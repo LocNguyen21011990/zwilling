@@ -129,7 +129,7 @@ app.controller('productlineListing', ['$rootScope', '$compile', '$http', '$scope
         });
 
     $scope.dtColumns = [
-        DTColumnBuilder.newColumn('product_line_no').withTitle('Product Line No'),
+        DTColumnBuilder.newColumn('product_line_no').withTitle('Product Line No.'),
         DTColumnBuilder.newColumn('product_line_name_english').withTitle('English Name'),
         DTColumnBuilder.newColumn('product_line_name_german').withTitle('German Name'),
         DTColumnBuilder.newColumn('brandname').withTitle('Brand'),

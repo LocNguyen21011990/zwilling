@@ -11,44 +11,52 @@ component accessors=true {
         if(cgi.request_method == 'POST'){ 
             var obj = createObject("component","api/general");
             var info = DeserializeJSON(GetHttpRequestData().content);
+            var is3Times = info.is3Times;
             var message = "The username or password is incorrect";
             var success = false;
             var check = userService.getUserLogin(info.user_name, info.user_password);
-            if( !isEmpty(check) )
-            {
-                var entity = entityLoad( "user", check.id_user, true );
-                entity.setLast_login(now());
-                var token = left(hash(createUUID()),15);
-                newSession = entityNew("session");
-                newSession.setToken(token);
-                newSession.setLang(info.lang);
-                newSession.setCreated_time( now() );
-                newSession.setUpdated_time( now() );
-                newSession.setUser(entity);
-                entitySave(newSession);
-                success = true;
-                message = "";
-            }
-            if(success){
-                var menus = obj.checkToken(token, 0); 
-                var parentArray = []; 
-                for(item in menus.data.access){
-                    if(item.view == 1){
-                        arrayAppend(parentArray, item);
-                    }
-                }
-                menus.data.access = parentArray;
-                if(ArrayLen(parentArray) <= 0){
-                    message = "Your access denied";
-                    success = false;
-                    VARIABLES.framework.renderData('JSON', {'success': success, 'message': message});
-                }else{
-                    VARIABLES.framework.renderData('JSON', menus);
-                }
-                
-            }else{
+            if(is3Times == true && info.capcha == '') {
+                message = "Please fill the capcha below.";
                 VARIABLES.framework.renderData('JSON', {'success': success, 'message': message});
             }
+            else {
+                if( !isEmpty(check) )
+                {
+                    var entity = entityLoad( "user", check.id_user, true );
+                    entity.setLast_login(now());
+                    var token = left(hash(createUUID()),15);
+                    newSession = entityNew("session");
+                    newSession.setToken(token);
+                    newSession.setLang(info.lang);
+                    newSession.setCreated_time( now() );
+                    newSession.setUpdated_time( now() );
+                    newSession.setUser(entity);
+                    entitySave(newSession);
+                    success = true;
+                    message = "";
+                }
+                if(success){
+                    var menus = obj.checkToken(token, 0); 
+                    var parentArray = []; 
+                    for(item in menus.data.access){
+                        if(item.view == 1){
+                            arrayAppend(parentArray, item);
+                        }
+                    }
+                    menus.data.access = parentArray;
+                    if(ArrayLen(parentArray) <= 0){
+                        message = "Your access denied";
+                        success = false;
+                        VARIABLES.framework.renderData('JSON', {'success': success, 'message': message});
+                    }else{
+                        VARIABLES.framework.renderData('JSON', menus);
+                    }
+                    
+                }else{
+                    VARIABLES.framework.renderData('JSON', {'success': success, 'message': message});
+                }
+            }
+            
         }   
     }
 
@@ -62,15 +70,21 @@ component accessors=true {
 
     function getlistUser(string token) { 
         var obj = createObject("component","api/general");
-        var checkAccess = obj.checkToken(token, obj.getIdPage(CGI.path_info));
+        var checkAccess = obj.checkTimeOut(token);
         var message = checkAccess.data;
         var success = false;
-        var access = [];
-        var listUser = [];
         if(checkAccess.success){
-            access = checkAccess.data.access; 
             var listUser = obj.queryToArray(userService.getListUser());
-            variables.framework.renderData('JSON', {'access': access, 'users': listUser});
+            for(item in listUser){
+                var roles = listToArray(item.id_role, ',');
+                var nameArray = [];
+                for(id in roles){
+                    var role_name = userService.getRoleById(id);
+                    arrayAppend(nameArray, userService.getRoleById(id).role_name);
+                }
+                item.id_role = arrayToList(nameArray, ',');
+            }
+            variables.framework.renderData('JSON', listUser);
         }else{
             variables.framework.renderData('JSON', {'success': success, 'message': message});
         }  
@@ -80,100 +94,85 @@ component accessors=true {
         var flag = false;
         var success = false;
         var obj = createObject("component","api/general");
-        var checkAccess = obj.checkToken(GetHttpRequestData().headers.Authorization, obj.getIdPage(CGI.path_info));
+        var checkAccess = obj.checkTimeOut(GetHttpRequestData().headers.Authorization);
         var message = checkAccess.data;
         if(checkAccess.success){
             var info = deserializeJSON(data);
-            var reg = REMatch("^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)(?=.*[~$@!^&%*<>\\+_=:;,.?()\[\]##]+.*)[0-9a-zA-Z~$@!^&%*<>\\+_=:;,.?()\[\]##]{6,}$", info.user_password);
-            if(ArrayLen(reg) <= 0){
-                message = "Password must have at least one number, one letter, one special character and more than 6 digits";
+            var checkExistUserName = userService.getUserFormUserName(info.user_name, 0);
+            if(isEmpty(checkExistUserName)){
+                var checkExistEmail = userService.getUserFormEmail(info.email, 0);
+                if(isEmpty(checkExistEmail))
+                    flag = true;
+                else
+                    message = "This is email exist";
             }else{
-                var checkExistUserName = userService.getUserFormUserName(info.user_name, 0);
-                if(isEmpty(checkExistUserName)){
-                    var checkExistEmail = userService.getUserFormEmail(info.email, 0);
-                    if(isEmpty(checkExistEmail))
-                        flag = true;
-                    else
-                        message = "This is email exist";
-                }else{
-                    message = "This is user name exist";
-                }
-                if(flag){
-                    var entity = entityNew('user');
-                    entity.setFirst_name(info.first_name);
-                    entity.setUser_name(info.user_name);
-                    //entity.setUser_password(hash(info.user_password));
-                    var id_role = arrayToList(info.id_role, ',');
-                    entity.setId_role(id_role);
-                    entity.setCompanyid(info.companyid);
-                    entity.setEmail(info.email);
-                    entity.setUser_type(info.user_type);
-                    entity.setIs_active(info.is_active);
-                    entitySave(entity);
+                message = "This is user name exist";
+            }
+            if(flag){
+                var entity = entityNew('user');
+                entity.setFirst_name(info.first_name);
+                entity.setUser_name(info.user_name);
+                //entity.setUser_password(hash(info.user_password));
+                var id_role = arrayToList(info.id_role, ',');
+                entity.setId_role(id_role);
+                //entity.setCompanyid(info.companyid);
+                entity.setEmail(info.email);
+                entity.setUser_type(info.user_type);
+                entity.setIs_active(info.is_active);
+                entitySave(entity);
+                success = true;
+                message = "Insert data success";
+                var token = left(hash(createUUID()),15);
+                var configMail = {};
+                configMail.mailFrom="quangkhaikg@gmail.com";
+                configMail.name=info.first_name;
+                configMail.title="Please click ";
+                configMail.mailTo=info.email;
+                configMail.mailSubject="Zwilling - forgot password for you";
+                configMail.mailContent=CGI.http_host&"/index.cfm/user.reset-Password?token="&token;
+                var mail = obj.sendMail(configMail);
+                if(mail){
+                    var entity_user = entityLoad("user", entity.getId_user(), true);
+                    entity_user.setLast_login(now());
+                    entity_user.setToken(token);
                     success = true;
-                    message = "Insert data success";
-                    var token = left(hash(createUUID()),15);
-                    var configMail = {};
-                    configMail.mailFrom="quangkhaikg@gmail.com";
-                    configMail.name=info.first_name;
-                    configMail.title="Please click ";
-                    configMail.mailTo=info.email;
-                    configMail.mailSubject="Zwilling - forgot password for you";
-                    configMail.mailContent=CGI.http_host&"/index.cfm/user.reset-Password?token="&token;
-                    var mail = obj.sendMail(configMail);
-                    if(mail){
-                        entity = entityLoad("user", check.id_user, true);
-                        entity.setLast_login(now());
-                        entity.setToken(token);
-                        success = true;
-                        message = "We are send link forgot password for you, check mail please";
-                    }
-                    if(arrayLen(info.avatar) > 0)
-                        uploadAvatar(info.avatar, entity.getId_user());
+                    message = "We are send link forgot password for you, check mail please";
                 }
+                if(arrayLen(info.avatar) > 0)
+                    uploadAvatar(info.avatar, entity.getId_user());
             }
         }
         VARIABLES.framework.renderData('JSON', {'success': success, 'message': message});
     }
 
     function editUser(string data) {
-        var flag = false;
+        var flag = true;
         var success = false;
         var obj = createObject("component","api/general");
-        var checkAccess = obj.checkToken(GetHttpRequestData().headers.Authorization, obj.getIdPage(CGI.path_info));
+        var checkAccess = obj.checkTimeOut(GetHttpRequestData().headers.Authorization);
         var message = checkAccess.data;
         if(checkAccess.success){
             var info = deserializeJSON(data);
-            var checkPass = userService.getUserPass(info.user_password, info.id_user);
-            if(isEmpty(checkPass)){
-                var reg = REMatch("^(?=.*[0-9]+.*)(?=.*[a-zA-Z]+.*)(?=.*[~$@!^&%*<>\\+_=:;,.?()\[\]##]+.*)[0-9a-zA-Z~$@!^&%*<>\\+_=:;,.?()\[\]##]{6,}$", info.user_password);
-                if(ArrayLen(reg) <= 0)
-                    message = "Password must have at least one number, one letter, one special character and more than 6 digits";
-                else
-                    flag = true;    
-            }
-            if(flag){
-                var checkExistUserName = userService.getUserFormUserName(info.user_name, info.id_user);
-                if(isEmpty(checkExistUserName)){
-                    var checkExistEmail = userService.getUserFormEmail(info.email, info.id_user);
-                    if(!isEmpty(checkExistEmail)){
-                        message = "This is email exist";
-                        flag = false;
-                    } 
-                }else{
-                    message = "This is user name exist";
+            var checkExistUserName = userService.getUserFormUserName(info.user_name, info.id_user);
+            if(isEmpty(checkExistUserName)){
+                var checkExistEmail = userService.getUserFormEmail(info.email, info.id_user);
+                if(!isEmpty(checkExistEmail)){
+                    message = "This is email exist";
                     flag = false;
-                }
+                } 
+            }else{
+                message = "This is user name exist";
+                flag = false;
             }
             if(flag){
                 var entity = entityLoad( "user", info.id_user, true );
                 entity.setFirst_name(info.first_name);
                 entity.setUser_name(info.user_name);
-                if(isEmpty(checkPass))
-                    entity.setUser_password(hash(info.user_password));
+                // if(isEmpty(checkPass))
+                //     entity.setUser_password(hash(info.user_password));
                 var id_role = arrayToList(info.id_role, ',');
                 entity.setId_role(id_role);
-                entity.setCompanyid(info.companyid);
+                //entity.setCompanyid(info.companyid);
                 entity.setEmail(info.email);
                 entity.setUser_type(info.user_type);
                 entity.setIs_active(info.is_active);
@@ -282,7 +281,7 @@ component accessors=true {
                 configMail.title="Please click ";
                 configMail.mailTo=check.email;
                 configMail.mailSubject="Zwilling - forgot password for you";
-                configMail.mailContent=CGI.http_host&"/##/reset-password?token="&token;
+                configMail.mailContent=CGI.http_host&"/##/reset-password/"&token;
                 var mail = obj.sendMail(configMail);
                 if(mail){
                     entity = entityLoad("user", check.id_user, true);

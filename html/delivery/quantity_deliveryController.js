@@ -6,7 +6,6 @@ app.filter("asDate", function () {
 });
 app.controller('quantity_delivery', ['$http','$scope','$timeout','ENV','DTOptionsBuilder','DTColumnBuilder','companyService','$filter', function($http,$scope,$timeout,ENV,DTOptionsBuilder,DTColumnBuilder,companyService,$filter){
 
-	
 	//begin
 	$scope.showTable = false;
 		$scope.dtOptions = DTOptionsBuilder.fromSource('');
@@ -15,39 +14,14 @@ app.controller('quantity_delivery', ['$http','$scope','$timeout','ENV','DTOption
 	    ];
 	$scope.dtInstance = {};
 
-    $scope.customer = '';
-    $scope.supplier = '';
-    $scope.conf_from ='';
-    $scope.conf_to ='';
     $scope.etd_from ='';
     $scope.etd_to ='';
-    $scope.product_segment = '';
-    $scope.product_line = '';
-    $scope.customers = [];
-    $scope.suppliers = [];
-    $scope.ListProductSegment =[];
 
-    companyService.getByType(window.globalVariable.company_kind.customer).then(function(data){
-        $scope.customers = data
-    });
-    companyService.getByType(window.globalVariable.company_kind.supplier).then(function(data){
-        $scope.suppliers = data;
+    $scope.locations = [];
+    companyService.getLocations().then(function(res){
+        $scope.locations = res;
     });
 
-
-   $http.get(ENV.domain+'productSegment.execute').then(function(res){
-   		$scope.ListProductSegment =res.data;
-   });
-
-   $http.get(ENV.domain+'evaluation.getProductLineBySegment?id='+$scope.product_segment).then(function(res){
-   		$scope.ListProductLine = res.data;
-   });
-
-   $scope.getProductLine = function(){
-	   	$http.get(ENV.domain+'evaluation.getProductLineBySegment?id='+$scope.product_segment).then(function(res){
-	   		$scope.ListProductLine = res.data;
-	   });
-   }
 
     function renderQty(data){
         return $filter('number')(data, 0);
@@ -69,12 +43,6 @@ app.controller('quantity_delivery', ['$http','$scope','$timeout','ENV','DTOption
     $scope.DetailOrderData = function(evaluationid){
 		var url = ENV.domain+'inspectionStatistic.execute';
 		var data = {
-				"supplier": $scope.supplier,
-				"customer": $scope.customer,
-				"product_segment": $scope.product_segment,
-				"product_line": $scope.product_line,
-				"confirmed_shipping_date_from": $scope.conf_from,
-				"confirmed_shipping_date_to": $scope.conf_to,
 				"etd_date_from": $scope.etd_from,
 				"etd_date_to": $scope.etd_to,
 				"key": evaluationid
@@ -93,7 +61,6 @@ app.controller('quantity_delivery', ['$http','$scope','$timeout','ENV','DTOption
 					$scope.data1.push(v.re_qty);
 					$scope.data2.push(v.ac_qty);
     				});
-    				console.log($scope.temp);
     				$scope.seriestemp = [{
 			        	color: 'red',
 			            name: 'Rejected',
@@ -288,6 +255,11 @@ function loadHightChart(){
     });
 }
   $timeout(function () {
+  	    $("#etd_from").datepicker({ dateFormat: "dd-M-yy" }).val();
+        $("#etd_to").datepicker({ dateFormat: "dd-M-yy" }).val();
+        $( ".datepicker" ).datepicker( "option", "prevText", "<" );
+        $( ".datepicker" ).datepicker( "option", "nextText", ">" );
+        $( ".datepicker" ).datepicker( "option", "firstDay", 1 );
       pageSetUp();
   }, 100);
 

@@ -4,10 +4,10 @@
 <div id="input_content">
 	<div class="search-content">
 		<div class="col-sm-2">
-			<input class="datepicker" placeholder="From date" id="tFromDate" ng-model="tFromDate">
+			<input class="datepicker" placeholder="From Date" id="tFromDate" ng-model="tFromDate">
 		</div>
 		<div class="col-sm-2">
-			<input class="datepicker" placeholder="To date" id="tEndDate" ng-model="tEndDate">
+			<input class="datepicker" placeholder="To Date" id="tEndDate" ng-model="tEndDate">
 		</div>
 		<div class="col-sm-1" style="padding-left: 5px; padding-right: 5px;">
 			  <select ng-options="size as size.name for size in sizes " ng-model="item" ng-change="update()"></select>
@@ -26,10 +26,11 @@
 		</div>
 		<div class="col-sm-3 no-padding-right">
 			<div class="col-sm-7">
-				<label>
+				<!-- <label>
 	                <input type="checkbox" ng-model="unfinishedab" >
 	                <span>UnFinished AB</span>
-	            </label>
+	            </label> -->
+	            <select ng-options="iFinish as iFinish.name for iFinish in option_finish " ng-model="unfinishedab" ng-change="updateab()"></select>
 	        </div>
 	        <div class="col-sm-5">
 	        	<button class="btn btn_custom" type="button" ng-click="searchOrder()"><i class="fa fa-search"></i></button>
@@ -52,7 +53,7 @@
               <th>Order Q'ty</th>
               <th>AB Q'ty</th>
               <th>Accepted Q'ty</th>
-              <th>Remain Qty.</th>
+              <th>Remain Q'ty</th>
               <th>Conf. Ship. Date</th>
               <th></th>
             </tr>
@@ -66,7 +67,7 @@
               <th>Order Q'ty</th>
               <th>AB Q'ty</th>
               <th>Accepted Q'ty</th>
-              <th>Remain Qty.</th>
+              <th>Remain Q'ty</th>
               <th>Conf. Ship. Date</th>
               <th></th>
             </tr>

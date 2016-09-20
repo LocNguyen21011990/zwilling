@@ -2,10 +2,12 @@
 
 
 appServices.factory('userService',function(ENV,$resource,Storage,$log,$http){
+    var restFul = ENV.domain + 'user.execute/:id';
+    var resource = $resource(restFul);
      return {
-           signup: function (username,password,lang) {
+           signup: function (username,password,lang,capcha,is3Times) {
                var api = ENV.domain + 'user.login';
-               var data = {"user_name": username, "user_password": password, "lang": lang};
+               var data = {"user_name": username, "user_password": password, "lang": lang, "capcha": capcha, "is3Times": is3Times};
                return $http.post(api,data).then(handeSuccess,handeError('Error conneting server'));
            },
            singout: function(){
@@ -16,10 +18,24 @@ appServices.factory('userService',function(ENV,$resource,Storage,$log,$http){
             var api = ENV.domain + 'user.execute?user_type=inspector';
             return $http.get(api).then(handeSuccess,handeError('Error when get inspector'));
            },
+           getRoles: function name() {
+               var api = ENV.domain + 'user.getRole';
+               return $http.get(api).then(handeSuccess,handeError('Error when get Roles'));
+           },
            forgotpassword: function (email) {
             var api = ENV.domain + 'user.forgotUser';
             var data = {"email": email};
             return $http.post(api,data).then(handeSuccess,handeError('Error when get inspector'));
+           },
+            getAll : function(){
+                return resource.query({},function(res){
+                    return res
+                });
+            },
+           resetpassword: function(token, user_password) {
+            var api = ENV.domain + 'user.resetPassword';
+            var data = {"token": token, "user_password": user_password};
+            return $http.put(api,data).then(handeSuccess,handeError('Error when get inspector'));
            }
      };
      function handeSuccess(res){

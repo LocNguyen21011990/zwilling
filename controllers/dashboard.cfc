@@ -8,7 +8,7 @@ component accessors=true {
         var obj             = createObject("component","api/general");
         var startDate       = DateFormat( CreateDate(year, month, 1), 'yyyy-mm-dd' );
         var endDate         = DateFormat( CreateDate(year, month, DaysInMonth(startDate)), 'yyyy-mm-dd' );
-        
+        var dateCurrent = DateFormat(now(), "yyyy-mm-dd");
         var dashboard        = [];
         var supplier = 0;
         var segment = 0;
@@ -37,7 +37,17 @@ component accessors=true {
             structIns.title = ins.shipped_quantity&" x "&ins.product_line_name_english&" - "&ins.product_item_name_english;
             structIns.start = DateFormat(ins.plan_date, "yyyy-mm-dd");
             structIns.stick = true;
-            structIns.color = "##ec1f26";
+            var color_ins = "green";
+            var mdate = DateDiff("d", dateCurrent, structIns.start);
+            if(mdate <= 7){
+                color_ins = "red";
+            }else if(mdate <= 14){
+                color_ins = "orange";
+            }
+            // Add class "green" for "Inspected / Delivered"
+            // Add class "orange" for "Inspected by next 14 days / Delivered by next 14 days"
+            // Add class "red" for "Inspected by next 7 days / Delivered by next 7 days"
+            structIns.icon  = "<i class='fa fa-file-text-o "&color_ins&"'></i>";
             arrayAppend(dashboard, structIns);
         }
 
@@ -54,7 +64,14 @@ component accessors=true {
             structDeli.title = deli.shipped_quantity&" x "&deli.product_line_name_english&" - "&deli.product_item_name_english;
             structDeli.start = DateFormat(deli.confirmed_shipping_date, "yyyy-mm-dd");
             structDeli.stick = true;
-            structDeli.color = "##000000";
+            var color_dei = "green";
+            var ndate = DateDiff("d", dateCurrent, structDeli.start);
+            if(ndate <= 7){
+                color_dei = "red";
+            }else if(ndate <= 14){
+                color_dei = "orange";
+            }
+            structDeli.icon   = "<i class='fa fa-truck "&color_dei&"'></i>";
             arrayAppend(dashboard, structDeli);
         }
         data.calendar=dashboard;

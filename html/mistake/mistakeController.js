@@ -17,7 +17,7 @@ app.controller('mistakeListing', ['$rootScope', '$scope', '$compile', '$q', '$ti
         angular.forEach(data, function(value) {
             $scope.columnTable.push(DTColumnBuilder.newColumn('product_segment').withTitle('<span class="rotate">' + value.product_segment_name_english + '</span').notSortable().renderWith(renderMistakeCheck));
         });
-        $scope.columnTable.push(DTColumnBuilder.newColumn('').withTitle('<span class="rotate">Edit</span>').notSortable().renderWith(renderAction));
+        $scope.columnTable.push(DTColumnBuilder.newColumn('').withTitle('Edit').notSortable().renderWith(renderAction));
     });
 
     $scope.dtOptions = DTOptionsBuilder.fromFnPromise(function() {

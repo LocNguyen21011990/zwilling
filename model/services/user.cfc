@@ -6,10 +6,10 @@ component {
 	}
 	
 	function getListUser() {
-		var sql = "select user.*, role.role_name, company.name company_name from user 
-				left join role on user.id_role=role.id_role 
-				left join company on user.companyid=company.companyid 
-				where user.is_active=1";
+		var sql = "select user.user_name, user.id_user, user.first_name as displayname, 
+					user.email, user.is_active, user.id_role 
+					from user 
+					where user.is_active=1";
 		return queryExecute(sql);
 	}
 	
@@ -73,5 +73,12 @@ component {
 	function getListLang() {
 		var sql = "select language_name, languagecol from language where active = 1";
 		return queryExecute(sql); 
+	}
+
+	function getRoleById(numeric id_role) {
+		var paramset = {};
+		var sql = "select * from role where id_role = :id_role";
+		paramset['id_role'] = {value=id_role, CFSQLType="integer"};
+		return queryExecute(sql, paramset); 
 	}
 }

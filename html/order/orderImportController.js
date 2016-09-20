@@ -26,8 +26,8 @@ app.controller('orderImport', function($http, $rootScope, $log, $scope, $timeout
         DTColumnBuilder.newColumn('product_item_no').withTitle('Product Item No.'),
         DTColumnBuilder.newColumn('product_line').withTitle('Product Line'),
         DTColumnBuilder.newColumn('product_item_name').withTitle('Product Item Name'),
-        DTColumnBuilder.newColumn('order_qty').withTitle('Order Qty'),
-        DTColumnBuilder.newColumn('ab_qty').withTitle('AB Qty'),
+        DTColumnBuilder.newColumn('order_qty').withTitle('Order Q\'ty'),
+        DTColumnBuilder.newColumn('ab_qty').withTitle('AB Q\'ty'),
         DTColumnBuilder.newColumn('confirmed_shipping_date').withTitle('Conf. Ship. Date'),
         DTColumnBuilder.newColumn('reason').withTitle('Reason'),
         DTColumnBuilder.newColumn('status').withTitle('Status').renderWith(status)

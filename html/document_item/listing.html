@@ -1,7 +1,6 @@
 <div id="ribbon">
     <h3>
         Document
-        
         <select class="address-type" ng-model="type_code" id="select_code" ng-change="changeDocument()">
             <option ng-repeat="value in listType" value="{{value.code}}">{{value.document_name}}</option>
         </select>
@@ -10,13 +9,6 @@
 <div id="input_content">
     <div class="add-content">
         <div class="col-sm-6">
-            <!-- <div class="row">
-                <div class="col-sm-12">
-                    <select style="width:100%" ui.select2 ng-model="type_code" id="select_code" ng-change="changeDocument()">
-                        <option ng-repeat="value in listType" value="{{value.code}}">{{value.document_name}}</option>
-                    </select>
-                </div>
-            </div> -->
             <div class="row">
                 <div class="col-sm-12">
                     <div class="form-row">
@@ -25,14 +17,6 @@
                     </div>
                 </div>
             </div>
-            <!-- <div class="row">
-                <div class="col-sm-12">
-                    <select ng-model="terminal" id="select_product" disabled>
-                        <option value="{{terminal}}">Document product Item</option>
-                        <option value="{{terminal}}">Document product segment</option>
-                    </select>
-                </div>
-            </div> -->
             <div class="row">
                 <div class="col-sm-12">
                     <div class="form-row">
@@ -48,19 +32,6 @@
                 </div>
                 <div class="col-sm-6">
                     <button type="button" class="btn btn_upload" ng-click="uploadFileInspection()">Upload</button>
-                    <!-- <button class="btn btn_document" type="button" data-toggle="dropdown" ng-click="listFileInspection()">Documents list</button>
-                    <ul class="dropdown-menu document-list" ng-if="icheckData>0">
-                        <li ng-repeat="i in iFiles">
-                            <div class="row">
-                                <div class="col-sm-10 document-list-item">
-                                    <a href="#"><span>{{listInspectFn[$index]}}</span></a>
-                                </div>
-                                <div class="col-sm-2">
-                                    <span class="remove-doc" ng-click="removeFileInspection($index,i)">&times;</span>
-                                </div>
-                            </div>
-                        </li>
-                    </ul> -->
                 </div>
             </div>
             <div class="row">
@@ -92,7 +63,7 @@
                         <th>Document Name</th>
                         <th>File Name</th>
                         <th>Type</th>
-                        <th>Product Item No</th>
+                        <th>Product Item No.</th>
                         <th>Product Segment</th>
                         <th></th>
                     </tr>
@@ -100,7 +71,7 @@
                         <th>Document Name.</th>
                         <th>File Name</th>
                         <th>Type</th>
-                        <th>Product Item No</th>
+                        <th>Product Item No.</th>
                         <th>Product Segment</th>
                         <th>Edit</th>
                     </tr>

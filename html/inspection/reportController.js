@@ -39,7 +39,8 @@ app.controller('inspectionReport', ['$window', '$scope', '$timeout', 'ENV', '$st
 
 
     function isNumber(obj) {
-        return !isNaN(parseFloat(obj)) }
+        return !isNaN(parseFloat(obj))
+    }
 
 
     $http.get(ENV.domain + 'inspectionResult.execute').then(function(data) {
@@ -48,7 +49,6 @@ app.controller('inspectionReport', ['$window', '$scope', '$timeout', 'ENV', '$st
     });
 
     $scope.listMistakeItem = [];
-
     $scope.totalCritical = 0;
     $scope.totalMajor = 0;
     $scope.totalMinor = 0;
@@ -81,9 +81,9 @@ app.controller('inspectionReport', ['$window', '$scope', '$timeout', 'ENV', '$st
             messageValid += '- Minor / Must be number </br>';
             valid = true;
         }
-        if(!validValues($scope.notice)){
-        	messageValid +='- Notice / Must be number </br>';
-        	valid = true;
+        if (!validValues($scope.notice)) {
+            messageValid += '- Notice / Must be number </br>';
+            valid = true;
         }
         if (valid) {
             Notification.error({ message: messageValid, delay: 3000 });
@@ -113,7 +113,9 @@ app.controller('inspectionReport', ['$window', '$scope', '$timeout', 'ENV', '$st
                 "number_of_notice": $scope.notice,
                 "updateby": "rasia"
             }
-            $http.post(ENV.domain + 'inspectionReportMistake.execute', data).then(function(res) {});
+            $http.post(ENV.domain + 'inspectionReportMistake.execute', data).then(function(res) {
+            	$scope.listMistakeItem[$scope.listMistakeItem.length -1].inspection_mistake_id =res.data.inspection_mistake_id;
+            });
         }
 
         $scope.critical = "";
@@ -151,8 +153,8 @@ app.controller('inspectionReport', ['$window', '$scope', '$timeout', 'ENV', '$st
                     $scope.totalCritical += parseInt(item.number_of_critical_defect);
                     $scope.totalMajor += parseInt(item.number_of_major_defect);
                     $scope.totalMinor += parseInt(item.number_of_minor_defect);
-                    $scope.listMistakeItem.push({ mistake_code: item.mistake_code, mistake_description_english: item.mistake_description_english, critical: item.number_of_critical_defect, major: item.number_of_major_defect, minor: item.number_of_minor_defect, notice: item.number_of_notice });
-                })
+                    $scope.listMistakeItem.push({ mistake_code: item.mistake_code, mistake_description_english: item.mistake_description_english, critical: item.number_of_critical_defect, major: item.number_of_major_defect, minor: item.number_of_minor_defect, notice: item.number_of_notice, inspection_mistake_id: item.inspection_mistake_id });
+                });
 
             });
 
@@ -192,11 +194,41 @@ app.controller('inspectionReport', ['$window', '$scope', '$timeout', 'ENV', '$st
         }
     });
 
+    $scope.removeMistake = function(index) {
+        var value = $scope.listMistakeItem[index];
+        console.log(value)
+        if (value.inspection_mistake_id != '') {
+            $http.delete(ENV.domain + 'inspectionReportMistake.execute?id=' + value.inspection_mistake_id).then(function(response) {
+                if (response.data['success']) {
+                    $scope.listMistakeItem.splice(index, 1);
+                    Notification.success({ message: response.data['message'] || 'Delete record mistake success', delay: 2000 });
+                } else {
+                    Notification.error({ message: response.data['message'] || 'Delete record mistake failed', delay: 2000 });
+                }
+            });
+        }
 
-
+    }
     $scope.saveReport = function() {
+        var messageValid = 'Input Accepted Quantity must be less than equal ' + $scope.inspectionReport.item_lost_size;
+        if ($scope.technicalDrawin == undefined) {
+            Notification.error({ message: 'Check Technical Drawin, Please!</br>', delay: 5000 });
+            return;
+        }
+        if ($scope.sealedSample == undefined) {
+            Notification.error({ message: 'Check Sealed Sample, Please!</br>', delay: 5000 });
+            return;
+        }
         if ($scope.inspection_no == '') {
             Notification.error({ message: 'Please input Inspection No.', delay: 2000 });
+            return;
+        }
+        if (!validValues($scope.quantity_accepted)) {
+            Notification.error({ message: 'Field Accepted Quantity must be number </br>', delay: 5000 });
+            return;
+        }
+        if ($scope.quantity_accepted > $scope.inspectionReport.item_lost_size) {
+            Notification.error({ message: messageValid, delay: 5000 });
             return;
         }
         $scope.listMistakeID = [];

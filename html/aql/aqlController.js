@@ -125,15 +125,14 @@ app.controller('aqlListing', ['$q','$compile','$rootScope','$scope', '$timeout',
                 type: 'text'
             }, {
                 type: 'text'
-            }, {
-                type: 'text'
             }]
         });
     $scope.dtColumns = [
-        DTColumnBuilder.newColumn('aqlid').withTitle('AQL No'),
+        DTColumnBuilder.newColumn('aqlid').withTitle('AQL No.'),
         DTColumnBuilder.newColumn('average_quality_level').withTitle('AQL'),
-        DTColumnBuilder.newColumn('min_quantity').withTitle('Min Quatity'),
-        DTColumnBuilder.newColumn('max_quantity').withTitle('Max Quatity'),
+        DTColumnBuilder.newColumn('min_quantity').withTitle('Min Quantity'),
+        DTColumnBuilder.newColumn('max_quantity').withTitle('Max Quantity'),
+        DTColumnBuilder.newColumn('inspection_lot').withTitle('Inspection Lot'),
         DTColumnBuilder.newColumn('accepted').withTitle('Accepted'),
         DTColumnBuilder.newColumn('rejected').withTitle('Rejected'),
         DTColumnBuilder.newColumn(null).renderWith(renderAction)
@@ -146,6 +145,7 @@ app.controller('aqlListing', ['$q','$compile','$rootScope','$scope', '$timeout',
             $scope.aqlList = data
             deferred.resolve($scope.aqlList);
         });
+        console.log(deferred.promise);
        
         return deferred.promise;
     }

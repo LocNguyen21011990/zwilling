@@ -190,6 +190,18 @@ component output="false" displayname=""  {
            return validContentTypes;
        }
 
+    function checkTimeOut(string token) {
+        var getSession = entityLoad("session",{token = token},true);
+        var result = {}; 
+        result["success"] = true;
+        result["data"] = "";
+        if( isNull(getSession) ){ 
+            result["success"] = false;
+            result["data"] = "Session time out!";
+        }
+        return result;
+    }
+    
     public function checkToken(string token, numeric id_access_page) {
         var getSession = entityLoad("session",{token = token},true);
         var result = {}; 

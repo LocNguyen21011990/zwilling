@@ -33,6 +33,12 @@ app.controller('inspectionCalendar', function($scope,$compile,$log,$filter,$time
                     events: events
                 }
             ]
+            ,
+          eventRender: function(event, element) {
+            if(event.icon){
+              element.find(".fc-title").prepend(event.icon+"<br>");
+            }
+          }  
         });
 
         $('.fc-next-button, .fc-prev-button').click(function(){

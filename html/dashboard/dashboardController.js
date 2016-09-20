@@ -26,9 +26,15 @@ app.controller('dashboard', function($scope,$http,$log, $timeout, ENV,companySer
           },
           eventSources: [
               {
-                  events: events,
+                  events: events      
               }
           ]
+          ,
+          eventRender: function(event, element) {
+            if(event.icon){
+              element.find(".fc-title").prepend(event.icon+"<br>");
+            }
+          }  
       });
       searchEvents();
       $('.fc-next-button, .fc-prev-button').click(function(){
@@ -89,7 +95,7 @@ app.controller('dashboard', function($scope,$http,$log, $timeout, ENV,companySer
         $http.get(api).then(function(res){
             $('#calendar').fullCalendar( 'removeEventSource', events);
             $('#calendar').fullCalendar( 'addEventSource', res.data.calendar);  
-            events = res.data.calendar;       
+            events = res.data.calendar;
             $('#calendar').fullCalendar( 'refetchEvents' );
             $scope.topproduct_label = [];
             $scope.topproduct_data = [];

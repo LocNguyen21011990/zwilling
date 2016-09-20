@@ -126,7 +126,7 @@
 		<script type="text/javascript" src="html/user/userController.js"></script>
 		<script type="text/javascript" src="html/shared/leftPanelController.js"></script>
 		<script type="text/javascript" src="html/contact/contactController.js"></script>
-		<script src='https://www.google.com/recaptcha/api.js'></script>
+		<script src='https://www.google.com/recaptcha/api.js?onload=vcRecaptchaApiLoaded&render=explicit' async defer></script>
+		<script type="text/javascript" src="assets/js/lib/angular-recaptcha.js"></script>
 	</body>
-
 </html>

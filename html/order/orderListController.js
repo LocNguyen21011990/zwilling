@@ -48,6 +48,13 @@ app.controller('orderList', ['$scope','$q','$filter','$compile','$timeout','ENV'
     {value: 'dr', name: 'Input Dates'}
     ];
 
+    $scope.option_finish = [ 
+    {value: '2', name: 'All'},
+    {value: '1', name: 'UnFinished AB'},
+    {value: '0', name: 'Finished AB'}
+    ];
+    $scope.unfinishedab = $scope.option_finish[1];
+
     $scope.item = $scope.sizes[9];
 
     $scope.tFromDate="";
@@ -167,7 +174,7 @@ app.controller('orderList', ['$scope','$q','$filter','$compile','$timeout','ENV'
         DTColumnBuilder.newColumn('ordered_quantity').withTitle('Order Q\'ty').renderWith(renderQty).withClass('dt-body-right'),
         DTColumnBuilder.newColumn('shipped_quantity').withTitle('AB Q\'ty').renderWith(renderQty).withClass('dt-body-right'),
         DTColumnBuilder.newColumn('accepted').withTitle('Accepted Q\'ty').renderWith(renderQty).withClass('dt-body-right'),
-        DTColumnBuilder.newColumn('remain').withTitle('Remain Qty.').renderWith(renderQty).withClass('dt-body-right'),
+        DTColumnBuilder.newColumn('remain').withTitle('Remain Q\'ty').renderWith(renderQty).withClass('dt-body-right'),
         DTColumnBuilder.newColumn('confirmed_shipping_date').withTitle('Conf. Ship. Date').renderWith(dateFormat).withClass('dt-body-center'),
         DTColumnBuilder.newColumn(null).withTitle('Edit').notSortable().renderWith(function(data,type,full,meta){return '<td class="btn_edit"><a class="cursor" ui-sref="home.order.edit({id: '+data.orderid+'})"><i class="fa fa-pencil-square-o"></i></a></td>'})
     ];
@@ -188,7 +195,6 @@ app.controller('orderList', ['$scope','$q','$filter','$compile','$timeout','ENV'
     }
 
 
-    $scope.unfinishedab = true;
 
 
     $scope.searchOrder = function(){
@@ -202,7 +208,6 @@ app.controller('orderList', ['$scope','$q','$filter','$compile','$timeout','ENV'
         var s2='';
         var s3='';
         var s4='';
-        var s5='finish=0';
         
         if($scope.tFromDate != ''){
             s1= 'start='+$scope.tFromDate+'&';
@@ -220,9 +225,7 @@ app.controller('orderList', ['$scope','$q','$filter','$compile','$timeout','ENV'
             s4= 'supid='+OL.supplier+'&';
         }
 
-        if($scope.unfinishedab){
-            s5= 'finish=1';
-        }
+        var s5= 'finish='+$scope.unfinishedab.value;
 
         var sSearch = s1+s2+s3+s4+s5;
         $http.get(ENV.domain+'order.execute?'+sSearch).then(function(data){

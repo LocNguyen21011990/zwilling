@@ -284,7 +284,8 @@
                                         <th style="width: 5%">Critical</th>
                                         <th style="width: 5%">Major</th>
                                         <th style="width: 5%">Minor</th>
-                                        <th style="width: 25%">Notice</th>
+                                        <th style="width: 5%">Notice</th>
+                                        <th style="width: 5%">Delete</th>
                                     </tr>
                                 </thead>
                                 <tbody id="mistake_list">
@@ -295,6 +296,7 @@
                                         <td class="text-center">{{item.major}}</td>
                                         <td class="text-center">{{item.minor}}</td>
                                         <td class="text-center">{{item.notice}}</td>
+                                        <td class=""><a class="cursor" ng-click="removeMistake($index)"><span class="glyphicon glyphicon-remove"></span></a></td>
                                     </tr>
                                     <tr id="total_defects" class="text-center">
                                         <td></td>
@@ -302,6 +304,7 @@
                                         <td>{{totalCritical}}</td>
                                         <td>{{totalMajor}}</td>
                                         <td>{{totalMinor}}</td>
+                                        <td></td>
                                         <td></td>
                                     </tr>
                                     <tr id="allowed_defects" class="text-center">
@@ -311,6 +314,7 @@
                                         <td>{{inspectionReport.major_allow}}</td>
                                         <td>{{inspectionReport.minor_allow}}</td>
                                         <td></td>
+                                        <td></td>
                                     </tr>
                                     <tr id="rejected_defects" class="text-center">
                                         <td></td>
@@ -318,6 +322,7 @@
                                         <td>0</td>
                                         <td>{{inspectionReport.major_reject}}</td>
                                         <td>{{inspectionReport.minor_reject}}</td>
+                                        <td></td>
                                         <td></td>
                                     </tr>
                                 </tbody>
@@ -475,7 +480,7 @@
                         <div class="col-md-12">
                             <div class="form-row">
                                 <input type="text" ng-model="quantity_accepted" required ng-model-options="{allowInvalid: true}">
-                                <label class="input-label">Accepted Quantity</label>
+                                <label class="input-label">Accepted Quantity: Total:{{inspectionReport.item_lost_size}} / Remaining: {{inspectionReport.item_lost_size - quantity_accepted}}</label>
                             </div>
                         </div>
                     </div>

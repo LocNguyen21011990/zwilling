@@ -1143,12 +1143,15 @@ form.frm_login a {
 }
 .green {
 	color: #01a618;
+	font-size: 18px;
 }
 .orange {
 	color: #ff8400;
+	font-size: 18px;
 }
 .red {
 	color: #ff0000;
+	font-size: 18px;
 }
 .explain-calendar {
     border-left: solid 1px #807c77;
@@ -1176,6 +1179,14 @@ form.frm_login a {
 }
 .explain-calendar .right-col {
 	padding: 20px;
+}
+a.fc-day-grid-event, a.fc-day-grid-event:hover {
+	background: #FFF;
+	color: #000;
+}
+.fc-event {
+	border-left: none;
+	border: solid 1px #807c77 !important;
 }
 ::-webkit-scrollbar {
     width: 7px;

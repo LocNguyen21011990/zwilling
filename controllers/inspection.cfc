@@ -277,6 +277,7 @@ component accessors=true {
         var supplier = 0;
         var inspector = 0;
         var location = 0;
+        var dateCurrent = DateFormat(now(), "yyyy-mm-dd");
         if(StructKeyExists(URL, 'supplier') && URL.supplier != ''){
             supplier = URL.supplier;
         }
@@ -300,7 +301,15 @@ component accessors=true {
             structCalendar.title = item.shipped_quantity&" x "&item.product_line_name_english&" - "&item.product_item_name_english;
             structCalendar.start = DateFormat(item.plan_date, "yyyy-mm-dd");
             structCalendar.stick = true;
-            arrayAppend(calendar, structCalendar)
+            var color = "green";
+            var mdate = DateDiff("d", dateCurrent, structCalendar.start);
+            if(mdate <= 7){
+                color = "red";
+            }else if(mdate <= 14){
+                color = "orange";
+            }
+            structCalendar.icon  = "<i class='fa fa-file-text-o "&color&"'></i>";
+            arrayAppend(calendar, structCalendar);
         }
         VARIABLES.framework.renderData('JSON', calendar);
     }

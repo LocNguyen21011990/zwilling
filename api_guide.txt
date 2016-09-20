@@ -725,13 +725,12 @@ get user activity for dashboard
 {
   "first_name": "first_name",
   "user_name": "user_name",
-  "user_password": "user_password",
   "companyid": 3,
   "id_role": [1,2],
   "email": "emai",
   "user_type": "inspector",
   "is_active":1,
-  "avatar":""
+  "avatar":[]
 }
 
 => user edit:
@@ -742,7 +741,6 @@ get user activity for dashboard
   "id_user": id_user,
   "first_name": "first_name",
   "user_name": "user_name",
-  "user_password": "rasia1@",
   "companyid": 3,
   "id_role": [1,3],
   "email": "emai",

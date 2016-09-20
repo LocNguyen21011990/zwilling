@@ -7,7 +7,7 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="form-row">
-						<input type="text" name="username" id="username" required ng-model-options="{allowInvalid: true}">
+						<input type="text" name="username" id="username" ng-model="user.user_name" required ng-model-options="{allowInvalid: true}">
 						<label class="input-label">User Name</label>
 					</div>
 				</div>
@@ -15,7 +15,7 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="form-row">
-						<input type="text" name="displayName" id="displayname" required ng-model-options="{allowInvalid: true}">
+						<input type="text" name="displayName" id="displayname" ng-model="user.first_name" required ng-model-options="{allowInvalid: true}">
 						<label class="input-label">Display Name</label>
 					</div>
 				</div>
@@ -23,7 +23,7 @@
 			<div class="row">
 				<div class="col-sm-12">
 					<div class="form-row">
-						<input type="text" name="displayName" id="displayname" required ng-model-options="{allowInvalid: true}">
+						<input type="text" name="displayName" id="displayname" ng-model="user.email" required ng-model-options="{allowInvalid: true}">
 						<label class="input-label">Email Address</label>
 					</div>
 				</div>
@@ -34,22 +34,34 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="col-md-12">
+				<div class="col-md-6">
 					<label>Active</label>
 					<label class="radio-inline">
-						<label class="check-box"><input type="checkbox"></label>
+						<label class="check-box"><input type="checkbox" ng-model="user.is_active"></label>
+					</label>
+				</div>
+				<div class="col-md-6">
+					<label>Inspector</label>
+					<label class="radio-inline">
+						<label class="check-box"><input type="checkbox" ng-model="isInspector" ng-change="checkInspector(isInspector)"></label>
 					</label>
 				</div>
 			</div>
-			<div class="row">
-				<div class="col-sm-12">
-					<br>
-					<button type="button" class="btn btn_save">Save</button>
-					<button type="button" class="btn btn_reset">Reset</button>
-				</div>
+		</div>
+		<div class="col-md-7">
+			<div class="col-md-6" ng-repeat="role in roles">
+				<label class="check-box">
+					<input type="checkbox" ng-model="ischeck" ng-change="checkRole(role.id_role,ischeck)">&nbsp;{{role.role_name}} 
+				</label>
 			</div>
 		</div>
-		<div class="col-md-7"></div>
+	</div>
+	<div class="row">
+		<div class="col-sm-12 text-center">
+			<br>
+			<button type="button" ng-click="saveUser()" class="btn btn_save">Save</button>
+			<button type="button" class="btn btn_reset">Reset</button>
+		</div>
 	</div>
 </div>
 <div id="table_content">

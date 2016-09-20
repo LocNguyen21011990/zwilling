@@ -1,13 +1,15 @@
 'use strict'
-appControllers.controller('loginCtrl',function(userService,$log,$state,Storage,Notification,$rootScope){
+
+appControllers.controller('loginCtrl',function(userService,$log,$state,Storage,Notification,$scope,$rootScope,$stateParams,vcRecaptchaService){
     
     var storageKey = 'user';
     var login = this;
-    login.isOver3Times = false;
     login.timeSignUp = 0;
+    login.isOver3Times = false;
     login.lang = window.globalVariable.lang;
     login.signup = signup;
     login.forgotpassword = forgotpassword;
+    login.resetpassword = resetpassword;
     if(Storage.get('token') != null){
         userService.singout().then(function(data){
             Storage.remove(storageKey);
@@ -17,7 +19,11 @@ appControllers.controller('loginCtrl',function(userService,$log,$state,Storage,N
     }
     var user = {};
     function signup(){
-        userService.signup(login.username, login.password,login.lang).then(function(data) {
+        var capcha = '';
+        if(vcRecaptchaService != '') {
+            capcha = vcRecaptchaService.getResponse(); 
+        }
+        userService.signup(login.username, login.password,login.lang,capcha, login.isOver3Times).then(function(data) {
             if(data.success)
             {
                 user=data.data;
@@ -36,12 +42,34 @@ appControllers.controller('loginCtrl',function(userService,$log,$state,Storage,N
                 }
             }
         });
+        
     }
 
     function forgotpassword() {
         userService.forgotpassword(login.email).then(function(data) {
             login.errorMessage = data.message;
         });
+    }
+
+    function resetpassword() {
+        var params = $state.params;
+        if(login.user_password === login.re_password) {
+            userService.resetpassword(params.token, login.user_password).then(function(data) {
+                if(data.success) {
+                    login.errorMessage = data.message;
+                    setTimeout(function() {
+                        $state.go('login');
+                    }, 1000);
+                }
+                else {
+                    login.errorMessage = data.message;
+                }
+            });
+        }
+        else {
+            login.errorMessage = "Confirm password not matching! Please try again.";
+        }
+        
     }
    
 });

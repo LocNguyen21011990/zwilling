@@ -23,10 +23,12 @@ app.config(function($stateProvider, $urlRouterProvider) {
             },
         })
         .state('reset-password', {
-            url: '/reset-password',
+            url: '/reset-password/:token',
             views: {
                 'login': {
-                    templateUrl: '/html/login/reset-password.html'
+                    templateUrl: '/html/login/reset-password.html',
+                    controller: 'loginCtrl',
+                    controllerAs: 'login'
                 }
             },
         })
