@@ -1,0 +1,45 @@
+<aside id="left-panel" >
+	<div id="logo-group">
+		<a href="#">
+			<div class="logo"></div>
+		</a>
+	</div>
+	<div class="login-info">
+		<span class="dropdown">
+			<a class="dropdown-toggle cursor" data-toggle="dropdown">
+				<img src="assets/img/avatar.png"><span class="login-name">{{username}}</span>
+				<i class="fa fa-angle-down"></i>
+			</a> 
+			<ul class="dropdown-menu dropdown-user">
+				<li>
+					<a href="#"><i class="fa fa-cog"></i>&nbsp;Config</a>
+				</li>
+				<li>
+					<a ui-sref="login"><i class="fa fa-sign-out"></i>&nbsp;Logout</a>
+				</li>
+			</ul>
+		</span>
+	</div>
+	<nav>
+		<ul class="navigation" ng-repeat="value in accesses | groupBy: 'parentid'">
+			<li ng-if="value[0].url">
+				<a ui-sref="{{value[0].url}}" title="Dashboard">
+					<i class="{{value[0].icon}}"></i> <span class="menu-item-parent">{{ value[0].page_name}}</span>
+				</a>
+			</li>
+			<li ng-if="!value[0].url">
+				<a title="{{value[0].page_name}}">
+					<i class="{{value[0].icon}}"></i> <span class="menu-item-parent">  {{ value[0].page_name}}</span>
+				</a>
+				<ul class="subnavigation">
+					<li data-ui-sref-active="active" ng-repeat="(key,player) in value" ng-if="key != 0">
+						<a ui-sref="{{player.url}}"><i class="{{player.icon}}"></i> {{ player.page_name }}</a>
+					</li>
+				</ul>
+			</li>
+		</ul>
+	</nav>
+	<span class="minifyme" data-action="minifyMenu"> 
+		<i class="fa fa-arrow-circle-left hit"></i> 
+	</span>
+</aside>

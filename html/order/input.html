@@ -1,0 +1,462 @@
+<div id="ribbon">
+	<h3>Order information</h3>
+</div>
+<div id="input_content">
+	<div class="col-sm-4">
+		<h3 class="title_function">Order</h3>
+		<div class="row">
+			<div class="col-sm-12">
+				<input type="text" name="orderNumber" id="order_number" ng-model="OP.purchase_order.order_no" placeholder="Order No.">
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-6">
+				<input type="text" name="request" placeholder="Order Date" ng-change="OP.changeCurrency()" ng-model="OP.purchase_order.order_date" class="datepicker" id="order_date">
+			</div>
+			<div class="col-sm-6">
+				<select id="currency" ng-model="OP.purchase_order.currency">
+					<option ng-repeat="cu in OP.currencies" value="{{cu.currency_code}}">{{cu.currency_code}}</option>
+				</select>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-6">
+				<label for="order_file" class="input_upload_file upload_document">File<label>
+				<input type="file" name="orderFile" id="order_file" class="upload" ng-model='OP.file' multiple base-sixty-four-input/>
+			</div>
+			<div class="col-sm-6">
+				<button class="btn btn_upload" ng-click="OP.uploadfile()">Upload</button>
+				<button class="btn btn_document" type="button" data-toggle="dropdown" ng-click="OP.listfile()">Documents List</button>
+				<ul class="dropdown-menu document-list" ng-if="OP.aFiles.length>0">
+					<li ng-repeat="i in OP.aFiles">
+						<div class="row">
+							<div class="col-sm-10 document-list-item">
+								<a href="#"><span>{{OP.listdocumentfn[$index]}}</span></a>
+							</div>
+							<div class="col-sm-2">
+								<span class="remove-doc" ng-click="OP.removefile($index,i)">&times;</span>
+							</div>
+						</div>
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="row">
+			<ul class="upload_listing"></ul>
+		</div>
+	</div>
+
+	<div class="col-sm-4">
+		<h3 class="title_function">Customer</h3>
+		<div class="row">
+			<div class="col-sm-12">
+				<select style="width:100%" ui-select2 id="customer_name" ng-model="OP.customer" ng-click="OP.selectCustomer()">
+					<option value="">Customer's Name</option>
+					<option ng-repeat="option in OP.customers" value="{{option.companyid}}">{{option.name}}</option>
+				</select>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<input type="text" name="customerEmail" id="customer_email" placeholder="Email" ng-model="OP.cusEmail" disabled>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-9">
+				<input type="text" name="contactPerson" id="contact_person" placeholder="Contact Person" ng-model="OP.cusContact" disabled>
+			</div>
+			<div class="col-sm-3">
+				<button class="btn btn_custom" type="button" ng-click="OP.showDetail(3)">Detail</button>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-4">
+		<h3 class="title_function">Supplier</h3>
+		<div class="row">
+			<div class="col-sm-12">
+				<select style="width:100%" ui-select2 id="suppiler_name" ng-model="OP.supplier" ng-click="OP.selectSupplier()">
+					<option value="">Supplier's Name</option>
+					<option ng-repeat="option in OP.suppliers" value="{{option.companyid}}">{{option.name}}</option>
+				</select>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<input type="text" name="suppilerEmail" id="suppiler_email" placeholder="Email" ng-model="OP.supEmail" disabled>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-9">
+				<input type="text" name="contactPerson" id="contact_person" placeholder="Contact Person" ng-model="OP.supContact" disabled>
+			</div>
+			<div class="col-sm-3">
+				<button class="btn btn_custom" type="button" ng-click="OP.showDetail(2)" >Detail</button>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="table_content">
+	<div class="col-sm-12">
+		<h3 class="title_table">
+			Position list
+			<button class="btn btn_table_add" type="button" data-toggle="modal" data-target="#addPosition" ng-click="OP.checkModal = 1">Add Position +</button>
+		</h3>
+		<table datatable dt-options="OP.dtOptions" dt-columns="OP.dtColumns" dt-instance="OP.dtInstance" id="position_datatable" class="table table-striped table-bordered table-hover" width="100%">
+			<tfoot>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th class="right-footer-table">Total:</th>
+    			<th class="right-footer-table">{{OP.totalPrice|number:2}}</th>
+				<th></th>
+				<th></th>
+				<th></th>
+				<th></th>
+    	</tfoot>
+		</table>
+		
+	</div>
+	<div class="col-sm-12 frm-save">
+		<button class="btn btn_save" ng-click="OP.savePurchase_order()" type="button">Save</button>
+	</div>
+</div>
+<div class="modal fade" id="editCustomer" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  	<div class="modal-header">
+		    	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		    	<h4 class="modal-title">{{OP.displayCompany.title}}</h4>
+		  	</div>
+		  	<div class="modal-body">
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="form-row">
+							<input type="text" ng-model="OP.displayCompany.gildemeisterid" name="companyNo" id="company_no" required ng-model-options="{allowInvalid: true}">
+							<label class="input-label">Company No</label>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="form-row">
+							<input type="text" ng-model="OP.displayCompany.name" name="companyName" id="company_name" required ng-model-options="{allowInvalid: true}">
+							<label class="input-label">Company Name</label>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="form-row">
+							<input type="text" ng-model="OP.displayCompany.abbreviation_name" name="companyAbbreviationName" id="company_abbreviation_name" required ng-model-options="{allowInvalid: true}">
+							<label class="input-label">Company Abbreviation Name</label>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="form-row">
+							<input type="text" ng-model="OP.displayCompany.address" name="address" id="address" required ng-model-options="{allowInvalid: true}">
+							<label class="input-label">Address</label>
+						</div>
+					</div>
+				</div>
+		    	<div class="row">
+					<div class="col-sm-12">
+						<select style="width:100%" class="select2" ng-model="OP.displayCompany.locationid" id="loaction">
+							<option value="">Select location</option>
+							<option ng-repeat="location in  OP.locations" value="{{location.locationid}}">{{location.locationname.trim()}}</option>
+						</select>
+					</div>
+				</div>
+		 		<div class="row">
+					<div class="col-md-12">
+						<div class="form-row">
+							<input type="text" ng-model="OP.displayCompany.phone" name="businessPhone" id="business_phone" required ng-model-options="{allowInvalid: true}">
+							<label class="input-label">Business Phone</label>
+						</div>
+					</div>
+		 		</div>
+		 		<div class="row">
+					<div class="col-md-12">
+						<div class="form-row">
+							<input type="text" ng-model="OP.displayCompany.fax" name="businessFax" id="business_fax" required ng-model-options="{allowInvalid: true}">
+							<label class="input-label">Business Fax</label>
+						</div>
+					</div>
+		 		</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="form-row">
+							<input type="text" ng-model="OP.displayCompany.mail" name="email" id="email" required ng-model-options="{allowInvalid: true}">
+							<label class="input-label">Email Address</label>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-sm-12">
+						<div class="form-row">
+							<input type="text" ng-model="OP.displayCompany.contact_person" name="contactPerson" id="contact_person" required ng-model-options="{allowInvalid: true}">
+							<label class="input-label">Contact Person</label>
+						</div>
+					</div>
+				</div>
+		  	</div>
+		  	<div class="modal-footer center">
+		    	<button type="button" class="btn btn_save" ng-click="OP.saveCompany()">Save</button>
+		  	</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="addPosition" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  	<div class="modal-header">
+		    	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		    	<h4 class="modal-title">Input order position</h4>
+		  	</div>
+		  	<div class="modal-body">
+		  		<div class="position-content">
+			    	<div class="row">
+						<div class="col-sm-12">
+							<h3 class="title">Position #{{OP.orderPosition.position_no}}</h3>
+						</div>
+			    	</div>
+			    	<div class="row">
+						<div class="col-sm-4">
+							<div class="form-row">
+								<input type="text" ng-model="OP.orderPosition.product_item_no" ui-autocomplete="searchProducts" required ng-model-options="{allowInvalid: true}">
+								<label class="input-label">Product Item No.</label>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-row">
+								<input type="text" ng-model="OP.orderPosition.product_item_line" name="productLineName" id="product_line_name" disabled>
+								<label class="input-disable-label product_item_name_label">Product Line Name</label>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-row">
+								<input type="text" ng-model="OP.orderPosition.product_item_name" name="productItemName" id="product_item_name" disabled>
+								<label class="input-disable-label product_item_name_label">Product Item Name</label>
+							</div>
+						</div>
+			    	</div>
+			    	<div class="row">
+						<div class="col-sm-2">
+							<div class="form-row">
+								<input type="text" ng-model="OP.orderPosition.ordered_quantity" ng-change="OP.orderPosition.total_price = OP.orderPosition.ordered_quantity * OP.orderPosition.unit_price" name="Total_quantity" id="total_quantity" required ng-model-options="{allowInvalid: true}">
+								<label class="input-label">Quantity</label>
+							</div>
+						</div>
+						<div class="col-sm-3">
+							<div class="form-row">
+								<input type="text" ng-model="OP.orderPosition.unit_price" ng-change="OP.orderPosition.total_price = OP.orderPosition.ordered_quantity * OP.orderPosition.unit_price" name="unitPrice" id="unit_price" required ng-model-options="{allowInvalid: true}">
+								<label class="input-label">Price</label>
+							</div>
+						</div>
+						<div class="col-sm-3">
+							<input type="text" disabled name="value" id="value" value="{{OP.orderPosition.total_price|number:2}}">
+						</div>
+			    	</div>
+			    </div>
+				<div id="abContent" ng-repeat="ab in OP.orderPosition.ab">
+					<div class="ab-content">
+						<div class="row">
+							<div class="col-sm-4">
+								<select id="transport" ng-model="ab.shipment_method">
+									<option value="">Select Tranport</option>
+									<option ng-repeat="trans in OP.tranports" value = "{{trans.method.trim()}}">{{trans.method.trim()}}</option>
+								</select>
+							</div>
+							<div class="col-sm-4">
+								<div class="form-row">
+									<input type="text" value="{{ab.expected_shipping_date}}" ng-model="ab.expected_shipping_date"  name="expectedShipDate" class="datepicker" id="expected_ship_date_{{ab.abno}}" required ng-model-options="{allowInvalid: true}">
+									<label class="input-label">Expected Ship. Date</label>
+								</div>
+							</div>
+							<div class="col-sm-4">
+								<div class="form-row">
+									<input type="text" value="{{ab.confirmed_shipping_date}}" ng-model="ab.confirmed_shipping_date"  name="confirmedShipDate" class="datepicker" id="confirmed_ship_date_{{ab.abno}}" required ng-model-options="{allowInvalid: true}">
+									<label class="input-label">Confirmed Ship. Date</label>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<!--<div class="col-sm-4">
+								<input type="text" name="zaDate" ng-model="ab.za_date" placeholder="ZA Date" class="datepicker" id='za_date_{{ab.abno}}'>
+							</div>
+							<div class="col-sm-4">
+								<input type="text" name="actualShipDate" ng-model="ab.shipping_date" placeholder="Actual Shipping Date" class="datepicker" id="shipping_date_{{ab.abno}}">
+							</div>
+							<div class="col-sm-4">
+								<input type="text" name="warehouseBookingDate" ng-model='ab.warehouse_book_date' placeholder="Warehouse booking date" class="datepicker" id="warehouse_book_date_{{ab.abno}}">
+							</div>-->
+						</div>
+					</div>
+				</div>
+		  	</div>
+		  	<div class="modal-footer">
+		  		<div class="add-another">
+					<label class="check-box"><input ng-model="OP.addMore" type="checkbox">&nbsp;Add another positon</label>
+		  		</div>
+		  		<div class="save-group">
+		    		<button type="button" class="btn btn_save" ng-click="OP.savePosition()">Save</button>
+		    	</div>
+		  	</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="editPosition" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+		  	<div class="modal-header">
+		    	<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		    	<h4 class="modal-title">Edit order position</h4>
+		  	</div>
+		  	<div class="modal-body">
+		  		<div class="position-content">
+			    	<div class="row">
+						<div class="col-sm-12">
+							<h3 class="title_line">
+								Position #1
+							</h3>
+						</div>
+			    	</div>
+			    	<div class="row">
+						<div class="col-sm-4">
+							<div class="form-row">
+								<input type="text" ng-model="OP.positions[OP.currentPosition].product_item_no" ui-autocomplete="searchProducts" disabled>
+								<label class="input-disable-label">Product Item No.</label>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-row">
+								<input type="text" disabled ng-model="OP.positions[OP.currentPosition].product_item_line" name="productLineName_current" id="product_line_name_current" disabled>
+								<label class="input-disable-label">Product Item Name</label>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-row">
+								<input type="text" disabled ng-model="OP.positions[OP.currentPosition].product_item_name" name="productItemName_current" id="product_item_name_current" disabled>
+								<label class="input-disable-label">Product Item Name</label>
+							</div>
+						</div>
+			    	</div>
+			    	<div class="row">
+						<div class="col-sm-4">
+							<div class="form-row">
+								<input type="text" ng-model="OP.positions[OP.currentPosition].ordered_quantity" name="quantity" id="total_quantity" disabled>
+								<label class="input-disable-label">Position Q'ty</label>
+							</div>
+						</div>
+						<div class="col-sm-8">
+							<select ng-model='OP.positions[OP.currentPosition].ql'>
+								<option ng-repeat="ql in OP.positions[OP.currentPosition].qls" value='{{ql}}'>{{ql}}</option>
+							</select>
+						</div>
+			    	</div>
+			    </div>	
+			    <div id="ab-content" ng-repeat="ab in OP.positions[OP.currentPosition].ab">
+			    	<div clas="ab-item">
+				    	<div class="row">
+							<div class="col-sm-12">
+								<h3 class="title_line">
+									AB #{{ab.abno}}
+									<button class="btn btn_delete" type="button" ng-click="OP.delAB($index)"><i class="fa fa-trash" ></i></button>
+									<button ng-if="$last" class="btn btn_table_add" type="button" ng-click="OP.splitAB()">+</button>
+								</h3>
+							</div>
+				    	</div>
+				    	<div class="row">
+				    		<div class="col-sm-2">
+				    			<div class="form-row">
+									<input type="text" name="quantity" ng-model="ab.shipped_quantity" ng-change="OP.changeTotalQty()" id="total_quantity" required ng-model-options="{allowInvalid: true}">
+									<label class="input-label">Q'ty.</label>
+								</div>
+				    		</div>
+							<div class="col-sm-2">
+								<select id="transport" ng-model="ab.shipment_method">
+									<option value="">Select Tranport</option>
+									<option ng-repeat="trans in OP.tranports" value = "{{trans.method.trim()}}">{{trans.method.trim()}}</option>
+								</select>
+							</div>
+							<div class="col-sm-4">
+								<div class="form-row">
+									<input type="text" ng-model="ab.expected_shipping_date" class="datepicker" id="E_expected_shipping_date_{{ab.abno}}" required ng-model-options="{allowInvalid: true}">
+									<label class="input-label">Expected Date</label>
+								</div>
+							</div>
+							<div class="col-sm-4">
+								<div class="form-row">
+									<input type="text" ng-model="ab.confirmed_shipping_date" class="datepicker" id="E_confirmed_shipping_date_{{ab.abno}}" required ng-model-options="{allowInvalid: true}">
+									<label class="input-label">Confirmed Date</label>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-4">
+								<div class="form-row">
+									<input type="text" name="zaDate" ng-model="ab.za_date" class="datepicker" id="E_za_date_{{ab.abno}}" required ng-model-options="{allowInvalid: true}">
+									<label class="input-label">ZA Date</label>
+								</div>
+							</div>
+							<div class="col-sm-4">
+								<div class="form-row">
+									<input type="text" name="actualShipDate" ng-model="ab.shipping_date" class="datepicker" id="E_shipping_date_{{ab.abno}}" required ng-model-options="{allowInvalid: true}">
+									<label class="input-label">Actual Shipping Date</label>
+								</div>
+							</div>
+							<div class="col-sm-4">
+								<div class="form-row">
+									<input type="text" name="warehouseBookingDate" ng-model="ab.warehouse_book_date" class="datepicker" id="E_warehouse_book_date_{{ab.abno}}" required ng-model-options="{allowInvalid: true}">
+									<label class="input-label">Warehouse Booking Date</label>
+								</div>
+							</div>
+						</div>
+						<div class="row">
+							<div class="col-sm-4">
+								<div class="form-row">
+									<input type="text" name="zaDate" ng-model="ab.etd_date" class="datepicker" id="E_etd_date_{{ab.abno}}" ng-model-options="{allowInvalid: true}">
+									<label class="input-label">ETD Date</label>
+								</div>
+							</div>
+							<div class="col-sm-4"></div>
+							<div class="col-sm-4"></div>
+						</div>
+				    </div>
+			   	</div>		
+		  	</div>
+		  	<div class="modal-footer">
+				<div class="row">
+				  	<div class="col-md-4">
+				  		<button type="button" class="btn btn_custom pull-left" ng-click="OP.delPosition(OP.positions[OP.currentPosition].positionid)">Delete Position <i class="fa fa-trash"></i></button>
+				  	</div>
+				  	<div class="col-md-4 col-md-offset-4">
+		    			<button type="button" class="btn btn_save pull-right" ng-click="OP.updatePosition()">Save</button>
+				  	</div>
+				</div>
+		  	</div>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+	jQuery(function($) {
+	    $('input[type="file"]').change(function() {
+		    if (this.files) {
+		        var filename = this.files;
+		        $("ul.upload_listing").html("");
+		        for(i=0; i<filename.length; i++) {
+		        	$("ul.upload_listing").append("<li>"+filename[i].name+"</li>");
+		        }
+			}
+	  	});
+	});
+</script>

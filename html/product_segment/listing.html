@@ -1,0 +1,169 @@
+<div id="ribbon">
+    <h3>Product Segment</h3>
+</div>
+<div id="input_content">
+    <div class="add-content">
+        <div class="col-sm-4">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-row">
+                        <input type="text" ng-model="productSegment.product_segment_name_english" name="product_segment_name_english" id="product_segment_name_english" required ng-model-options="{allowInvalid: true}">
+                        <label class="input-label">Product Segment Name English</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12"><ul></ul></div>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-row">
+                        <input type="text" ng-model="productSegment.product_segment_name_german" name="product_segment_name_german" id="product_segment_name_german" required ng-model-options="{allowInvalid: true}">
+                        <label class="input-label">Product Segment Name German</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="inspection-plan-document" class="input_upload_file upload_resource">Inspection Plan</label>
+                    <input type="file" class="inspectionPlan" ng-model="fileInspection" name="technicalDrawing" id="inspection-plan-document" multiple base-sixty-four-input/>
+                </div>
+                <div class="col-sm-6 no-padding-left">
+                    <button type="button" class="btn btn_upload" ng-click="uploadFileInspection()">Upload</button>
+                    <button class="btn btn_document" type="button" data-toggle="dropdown" ng-click="listFileInspection()">Documents List</button>
+                    <ul class="dropdown-menu document-list" ng-if="icheckData>0">
+                        <li ng-repeat="i in iFiles">
+                            <div class="row">
+                                <div class="col-sm-10 document-list-item">
+                                    <a href="#"><span>{{listInspectFn[$index]}}</span></a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <span class="remove-doc" ng-click="removeFileInspection($index,i)">&times;</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <ul class="upload_listing_inspection"></ul>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="limitSample-catalog-document" class="input_upload_file upload_resource">Limit Sample Catalog
+                    </label>
+                    <input type="file" class="limitCatalog" ng-model="fileCatalog" name="limitSampleCatalogDocument" id="limitSample-catalog-document" multiple base-sixty-four-input/>
+                </div>
+                <div class="col-sm-6 no-padding-left">
+                    <button type="button" class="btn btn_upload" ng-click="uploadFileLimitCatalog()">Upload</button>
+                    <button class="btn btn_document" type="button" data-toggle="dropdown" ng-click="listFileLimitCatalog()">Documents List</button>
+                    <ul class="dropdown-menu document-list" ng-if="lcCheckData>0">
+                        <li ng-repeat="i in lcFiles">
+                            <div class="row">
+                                <div class="col-sm-10 document-list-item">
+                                    <a href="#"><span>{{listLimitCatalogFn[$index]}}</span></a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <span class="remove-doc" ng-click="removeFileLimitCatalog($index,i)">&times;</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <ul class="upload_listing_limit"></ul>
+            </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="functional-requirement-document" class="input_upload_file upload_resource">Functional Requirement</label>
+                    <input type="file" class="functionRequirement" ng-model="fileFunRequire" name="functionalRequirementDocument" id="functional-requirement-document" multiple base-sixty-four-input/>
+                </div>
+                <div class="col-sm-6 no-padding-left">
+                    <button type="button" class="btn btn_upload" ng-click="uploadFileFunctionRequire()">Upload</button>
+                    <button class="btn btn_document" type="button" data-toggle="dropdown" ng-click="listFileFunctionRequire()">Documents List</button>
+                    <ul class="dropdown-menu document-list" ng-if="frCheckData">
+                        <li ng-repeat="i in frFiles">
+                            <div class="row">
+                                <div class="col-sm-10 document-list-item">
+                                    <a href="#"><span>{{listFileFunctionRequireFn[$index]}}</span></a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <span class="remove-doc" ng-click="removeFileFunctionRequire($index,i)">&times;</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            <div class="row">
+                <ul class="upload_listing_function"></ul>
+            </div>
+            <div class="row">
+                <div class="col-sm-12">
+                    <button type="button" class="btn btn_save" ng-click="saveProductSegment()">Save</button>
+                    <button type="button" class="btn btn_reset" ng-click="reset()">Reset</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div id="table_content">
+    <div class="table_box">
+        <div class="col-sm-12">
+            <h3 class="title_table">
+                Product Segment List
+            </h3>
+            <table id="product_segment_datatable" class="table table-striped table-bordered" width="100%" datatable="" dt-options="dtOptions" dt-columns="dtColumns" dt-instance="dtInstance">
+                <thead>
+                    <tr class="filter-group">
+                        <th>English Name</th>
+                        <th>Germen Name</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <th>English Name</th>
+                        <th>Germen Name</th>
+                        <th></th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+jQuery(function($) {
+    $('input[type="file"].inspectionPlan').change(function() {
+        if (this.files) {
+            var filename = this.files;
+            $("ul.upload_listing_inspection").html("");
+            for (i = 0; i < filename.length; i++) {
+                $("ul.upload_listing_inspection").append("<li>" + filename[i].name + "</li>");
+            }
+        }
+    });
+    $('input[type="file"].limitCatalog').change(function() {
+        if (this.files) {
+            var filename = this.files;
+            $("ul.upload_listing_limit").html("");
+            for (i = 0; i < filename.length; i++) {
+                $("ul.upload_listing_limit").append("<li>" + filename[i].name + "</li>");
+            }
+        }
+    });
+    $('input[type="file"].functionRequirement').change(function() {
+        if (this.files) {
+            var filename = this.files;
+            $("ul.upload_listing_function").html("");
+            for (i = 0; i < filename.length; i++) {
+                $("ul.upload_listing_function").append("<li>" + filename[i].name + "</li>");
+            }
+        }
+    });
+});
+</script>

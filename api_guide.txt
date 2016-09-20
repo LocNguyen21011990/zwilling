@@ -1,0 +1,861 @@
+order position add
+{
+	"product_item_no": "99970-186-0",
+	"position_no": 2,
+	"ordered_quantity": 2000,
+	"unit_price": 19.05,
+	"total_price": 45250,
+	"ab":[{
+			"abno": 1,
+			"shipped_quantity": 1000,
+			"shipment_method": "Planes",
+			"expected_shipping_date": "2016-07-21",
+			"confirmed_shipping_date": "2016-08-25",
+			"shipping_date": "2016-08-25",
+			"za_date": "2016-08-25",
+			"eta_date": "2016-08-25",
+			"relevant_due_date": "2016-08-25",
+			"warehouse_book_date": "2016-08-25"
+		},
+		{
+			"abno": 2,
+			"shipped_quantity": 1000,
+			"shipment_method": "Bus",
+			"expected_shipping_date": "2016-11-25",
+			"confirmed_shipping_date": "2016-12-25",
+			"shipping_date": "2016-08-25",
+			"za_date": "2016-08-25",
+			"eta_date": "2016-08-25",
+			"relevant_due_date": "2016-08-25",
+			"warehouse_book_date": "2016-08-25"
+	}]
+}
+===============
+order position edit 
+
+{
+	"positionid": 31785,
+	"product_item_no": "01000-042-9",
+	"position_no": 2,
+	"ordered_quantity": 3000,
+	"unit_price": 19.05,
+	"total_price": 45250,
+	"ab":[{
+			"abid": 181326,
+			"abno": 1,
+			"shipped_quantity": 1000,
+			"shipment_method": "Planes edit",
+			"expected_shipping_date": "2016-07-21",
+			"confirmed_shipping_date": "2016-08-25",
+			"shipping_date": "2016-08-25",
+			"za_date": "2016-08-25",
+			"eta_date": "2016-08-25",
+			"relevant_due_date": "2016-08-25",
+			"warehouse_book_date": "2016-08-25",
+			"id":727
+		},
+		{
+			"abid": 181327,
+			"abno": 2,
+			"shipped_quantity": 1000,
+			"shipment_method": "Bus edit",
+			"expected_shipping_date": "2016-11-25",
+			"confirmed_shipping_date": "2016-12-25",
+			"shipping_date": "2016-08-25",
+			"za_date": "2016-08-25",
+			"eta_date": "2016-08-25",
+			"relevant_due_date": "2016-08-25",
+			"warehouse_book_date": "2016-08-25",
+			"id":728
+		},
+		{
+			"abno": 3,
+			"shipped_quantity": 1000,
+			"shipment_method": "Moto",
+			"expected_shipping_date": "2016-12-21",
+			"confirmed_shipping_date": "2016-12-25",
+			"shipping_date": "2016-08-25",
+			"za_date": "2016-08-25",
+			"eta_date": "2016-08-25",
+			"relevant_due_date": "2016-08-25",
+			"warehouse_book_date": "2016-08-25"
+	}]
+}
+
+
+=================
+purchase_order  save
+
+
+{
+	"order_no":"10-12-27",
+	"order_date":"2016-07-27",
+	"supplier_id":1891,
+	"customer_id":1892,
+	"currency": "USD  ",
+	"position":[
+					31247,
+					31248
+				],
+	"document":[
+					30,
+					31
+				]
+}
+
+
+get list order_no
+-URL: http://your Domail/index.cfm/order.getOrderNo
+-method: get
+
+check order_no exists in order
+-URL: http://your Domail/index.cfm/order.orderExist?order_no=4500114662677
+-method: get
+
+get currency by year:
+-URL: http://your Domail/index.cfm/order.getCurrencyByYear?order_date=2016-08-01
+-method: get
+
+
+===============
+Upload order_document: order_document.uploadDocument
+1. get a file format document from PC
+===============
+get order_document by Id
+param: "docId" with method GET: order_document.executeDocument
+===============
+delete all info relationship with a document
+param: "docId" with method DELETE: order_document.executeDocument
+================
+show list document
+default GET: order_document.executeDocument not param
+
+================
+update order_id in order_document
+order_document.executeDocument
+ // JSON {docId:'35',order_Id:123 }
+
+ ================
+ add company
+ {
+  "name": "khaitest",
+  "abbreviation_name": "abbreviation_name",
+  "address": "12 hung vuong",
+  "locationid": 1,
+  "country_code_phone": "3434",
+  "phone": "01334433333",
+  "country_code_fax": "4343",
+  "fax": "3232",
+  "mail": "test@gmail.com",
+  "contact_person": "contact_person",
+  "company_kind": 3,
+  "gildemeisterid": "20222"
+}
+=================
+edit company
+
+{companyid:1, name:"khaitest", abbreviation_name:"abbreviation_name", address: "12 hung vuong",  
+        locationid:1, country_code_phone:"3434", phone:"01334433333",country_code_fax:"4343",
+        fax:"3232", mail: "test@gmail.com", contact_person: "contact_person", company_kind:3}
+================
+get list customer:
+-URL: http://your Domail/index.cfm/company.execute?company_kind = 3
+
+get list supplier:
+-URL: http://your Domail/index.cfm/company.execute?company_kind = 2
+
+=======================================
+add inspection report
+
+-URL: http://your Domail/index.cfm/inspection.execute
+-method: post
+- data:
+
+{
+	"abid":23,
+	"inspection_no": "12345",
+	"inspection_date": "2016-01-22",
+	"set_item_lot_size": 1000,
+	"item_lot_size": 1600,
+	"inspected_quantity": 123,
+	"inspected_ql": "FWA",
+	"product_item_no": "99970-186-0",
+	"inspector1": 1,
+	"inspector2": 2,
+	"last_change_person": 1,
+	"sealfrom1": "sealfrom1",
+	"sealfrom2": "sealfrom2",
+	"sealto1": "sealto1",
+	"sealto2": "sealto2",
+	"td_materials": "no",
+	"missing_td": 1,
+	"ss_materials": "no",
+	"missing_ss": 2,
+	"carton_info": "Carton_info",
+	"result": "result",
+	"comment": "comment text",
+	"is_general_report": 1,
+	"mistake":[1,2]
+}
+
+
+edit inspection report
+
+-URL: http://your Domail/index.cfm/inspection.execute
+-method: put
+- data:
+
+{
+	"inspectionid": 17,
+	"abid":23,
+	"inspection_no": "12345",
+	"inspection_date": "2016-01-22",
+	"set_item_lot_size": 1000,
+	"item_lot_size": 1600,
+	"inspected_quantity": 123,
+	"inspected_ql": "FWA",
+	"product_item_no": "99970-186-0",
+	"inspector1": 1,
+	"inspector2": 2,
+	"last_change_person": 1,
+	"sealfrom1": "sealfrom1",
+	"sealfrom2": "sealfrom2",
+	"sealto1": "sealto1",
+	"sealto2": "sealto2",
+	"td_materials": "no",
+	"missing_td": 1,
+	"ss_materials": "no",
+	"missing_ss": 2,
+	"carton_info": "Carton_info",
+	"result": "result",
+	"comment": "comment text",
+	"is_general_report": 1
+}
+
+
+get list inspection_no
+-URL: http://your Domail/index.cfm/inspection.getInspectionNo
+-method: get
+=========================================================
+add inspection report mistake
+-URL: http://your Domail/index.cfm/inspectionReportMistake.execute
+-method: post
+- data:
+{
+	"inspectionid": 17,
+	"mistake_code": "00111",
+	"number_of_critical_defect": 34,
+	"number_of_major_defect": 23,
+	"number_of_minor_defect": 45,
+	"number_of_notice": 23,
+	"updateby": "rasia"
+}
+
+edit InspectionReportMistake
+-URL: http://your Domail/index.cfm/inspectionReportMistake.execute
+-method: put
+- data:
+{
+	"inspection_mistake_id": 1,
+	"mistake_code": "00111",
+	"number_of_critical_defect": 34,
+	"number_of_major_defect": 23,
+	"number_of_minor_defect": 45,
+	"number_of_notice": 23,
+	"updateby": "rasia"
+}
+
+get InspectionReportMistake by inspectionid
+-URL: http://your Domail/index.cfm/inspectionReportMistake.execute?inspectionid=21
+-method: get
+
+Delete InspectionReportMistake
+-URL: http://your Domail/index.cfm/inspectionReportMistake.execute?id=20
+-method: delete
+=======================================
+
+-URL: http://your Domail/index.cfm/mistakeDictionary.execute
+-method: post
+- data:
+add MistakeDictionary
+
+{
+	"mistake_code": "SAOKJO2",
+	"characteristic": "PACKING",
+	"mistake_description_english": "test",
+	"updateby": "rasia",
+	"nr_fo": "nr_fo",
+	"nr_fe": "nr_fe",
+	"product_segment":[2,3,4]
+}
+
+
+-URL: http://your Domail/index.cfm/mistakeDictionary.execute
+-method: put
+- data:
+edit MistakeDictionary
+
+{
+	"mistake_code": "SAOKJO2",
+	"characteristic": "PACKING",
+	"mistake_description_english": "test edit",
+	"updateby": "rasia",
+	"nr_fo": "nr_fo",
+	"nr_fe": "nr_fe",
+	"product_segment":[2,5,9]
+}
+
+========================
+get document for form add edit inspection report
+-URL: http://your Domail/index.cfm/inspection.getListDocument?itemno=01000-040-9&product_segment_id=5
+-method: get
+
+=========================
+
+get productSegment list
+-URL: http://your Domail/index.cfm/productSegment.execute
+-method: get
+
+get productSegment by id
+-URL: http://your Domail/index.cfm/productSegment.execute?id=2
+-method: get
+
+add product segment:
+-URL: http://your Domail/index.cfm/productSegment.execute
+-method: post
+-Data:
+{
+	"product_segment_name_english": "zwilling eng",
+	"product_segment_name_german": "zwilling ger",
+	"updateby": "rasia",
+	"documentSegment": [4, 5]
+}
+
+edit product segment:
+-URL: http://your Domail/index.cfm/productSegment.execute
+-method: put
+-Data:
+{
+	"product_segment_id": 44,
+	"product_segment_name_english": "zwilling eng edit",
+	"product_segment_name_german": "zwilling ger",
+	"updateby": "rasia",
+	"documentSegment": [6, 7]
+}
+
+=====================
+
+evaluation for order
+-URL: http://your Domail/index.cfm/evaluation.order
+-method: post
+-Key: ("perSupplier" or "supplierBility" or "orderData")
+-Data:
+{
+	"supplier": 168,
+	"customer": 2,
+	"product_segment": 2,
+	"product_line": "01000",
+	"confirmed_shipping_date_from": "2014-01-01",
+	"confirmed_shipping_date_to": "2016-08-10",
+	"etd_date_from": "2016-01-01",
+	"etd_date_to": "2016-01-08",
+	"key": "orderData"
+}
+
+======================================
+
+evaluation for inspection
+-URL: http://your Domail/index.cfm/evaluation.inspection
+-method: post
+-Key: ("evaluationReport" or "detailReport" or "evaluationChart")
+-Data:
+{
+	"supplier": 2,
+	"inspection_date_from": "2016-01-01",
+	"inspection_date_to": "2016-01-01",
+	"order_no": "1080113",
+	"product_segment": 23,
+	"product_line": "01184",
+	"product_item": "2016-01-01",
+	"inspection_no": "1233",
+	"inspector": 2,
+	"key": "evaluationReport"
+}
+
+====================
+get product line by product segment id
+-URL: http://your Domail/index.cfm/evaluation.getProductLineBySegment?id=2
+-method: get
+
+====================
+get order not inspection report
+-URL: http://your Domail/index.cfm/inspection.getInspectionCalendar&month=8&year=2016&supplier=2&inspector&location=4
+-method: get
+
+========================
+
+add product item
+- url: http://your Domail/index.cfm/productItem.execute
+-method: post
+-data:
+{
+	"product_item_no": "99970-186-1",
+	"product_item_name_english": "working",
+	"product_item_name_german": "german",
+	"product_line_no": "99970",
+	"updateby": "rasia",
+	"ean_code": "3333",
+	"shape": "shape",
+	"colour": "3333",
+	"size": "33",
+	"product_item_set":[{
+					"child_product_item_no": "99970-186-1",
+					"quantity": 1
+				},
+				{
+					"child_product_item_no": "02053-002-1",
+					"quantity": 6
+				},
+				{
+					"child_product_item_no": "02053-002-2",
+					"quantity": 2
+	}],
+	"product_item_document": [3, 4],
+	"product_item_ql": [{
+							"ql": "FWC",
+							"isDefault": 1
+						},
+						{
+							"ql": "BWC",
+							"isDefault": 0
+						}]
+}
+
+edit product item
+- url: http://your Domail/index.cfm/productItem.execute
+-method: put
+-data:
+{
+	"product_item_no": "rasiatest",
+	"product_item_name_english": "working edit",
+	"product_item_name_german": "german",
+	"product_line_no": "99970",
+	"updateby": "rasia",
+	"ean_code": "6666",
+	"shape": "shape",
+	"colour": "3333",
+	"size": "3",
+	"product_item_set":[{
+					"isDelete": false,
+					"set_compositionid": 70,
+					"child_product_item_no": "rasiatest",
+					"quantity": 1
+				},
+				{
+					"isDelete": true,
+					"set_compositionid": 67,
+					"child_product_item_no": "11380-005-9",
+					"quantity": 5
+				},
+				{
+					"isDelete": true,
+					"set_compositionid": 68,
+					"child_product_item_no": "02233-306-0",
+					"quantity": 6
+				},
+				{
+					"isDelete": false,
+					"set_compositionid": 69,
+					"child_product_item_no": "khaitest",
+					"quantity": 5
+				},
+				{
+					"isDelete": false,
+					"child_product_item_no": "02053-002-4",
+					"quantity": 2
+	}],
+	"product_item_document": [5],
+	"product_item_ql": [{
+							"ql": "FWC",
+							"isDefault": 1
+						},
+						{
+							"ql": "BWC",
+							"isDefault": 0
+						}]
+}
+
+get product item by product_item_no
+- url: http://your Domail/index.cfm/productItem.execute?id=99970-186-1
+-method: get
+
+get list product item for set product item
+- url: http://your Domail/index.cfm/productItem.getListProductItemChid?product_line_no=01000
+-method: get
+
+get list quality level
+- url: http://your Domail/index.cfm/ql.executeQL
+-method: get
+
+=====================================
+
+get list product line:
+-URL: http://your Domail/index.cfm/productLine.execute
+-Method: get
+
+get list product line by id:
+-URL: http://your Domail/index.cfm/productLine.execute?id=01000
+-Method: get
+
+add product line:
+-URL: http://your Domail/index.cfm/productLine.execute
+-Method: post
+-Data: 
+{
+	"product_line_no": "00003",
+	"product_line_name_english": "zwilling enghlish",
+	"product_line_name_german": "zwilling german",
+	"updateby": "rasia",
+	"product_segment_id": 2,
+	"ql": "FWA",
+	"brandid": 27
+}
+
+edit product line:
+-URL: http://your Domail/index.cfm/productLine.execute
+-Method: put
+-Data: 
+{
+	"product_line_no": "00003",
+	"product_line_name_english": "zwilling enghlish",
+	"product_line_name_german": "zwilling german",
+	"updateby": "rasia",
+	"product_segment_id": 2,
+	"ql": "FWA",
+	"brandid": 27
+}
+
+get list Brand:
+-URL: http://your Domail/index.cfm/productLine.getBrands
+-Method: get
+
+get list Product Segment:
+-URL: http://your Domail/index.cfm/productLine.getProductSegments
+-Method: get
+
+get list Ql:
+-URL: http://your Domail/index.cfm/productLine.getQls
+-Method: get
+=========================
+
+get list brand:
+-URL: http://your Domail/index.cfm/brand.execute
+-Method: get
+
+get brand by id:
+-URL: http://your Domail/index.cfm/brand.execute?id=1
+-Method: get
+
+add brand:
+-URL: http://your Domail/index.cfm/brand.execute
+-Method: post
+-Data: 
+{
+	"brandname": "TAZA",
+	"description": "zwilling enghlish",
+	"updateby": "rasia"
+}
+
+edit brand:
+-URL: http://your Domail/index.cfm/brand.execute
+-Method: put
+-Data: 
+{
+	"brandid": 40,
+	"brandname": "TAZA",
+	"description": "zwilling enghlish",
+	"updateby": "rasia"
+}
+
+=======================================
+get dashboad
+-URL: http://your Domail/index.cfm/dashboard.execute?month=8&year=2016&location=1&supplier=48&segment=2
+-Method: get
+
+get list location:
+-URL: http://your Domail/index.cfm/dashboard.getLocationList
+-Method: get
+
+get list supplier:
+-URL: http://your Domail/index.cfm/dashboard.getSupplier?locationid=1
+-Method: get
+
+====================================
+add import history:
+{
+	"user": 1,
+	"data": [{
+	
+	}]
+}
+
+======================================
+get list QL:
+-URL: http://your Domail/index.cfm/ql.executeQL
+-Method: get
+
+add QL: METHOD:POST
+{
+	"quality_level":"abc",
+	 "quality_description":"abc",
+	"major_defect_aql":"1", 
+	"minor_defect_aql":"2.5",
+	"updateby":"rasia"
+}
+edit QL: METHOD:PUT
+{
+	"quality_level":"abc",
+	 "quality_description":"toilaai",
+	"major_defect_aql":"1", 
+	"minor_defect_aql":"22.5"
+}
+
+=======================================
+get list AQL:
+-URL: http://your Domail/index.cfm/aql.execute
+-Method: get
+
+add AQL:
+{
+	"average_quality_level":"3.5",
+	 "min_quantity":"1",
+	"max_quantity":"1", 
+	"inspection_lot":"2",
+	"accepted":1,
+	"rejected":0,
+	"updateby":"rasia"
+}
+edit AQL:
+ {
+	"aqlid": 1,
+	"average_quality_level":"3.5",
+	"min_quantity":"1",
+	"max_quantity":"1", 
+	"inspection_lot":"2",
+	"accepted":1,
+	"rejected":0,
+	"updateby":"rasia"
+} 
+
+========================================
+get list Currency:
+-URL: http://your Domail/index.cfm/currency.execute
+-Method: get
+
+add Currency
+/*  JSON {
+	"currency_code":"USD",
+	"exchange_rate":"1.00000",
+	"exchange_year":"2016", 
+	"updateby":"rasia"
+
+	} */
+
+edit Currency
+/*  JSON {
+	"currency_code":"USD",
+	"exchange_rate":"1.00000",
+	"exchange_year":"2016", 
+	"updateby":"rasia"
+
+	} */
+
+=========================================
+get list Currency:
+-URL: http://your Domail/index.cfm/location.execute
+-Method: get
+
+add location METHOD: POST
+	/* JSON {
+		"locationname":"xl test",
+		"short_name":"xl",
+		"country_code_phone":"123",
+		"country_code_fax":"123",
+		"updateby":"rasia"
+	} */
+
+edit location METHOD:PUT
+/* JSON {
+	"locationid":"117",
+	"locationname":"xl test",
+	"short_name":"xl",
+	"country_code_phone":"123",
+	"country_code_fax":"123",
+	"updateby":"rasia"
+} */
+
+=====================================
+
+get user activity for dashboard
+-URL: http://your Domail/index.cfm/userActivity.execute
+-Method: get
+
+==========================================
+
+=> User login:
+-URL: http://your Domail/index.cfm/user.login
+-Method: post
+-Data: 
+{
+	"user_name": "khai", 
+	"user_password": "123", 
+	"lang": "de"
+}
+
+=> User logout:
+-URL: http://your Domail/index.cfm/user.logout
+-Method: get
+-headers:
+	Authorization: E0712F11B27B6BD
+
+=> user create:
+-URL: http://your Domail/index.cfm/user.execute
+-Method: post
+- Data:
+{
+  "first_name": "first_name",
+  "user_name": "user_name",
+  "user_password": "user_password",
+  "companyid": 3,
+  "id_role": [1,2],
+  "email": "emai",
+  "user_type": "inspector",
+  "is_active":1,
+  "avatar":""
+}
+
+=> user edit:
+-URL: http://your Domail/index.cfm/user.execute
+-Method: put
+- Data:
+{
+  "id_user": id_user,
+  "first_name": "first_name",
+  "user_name": "user_name",
+  "user_password": "rasia1@",
+  "companyid": 3,
+  "id_role": [1,3],
+  "email": "emai",
+  "user_type": "inspector",
+  "is_active":1,
+  "avatar":""
+}
+
+=> user fogot password:
+-URL: http://your Domail/index.cfm/user.forgotUser
+-Method: post
+- Data:
+{"email": "a@gmail.com"}
+
+=> user check token forgot password:
+-URL: http://your Domail/index.cfm/user.checkForGotPass?token=3F88E4C95980398
+-Method: get
+
+=> user reset password:
+-URL: http://your Domail/index.cfm/user.resetPassword
+-Method: put
+- Data:
+{
+  "token": "3F88E4C95980398",
+  "user_password": "rasia1@"
+}
+
+=================================
+
+Document item:
+-get list type
+-URL: http://your Domail/index.cfm/document_item.getDocumentTypeList
+-Method: get
+
+-get data auto complete:
+-URL: http://your Domail/index.cfm/document_item.execute?code=inspectionplan
+-Method: get
+
+-update document item:
+-URL: http://your Domail/index.cfm/document_item.execute
+-Method: put
+-Data:
+{
+	"productId": "01000-040-0",
+	"documentId": [1,2],
+	"documentName": "title",
+	"code": "inspectionplan"
+}
+
+-get document by id
+-URL: http://your Domail/index.cfm/document_item.execute?id=4&docType=2
+-Method: get
+
+-get document list type
+-URL: http://your Domail/index.cfm/document_item.execute?codes=inspectionplan
+-Method: get
+
+====GET ALL CONTACT========
+-URL: http://your Domail/index.cfm/contact.execute
+-Method: get
+====ADD NEW RECORD IN CONTACT=======
+
+-URL: http://your Domail/index.cfm/contact.execute
+-Method: post
+
+/*JSON:
+		{ 
+			"full_name":"Mickey",
+			"title":"senior",
+			"address":"123 Le Loi, Ben Nghe, District 1, HCMC",
+			"business_phone":"12343",
+			"mobile_phone":"321",
+			"business_fax":"084-123",
+			"mail1":"info@rasia.info",
+			"company_name":"Zwilling",
+			"company_no":"00122",
+			"country_code_phone":"0084",
+			"country_code_fax":"0084",
+			"country_code_business_phone":"0084",
+			"buyer_no":"CN3",
+			"planer_no":"cn3",
+			"locationid":"1",
+			"updateby":"dieule"
+
+		}  */
+
+-URL: http://your Domail/index.cfm/contact.execute
+-Method: PUT
+
+/*JSON:
+		{ 
+			"contactid":"1"
+			"full_name":"Mickey",
+			"title":"senior",
+			"address":"123 Le Loi, Ben Nghe, District 1, HCMC",
+			"business_phone":"12343",
+			"mobile_phone":"321",
+			"business_fax":"084-123",
+			"mail1":"info@rasia.info",
+			"company_name":"Zwilling",
+			"company_no":"00122",
+			"country_code_phone":"0084",
+			"country_code_fax":"0084",
+			"country_code_business_phone":"0084",
+			"buyer_no":"CN3",
+			"planer_no":"cn3",
+			"locationid":"1",
+			"updateby":"dieule"
+
+		}  */
+
+=============================================
+
+Inspection Statistic:
+-URL: http://your Domail/index.cfm/inspectionStatistic.execute
+-Method: post

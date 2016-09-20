@@ -1,0 +1,21 @@
+[{
+    "no":"1",
+    "companyName":"ARTIPLAST B.V.",
+    "companyAbbreviationName":"ARTIPLAST B.V.",
+    "loaction":"NETHERLANDS",
+    "address":"Zilverstraat 13 8211 AN AN LELYSTAD",
+    "email":"artiplast@artiplast.nl",
+    "contactPerson":"A. Breukink",
+    "phone":"0031-0320-221935",
+    "fax":"320/230726"
+}, {
+    "no":"2",
+    "companyName":"BORKOTT GMBH",
+    "companyAbbreviationName":"BORKOTT",
+    "loaction":"GERMANY",
+    "address":"Wuppertaler Str. 90-94 42653 Solingen",
+    "email":"BW@borkott.de",
+    "contactPerson":"Frau Wehrens",
+    "phone":"0212/25810-0",
+    "fax":"0212/592859"
+}]

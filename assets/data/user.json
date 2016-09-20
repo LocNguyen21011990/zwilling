@@ -1,0 +1,23 @@
+[
+  {
+    "username": "hieu",
+    "displayname": "Hieu Huynh",
+    "email": "hieu@rasia.info",
+    "roles": "",
+    "active": "1"
+  },
+  {
+    "username": "Nam",
+    "displayname": "Nam Nguyen",
+    "email": "nam@rasia.info",
+    "roles": "",
+    "active": "1"
+  },
+  {
+    "username": "Xuan",
+    "displayname": "Xuan Le",
+    "email": "xuan@rasia.info",
+    "roles": "",
+    "active": "0"
+  }
+]

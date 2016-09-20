@@ -1,0 +1,8 @@
+/assets/js/app.constant.js
+WEB-INF
+/fileUpload/importorder/*
+/fileUpload/order/*
+/fileUpload/productItem/*
+/fileUpload/productSegment/*
+/fileUpload/inspectionReport/*
+/log/*

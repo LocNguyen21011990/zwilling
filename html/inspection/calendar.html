@@ -1,0 +1,34 @@
+<div id="ribbon">
+	<h3>Inspection calendar</h3>
+</div>
+<div id="search-content">
+	<div class="add-content">
+		<div class="col-sm-2">
+			<select class="select2" style="width:100%" ng-change="changeLocation()" ng-model="locationId">
+				<option value="">Country</option>
+				<option ng-repeat="item in locations" value="{{item.locationid}}">{{item.locationname}}</option>
+			</select>
+		</div>
+		<div class="col-sm-3">
+			<select class="select2" style="width:100%" ng-model="supplierId" id="supplierId">
+				<option value="">Supplier</option>
+				<option ng-repeat="sup in suppliers" value="{{sup.companyid}}">{{sup.name}}</option>
+			</select>
+		</div>
+		<div class="col-sm-3">
+			<select class="select2" style="width:100%" ng-model="inspectorid">
+				<option value="">Inspector</option>
+				<option ng-repeat="inspector in inspectors" value="{{inspector.id_user}}">{{inspector.first_name + "" + inspector.last_name}}</option>
+			</select>
+		</div>
+		<div class="col-sm-2">
+			<button class="btn btn_custom" type="button" ng-click="searchEvents()"><i class="fa fa-search"></i></button>
+		</div>
+		<div class="col-md-offset-2"></div>
+	</div>
+</div>
+<div class="calendar-content">
+	<div class="col-sm-12">
+		<div class='calendar dashboard-calendar' id="calendar"></div>
+	</div>
+</div>

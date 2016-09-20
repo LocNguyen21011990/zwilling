@@ -1,0 +1,189 @@
+<div id="ribbon">
+	<h3>Inspection schedule</h3>
+</div>
+<div id="input_content">
+	<div class="search-content">
+		<div class="col-sm-2">
+			<input class="datepicker" placeholder="From date" id="tFromDate" ng-model="tFromDate">
+		</div>
+		<div class="col-sm-2">
+			<input class="datepicker" placeholder="To date" id="tEndDate" ng-model="tEndDate">
+		</div>
+		<div class="col-sm-2">
+			  <select ng-options="size as size.name for size in sizes " ng-model="item" ng-change="update()"></select>
+		</div>
+		<div class="col-sm-2">
+			<select style="width:100%" ui-select2 id="customer_name" ng-model="OI.customer" ng-click="OL.selectCustomer()">
+				<option value="">Customer's Name</option>
+				<option ng-repeat="option in OI.customers" value="{{option.companyid}}">{{option.name}}</option>
+			</select>
+		</div>
+		<div class="col-sm-2">
+			<select style="width:100%" ui-select2 id="suppiler_name" ng-model="OI.supplier" ng-click="OL.selectSupplier()">
+				<option value="">Supplier's Name</option>
+				<option ng-repeat="option in OI.suppliers" value="{{option.companyid}}">{{option.name}}</option>
+			</select>
+		</div>
+		<div class="col-sm-2">
+			<div class="row">
+				<div class="col-sm-12">
+					<button class="btn btn_custom" type="button" ng-click="searchOrder()"><i class="fa fa-search"></i></button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="table_content">
+	<div class="table_box">
+		<div class="col-sm-12">
+			 <table datatable="ng" id="order_list_datatable" dt-options="dtOptions" dt-column-defs="dtColumnDefs" class="table table-striped table-bordered" width="100%"  >
+          <thead>
+            <tr class="filter-group">
+              <th>Order No.</th>
+              <th>Pos.</th>
+              <th>AB</th>
+              <th>Product Item No.</th>
+              <th>Product Line</th>
+              <th>Product Item Name</th>
+              <th>Order Q'ty</th>
+              <th>AB Q'ty</th>
+              <th>Accepted Q'ty</th>
+              <th>Remain Qty.</th>
+              <th>Plan Date</th>
+              <th>Conf. Ship. Date</th>
+              <th></th>
+              <th></th>
+              <th></th>
+            </tr>
+             <tr>
+              <th>Order No.</th>
+              <th>Pos.</th>
+              <th>AB</th>
+              <th>Product Item No.</th>
+              <th>Product Line</th>
+              <th>Product Item Name</th>
+              <th>Order Q'ty</th>
+              <th>AB Q'ty</th>
+              <th>Accepted Q'ty</th>
+              <th>Remain Qty.</th>
+              <th>Plan Date</th>
+              <th>Conf. Ship. Date</th>
+              <th></th>
+              <th>Edit</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody >
+              <tr ng-repeat="orderItem in ListInspectionSchedule">
+              		<td>{{orderItem.order_no}}</td>
+              		<td>{{orderItem.position_no}}</td>
+              		<td>{{orderItem.abno}}</td>
+              		<td>{{orderItem.product_item_no}}</td>
+              		<td>{{orderItem.product_line_name_english}}</td>
+              		<td>{{orderItem.product_item_name_english}}</td>
+              		<td class="right-footer-table">{{orderItem.ordered_quantity.insertThousandSeparator()}}</td>
+              		<td class="right-footer-table">{{orderItem.shipped_quantity.insertThousandSeparator()}}</td>
+              		<td class="right-footer-table">{{orderItem.accepted.insertThousandSeparator()}}</td>
+              		<td class="right-footer-table">{{orderItem.remain.insertThousandSeparator()}}</td>
+                  	<td>{{orderItem.plan_date | asDate | date: 'dd-MMM-yyyy'}}</td>
+              		<td>{{orderItem.confirmed_shipping_date | asDate | date: 'dd-MMM-yyyy'}}</td>
+              		<td class="btn_edit"><a class="cursor" data-toggle="modal" data-target="#editSchedule" ng-click="setInspectionSchedule(orderItem.inspector1,orderItem.inspector2,orderItem.plan_date,orderItem.inspection_schedule_id)"><i class="fa fa-calendar"></i></a></td>
+              		<td class="btn_edit"><a class="cursor" ng-click="choiseInspectionReport($index)"><i class="fa fa-pencil-square-o"></i></a></td>
+              		<td class="btn_edit"><a class="cursor" ng-click="goPDF($index)" ng-show="orderItem.inspectionid != ''"><i class="fa fa-file-pdf-o"></i></a></td>
+              </tr>
+          </tbody>
+      </table>
+
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="editSchedule" tabindex="-1" role="dialog">
+  	<div class="modal-dialog" role="document">
+	    <div class="modal-content">
+	      	<div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title" id="myModalLabel">Edit Schedule</h4>
+	      	</div>
+		    <div class="modal-body">
+		    	<div class="edit-schedule-content">
+			    	<div class="row">
+						<div class="col-sm-12">
+							<select style="width:100%" class="select2" id="inspector1" ng-model="inspector1" ng-click="selectInspector1()">
+								<option value="">Inspector 1</option>
+								<option ng-repeat="option in listInspection" value="{{option.id_user}}">{{option.user_name}}</option>
+							</select>
+						</div>
+						
+			    	</div>
+			    	<div class="row">
+						<div class="col-sm-12">
+							<select style="width:100%" class="select2" id="inspector2" ng-model="inspector2" ng-click="selectInspector2()">
+								<option value="">Inspector 2</option>
+								<option ng-repeat="option in listInspection" value="{{option.id_user}}">{{option.user_name}}</option>
+							</select>
+						</div>
+			    	</div>
+			    	<div class="row">
+						<div class="col-sm-12">
+							<div class="form-row">
+								<input class="datepicker" id="plan_date" ng-model="plan_date" required>
+								<label class="input-label">Inspection Plan Date</label>
+							</div>
+						</div>
+			    	</div>
+		    	</div>
+		    </div>
+		  	<div class="modal-footer center">
+		    	<button type="button" class="btn btn_save" ng-click="saveInspectionSchedule()">Save</button>
+		  	</div>
+	    </div>
+  	</div>
+</div>
+
+<div class="modal fade" id="itemInspected" tabindex="-1" role="dialog">
+  	<div class="modal-dialog modal-lg" role="document">
+	    <div class="modal-content">
+	      	<div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title" id="myModalLabel">Choose an item to be inspected</h4>
+	      	</div>
+		    <div class="modal-body">
+				<div class="table-responsive">
+					<table class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th style="width:15%">Product Item No.</th>
+								<th style="width:18%">Product Line</th>
+								<th style="width:15%">Product Item Name</th>
+								<th style="width:12%">Quantity</th>
+								<th>Result</th>
+								<th style="width:15%">Inspector 1</th>
+								<th style="width:15%">Inspector 2</th>
+								<th>Inspection Report :: Date</th>
+								<th></th>
+								<th></th>
+							</tr>
+						</thead>
+						<tbody id="item_list">
+							<tr ng-repeat="item in listItemSet">
+								<td>{{item.product_item_no}}</td>
+								<td>{{item.product_line}}</td>
+								<td>{{item.product_item_name}}</td>
+								<td>{{item.quantity_product_item_set}} x {{item.quantity_ab}}</td>
+								<td>{{item.result}}</td>
+								<td>{{inspectorname1}}</td>
+								<td>{{inspectorname2}}</td>
+								<td>{{item.inspection_no}}::{{item.inspection_date}}</td>
+								<td class="btn_edit"><a class="cursor" ng-click="goReport($index)"><i class="fa fa-pencil-square-o"></i></a></td>
+								<td class="btn_edit"><a class="cursor" ng-click="goSubPDF($index)" ng-show="item.inspection_no != ''"><i class="fa fa-file-pdf-o"></i></a></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+		    </div>
+		  	<div class="modal-footer">
+		  	</div>
+	    </div>
+  	</div>
+</div>

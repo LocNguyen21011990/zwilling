@@ -1,0 +1,66 @@
+<div id="ribbon">
+	<h3>Characteristic</h3>
+</div>
+<div id="input_content">
+	<div class="add-content">
+		<div class="col-md-5">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="form-row">
+						<input type="text" ng-model="characteristic.code" name="code" id="code" required ng-model-options="{allowInvalid: true}" >
+						<label class="input-label">Characteristic Code</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="form-row">
+						<input type="text" ng-model="characteristic.characteristic_name_english" name="characteristic_name_english" id="characteristic_name_english" required ng-model-options="{allowInvalid: true}">
+						<label class="input-label">Characteristic Name English</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="form-row">
+						<input type="text" ng-model="characteristic.characteristic_name_german" name="characteristic_name_german" id="characteristic_name_german" required ng-model-options="{allowInvalid: true}">
+						<label class="input-label">Characteristic Name German</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<br>
+					<button type="button" class="btn btn_save" ng-click="saveCharacteristic()">Save</button>
+					<button type="button" class="btn btn_reset" ng-click="reset()">Reset</button>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-7"></div>
+	</div>
+</div>
+<div id="table_content">
+	<div class="table_box">
+		<div class="col-sm-12">
+			<h3 class="title_table">
+				Characteristic List
+			</h3>
+			<table id="characteristic_datatable" class="table table-striped table-bordered" width="100%" datatable="" dt-options="dtOptions" dt-columns="dtColumns" dt-instance="dtInstance">
+				<thead>
+					<tr class="filter-group">
+					  	<th>Code</th>
+					  	<th>Characteristic Name English</th>
+					  	<th>Characteristic Name German</th>
+					  	<th></th>  	
+			    	</tr>
+					<tr>
+					  	<th>Code</th>
+					  	<th>Characteristic Name English</th>
+					  	<th>Characteristic Name German</th>
+					  	<th></th> 
+					</tr>
+				</thead>
+			</table>
+		</div>
+	</div>
+</div>

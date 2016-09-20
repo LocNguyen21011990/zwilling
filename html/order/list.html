@@ -1,0 +1,78 @@
+<div id="ribbon">
+	<h3>Search Order</h3>
+</div>
+<div id="input_content">
+	<div class="search-content">
+		<div class="col-sm-2">
+			<input class="datepicker" placeholder="From date" id="tFromDate" ng-model="tFromDate">
+		</div>
+		<div class="col-sm-2">
+			<input class="datepicker" placeholder="To date" id="tEndDate" ng-model="tEndDate">
+		</div>
+		<div class="col-sm-1" style="padding-left: 5px; padding-right: 5px;">
+			  <select ng-options="size as size.name for size in sizes " ng-model="item" ng-change="update()"></select>
+		</div>
+		<div class="col-sm-2">
+			<select style="width:100%" ui-select2 id="customer_name" ng-model="OL.customer" ng-click="OL.selectCustomer()">
+				<option value="">Customer's Name</option>
+				<option ng-repeat="option in OL.customers" value="{{option.companyid}}">{{option.abbreviation_name}}</option>
+			</select>
+		</div>
+		<div class="col-sm-2">
+			<select style="width:100%" ui-select2 id="suppiler_name" ng-model="OL.supplier" ng-click="OL.selectSupplier()">
+				<option value="">Supplier's Name</option>
+				<option ng-repeat="option in OL.suppliers" value="{{option.companyid}}">{{option.name}}</option>
+			</select>
+		</div>
+		<div class="col-sm-3 no-padding-right">
+			<div class="col-sm-7">
+				<label>
+	                <input type="checkbox" ng-model="unfinishedab" >
+	                <span>UnFinished AB</span>
+	            </label>
+	        </div>
+	        <div class="col-sm-5">
+	        	<button class="btn btn_custom" type="button" ng-click="searchOrder()"><i class="fa fa-search"></i></button>
+	        </div>
+		</div>
+	</div>
+</div>
+<div id="table_content">
+	<div class="table_box">
+		<div class="col-sm-12">
+      <table datatable="" id="product_item_datatable" dt-options="dtOptions" dt-instance="dtInstance" dt-columns="dtColumns" dt-column-defs="dtColumnDefs" class="table table-striped table-bordered" width="100%" >
+		       <thead>
+            <tr class="filter-group">
+              <th>Order No.</th>
+              <th style="width: 3%">Pos.</th>
+              <th style="width: 3%">AB</th>
+              <th>Product Item No.</th>
+              <th>Product Line</th>
+              <th>Product Item Name</th>
+              <th>Order Q'ty</th>
+              <th>AB Q'ty</th>
+              <th>Accepted Q'ty</th>
+              <th>Remain Qty.</th>
+              <th>Conf. Ship. Date</th>
+              <th></th>
+            </tr>
+             <tr>
+              <th>Order No.</th>
+              <th style="width: 3%">Pos.</th>
+              <th style="width: 3%">AB</th>
+              <th>Product Item No.</th>
+              <th>Product Line</th>
+              <th>Product Item Name</th>
+              <th>Order Q'ty</th>
+              <th>AB Q'ty</th>
+              <th>Accepted Q'ty</th>
+              <th>Remain Qty.</th>
+              <th>Conf. Ship. Date</th>
+              <th></th>
+            </tr>
+          </thead>
+      		</table>
+		</div>
+	</div>
+</div>
+

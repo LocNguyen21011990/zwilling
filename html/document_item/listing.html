@@ -1,0 +1,124 @@
+<div id="ribbon">
+    <h3>
+        Document
+        
+        <select class="address-type" ng-model="type_code" id="select_code" ng-change="changeDocument()">
+            <option ng-repeat="value in listType" value="{{value.code}}">{{value.document_name}}</option>
+        </select>
+    </h3>
+</div>
+<div id="input_content">
+    <div class="add-content">
+        <div class="col-sm-6">
+            <!-- <div class="row">
+                <div class="col-sm-12">
+                    <select style="width:100%" ui.select2 ng-model="type_code" id="select_code" ng-change="changeDocument()">
+                        <option ng-repeat="value in listType" value="{{value.code}}">{{value.document_name}}</option>
+                    </select>
+                </div>
+            </div> -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-row">
+                        <input type="text" ng-model="component.productId" name="productId" id="productId" required ng-model-options="{allowInvalid: true}" ui-autocomplete="searchItemNo">
+                        <label class="input-label">Product No.</label>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="row">
+                <div class="col-sm-12">
+                    <select ng-model="terminal" id="select_product" disabled>
+                        <option value="{{terminal}}">Document product Item</option>
+                        <option value="{{terminal}}">Document product segment</option>
+                    </select>
+                </div>
+            </div> -->
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-row">
+                        <input type="text" ng-model="component.documentName" name="documentName" id="documentName" required ng-model-options="{allowInvalid: true}">
+                        <label class="input-label">Document name</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-sm-6">
+                    <label for="inspection-plan-document" class="input_upload_file upload_resource">Document File</label>
+                    <input type="file" class="document_type" ng-model="fileInspection" name="technicalDrawing" id="inspection-plan-document" multiple base-sixty-four-input/>
+                </div>
+                <div class="col-sm-6">
+                    <button type="button" class="btn btn_upload" ng-click="uploadFileInspection()">Upload</button>
+                    <!-- <button class="btn btn_document" type="button" data-toggle="dropdown" ng-click="listFileInspection()">Documents list</button>
+                    <ul class="dropdown-menu document-list" ng-if="icheckData>0">
+                        <li ng-repeat="i in iFiles">
+                            <div class="row">
+                                <div class="col-sm-10 document-list-item">
+                                    <a href="#"><span>{{listInspectFn[$index]}}</span></a>
+                                </div>
+                                <div class="col-sm-2">
+                                    <span class="remove-doc" ng-click="removeFileInspection($index,i)">&times;</span>
+                                </div>
+                            </div>
+                        </li>
+                    </ul> -->
+                </div>
+            </div>
+            <div class="row">
+                <ul class="upload_listing"></ul>
+            </div>
+        </div>
+        <div class="col-sm-6"></div>
+        <div class="col-sm-12" style="margin-top:20px">
+            <div class="col-sm-4">
+            </div>
+            <div class="col-sm-4">
+                <button type="button" class="btn btn_save" ng-click="saveDocument()">Save</button>
+                <button type="button" class="btn btn_reset" ng-click="reset()">Reset</button>
+            </div>
+            <div class="col-sm-4">
+            </div>
+        </div>
+    </div>
+</div>
+<div id="table_content">
+    <div class="table_box">
+        <div class="col-sm-12">
+            <h3 class="title_table">
+                Document List
+            </h3>
+            <table datatable id="document_datatable" dt-options="dtOptions" dt-column-defs="dtColumnDefs" dt-instance="dtInstance" dt-columns="dtColumns" class="table table-striped table-bordered" width="100%">
+                <thead>
+                    <tr class="filter-group">
+                        <th>Document Name</th>
+                        <th>File Name</th>
+                        <th>Type</th>
+                        <th>Product Item No</th>
+                        <th>Product Segment</th>
+                        <th></th>
+                    </tr>
+                    <tr>
+                        <th>Document Name.</th>
+                        <th>File Name</th>
+                        <th>Type</th>
+                        <th>Product Item No</th>
+                        <th>Product Segment</th>
+                        <th>Edit</th>
+                    </tr>
+                </thead>
+            </table>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+jQuery(function($) {
+    $('input[type="file"].document_type').change(function() {
+        if (this.files) {
+            var filename = this.files;
+            $("ul.upload_listing").html("");
+            for (i = 0; i < filename.length; i++) {
+                $("ul.upload_listing").append("<li>" + filename[i].name + "</li>");
+            }
+        }
+    });
+});
+</script>

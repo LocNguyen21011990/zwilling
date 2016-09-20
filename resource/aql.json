@@ -1,0 +1,25 @@
+[{
+    "aqlNo":"3",
+    "aql":"2.5",
+    "minQuatity":"2",
+    "maxQuatity":"8",
+    "inspectionLot":"2",
+    "accepted":"0",
+    "rejected":"1"
+}, {
+    "aqlNo":"4",
+    "aql":"2.5",
+    "minQuatity":"9",
+    "maxQuatity":"14",
+    "inspectionLot":"3",
+    "accepted":"0",
+    "rejected":"1"
+}, {
+    "aqlNo":"5",
+    "aql":"2.5",
+    "minQuatity":"9",
+    "maxQuatity":"19",
+    "inspectionLot":"5",
+    "accepted":"1",
+    "rejected":"3"
+}]

@@ -1,0 +1,21 @@
+[{
+    "qlLevel":"STO",
+    "majorDefect":"1",
+    "minorDefect":"1.5",
+    "qlDesc":"Stove"
+}, {
+    "qlLevel":"SCI",
+    "majorDefect":"1",
+    "minorDefect":"1.5",
+    "qlDesc":"Scissors"
+}, {
+    "qlLevel":"S&S",
+    "majorDefect":"2.5",
+    "minorDefect":"4",
+    "qlDesc":"Steel & Style QL"
+}, {
+    "qlLevel":"POR",
+    "majorDefect":"2.5",
+    "minorDefect":"4",
+    "qlDesc":"Porcelain"
+}]

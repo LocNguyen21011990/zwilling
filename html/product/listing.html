@@ -1,0 +1,237 @@
+<style>
+	.select2-container{
+		width:100%
+	}
+</style>
+<div id="ribbon">
+	<h3>Product Item</h3>
+</div>
+<div id="input_content">
+	<div class="add-content">
+		<div class="col-sm-6">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="form-row">
+						<input type="text" ng-model="component.product_item_no" ng-disabled="isEdit" name="productItemNo" id="product_item_no" required ng-model-options="{allowInvalid: true}">
+						<label class="input-label product_item_no_label">Product Item No.</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="form-row">
+						<input type="text" ng-model="component.product_item_name_english" name="productItemName" id="productItemName" required ng-model-options="{allowInvalid: true}">
+						<label class="input-label">Product Item Name English</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="form-row">
+						<input type="text" ng-model="component.product_item_name_german" name="productItemNameGerman" id="productItemNameGerman" required ng-model-options="{allowInvalid: true}">
+						<label class="input-label">Product Item Name German</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="form-row">
+						<input type="text" ng-model="searchResult" ui-autocomplete="searchProductitem" required ng-model-options="{allowInvalid: true}">
+						<label class="input-label">Product Line Name</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-6">
+					<input type="text" ng-model="product_segment_name" id="product_segment_name"  placeholder="Product Segment Name" disabled>
+				</div>
+				<div class="col-sm-6">
+					<input type="text" ng-model="brandname" id="brandname"  placeholder="Brand Name" disabled>
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="col-sm-6">
+					<input type="hidden" ui-select2-sortable ng-model="selection" allow-clear='true' simple-query="getObjectsData"
+						multiple sortable to-id="complexId" to-text="complexText">
+				</div>
+				<div class="col-sm-6">
+					<div class="form-row">
+						<input type="text" ng-model="component.ean_code" name="ean_code" id="ean_code" required ng-model-options="{allowInvalid: true}">
+						<label class="input-label">Ean Code</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<label class="check-box"><input type="checkbox" ng-model="addItem" ng-change="checkProductItem()">&nbsp;Set Composition</label>
+				</div>
+			</div>
+			<div class="set-composition" ng-class="{'add-set-item': addItem}">
+				<div class="row">
+					<div class="col-sm-12">
+						<button type="button" class="btn btn_custom" style="margin-bottom: 20px;" ng-click="addComposition()">Add item +</button>
+					</div>
+				</div>
+				<div class="row" ng-repeat="child in component.product_item_set" ng-if="child.child_product_item_no !== child.parent_product_item_no">
+					<div class="col-sm-4">
+						<div class="form-row">
+							<input type="text" id="productno_{{$index}}" ng-model="child.child_product_item_no" ui-autocomplete="searchProduct"  ng-model-options="{allowInvalid: true}">
+							<label class="input-label">Product Item No</label>
+						</div>
+					</div>
+					<div class="col-sm-4">
+						<div class="form-row">
+							<input type="text" ng-model="child.product_item_name"  ng-model-options="{allowInvalid: true}">
+							<label class="input-label">Product Item Name</label>
+						</div>
+					</div>
+					<div class="col-sm-2">
+						<div class="form-row">
+							<input type="text" name="quantity" id="quantity" ng-model="child.quantity" required ng-model-options="{allowInvalid: true}">
+							<label class="input-label">Quantity</label>
+						</div>
+					</div>
+					<div class="col-sm-2">
+						<button type="button" class="btn btn_custom" ng-click="delComposition($index)">X</button>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="row">
+				<div class="col-sm-4">
+					<div class="form-row">
+						<input type="text" ng-model="component.shape" name="shape" id="shape" required ng-model-options="{allowInvalid: true}">
+						<label class="input-label">Shape</label>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="form-row">
+						<input type="text" ng-model="component.colour" name="colour" id="colour" required ng-model-options="{allowInvalid: true}">
+						<label class="input-label">Colour</label>
+					</div>
+				</div>
+				<div class="col-sm-4">
+					<div class="form-row">
+						<input type="text" ng-model="component.size" name="size" id="size" required ng-model-options="{allowInvalid: true}">
+						<label class="input-label">Size</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-6">
+					<label for="technical_drawing" class="input_upload_file upload_resource">Technical Drawing</label>
+					<input type="file" name="technicalDrawing" class="technical_drawing" id="technical_drawing" ng-model="fileTech" multiple base-sixty-four-input class="upload"/>
+				</div>
+				<div class="col-sm-6">
+					<button type="button" class="btn btn_custom" ng-click="uploadFileTech()">Upload</button>
+					<button class="btn btn_custom" type="button" data-toggle="dropdown" ng-click="listFileTech()">Documents List</button>
+					<ul class="dropdown-menu document-list" ng-if="tFiles.length>0">
+						<li ng-repeat="i in tFiles">
+							<div class="row">
+								<div class="col-sm-10 document-list-item">
+									<a href="#"><span>{{listFileName[$index]}}</span></a>
+								</div>
+								<div class="col-sm-2">
+									<span class="remove-doc" ng-click="removefileTech($index,i)"> &times;</span>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="row">
+				<ul class="upload_listing"></ul>
+			</div>
+			<div class="row">
+				<div class="col-sm-6">
+					<label for="product_spec" class="input_upload_file upload_resource">Product Specification</label>
+					<input type="file" name="productSpec" id="product_spec" class="product_spec" ng-model="fileSpec" multiple base-sixty-four-input/>
+				</div>
+				<div class="col-sm-6">
+					<button type="button" class="btn btn_custom" ng-click="uploadfileSpec()">Upload</button>
+					<button class="btn btn_custom" type="button" data-toggle="dropdown" ng-click="listfileSpec()">Documents List</button>
+					<ul class="dropdown-menu document-list" ng-if="sFiles.length>0">
+						<li ng-repeat="i in sFiles">
+							<div class="row">
+								<div class="col-sm-10 document-list-item">
+									<a href="#"><span>{{listsFileName[$index]}}</span></a>
+								</div>
+								<div class="col-sm-2">
+									<span class="remove-doc" ng-click="removefileSpec($index,i)">&times;</span>
+								</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+			<div class="row">
+				<ul class="upload_listing_spec"></ul>
+			</div>
+		</div>
+	</div>
+</div>
+<div class="row text-center">
+	<div class="col-sm-12">
+		<button type="button" class="btn btn_save" ng-click="saveProduct()">Save</button>
+		<button type="button" class="btn btn_reset" ng-click="resetPage()">Reset</button>
+	</div>
+</div>
+<div id="table_content">
+	<div class="table_box">
+		<div class="col-sm-12">
+			<h3 class="title_table">
+				Product Item List
+			</h3>
+			<table datatable="" id="product_item_datatable" dt-instance="dtInstance" dt-options="dtOptions" dt-columns="dtColumns" dt-column-defs="dtColumnDefs"  class="table table-striped table-bordered" width="100%" >
+		        <thead>
+			        <tr class="filter-group">
+					  	<th>No.</th>
+					  	<th>Product Line</th>
+					  	<th>Product Item</th>
+					  	<th>Segment</th>
+					  	<th>Brand</th>
+					  	<th>QL</th>
+					  	<th></th>
+					  	<th></th>
+			    	</tr>
+					<tr>
+					  	<th>No.</th>
+					  	<th>Product Line</th>
+					  	<th>Product Item</th>
+					  	<th>Segment</th>
+					  	<th>Brand</th>
+					  	<th>QL</th>
+					  	<th>Set Composition</th>
+					  	<th></th>
+					</tr>
+		        </thead>
+      		</table>
+		</div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+	jQuery(function($) {
+	    $('input[type="file"].technical_drawing').change(function() {
+		    if (this.files) {
+		        var filename = this.files;
+		        $("ul.upload_listing").html("");
+		        for(i=0; i<filename.length; i++) {
+		        	$("ul.upload_listing").append("<li>"+filename[i].name+"</li>");
+		        }
+			}
+	  	});
+	    $('input[type="file"].product_spec').change(function() {
+		    if (this.files) {
+		        var filename = this.files;
+		        $("ul.upload_listing_spec").html("");
+		        for(i=0; i<filename.length; i++) {
+		        	$("ul.upload_listing_spec").append("<li>"+filename[i].name+"</li>");
+		        }
+			}
+	  	});
+	});
+</script>

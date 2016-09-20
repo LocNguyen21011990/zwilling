@@ -1,0 +1,39 @@
+<div id="ribbon">
+	<h3>Import order</h3>
+</div>
+<div id="input_content">
+	<div class="import-content">
+		<div class="col-md-6 col-md-offset-2">
+			<div class="col-sm-6">
+				<label for="order_file" class="input_upload_file upload_document">File</label>
+				<input type="file" name="orderFile" id="order_file" class="upload" ng-model='file' base-sixty-four-input/>
+			</div>
+			<div class="col-sm-6">
+				<button class="btn btn_upload" ng-click="uploadfile()">Import Order</button>
+			</div>
+		</div>
+		<div class="col-md-3 col-md-offset-1">
+			<select ng-change="showHistory()" ng-model="hitoryItem">
+				<option value="">Select History</option>
+				<option ng-repeat="item in histories" value="{{item.import_id}}">{{item.createTime|date:'medium'}}</option>
+			</select>
+		</div>
+	</div>
+</div>
+<div id="table_content">
+	<div class="table_box">
+		<div class="col-sm-12">
+			<table id="import_order_datatable" class="table table-striped table-bordered" width="100%" datatable="" dt-options="dtOptions" dt-columns="dtColumns" dt-instance="dtInstance">
+		</div>
+	</div>
+</div>
+<script type="text/javascript">
+	jQuery(function($) {
+	    $('input[type="file"]').change(function() {
+		    if ($(this).val()) {
+		        var filename = $(this).val();
+		        $('.input_upload_file').html(filename);
+			}
+	  	});
+	});
+</script>

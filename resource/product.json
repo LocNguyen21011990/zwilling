@@ -1,0 +1,33 @@
+[{
+    "no":"01000-040-0",
+    "productLine":"Flatw. / Neutral or Fresh",
+    "productItem":"Neutral Cereal Spoon",
+    "segment":"BSF",
+    "brand":"Flatware",
+    "ql":"FWC",
+    "setComposition":"1"
+}, {
+    "no":"01000-040-4",
+    "productLine":"Flatw. / Neutral or Fresh",
+    "productItem":"Dr. Oetker Ceral Spoon",
+    "segment":"BSF",
+    "brand":"Flatware",
+    "ql":"FWC",
+    "setComposition":"0"
+}, {
+    "no":"01000-040-5",
+    "productLine":"Resto",
+    "productItem":"Mixing Bowl 20cm",
+    "segment":"DEMEYERE",
+    "brand":"Demeyere",
+    "ql":"CWB",
+    "setComposition":"0"
+}, {
+    "no":"01000-051-0",
+    "productLine":"Resto",
+    "productItem":"Resto Mixing Bowls - 2 pcs Set (20 cm 24 cm)",
+    "segment":"DEMEYERE",
+    "brand":"Demeyere",
+    "ql":"CWB",
+    "setComposition":"1"
+}]

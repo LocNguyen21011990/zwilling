@@ -1,0 +1,97 @@
+<div id="ribbon">
+	<h3>Mistake Dictionary</h3>
+</div>
+<div id="input_content">
+	<div class="add-content">
+		<div class="col-sm-4">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="form-row">
+						<input type="text" ng-model="mistake.mistake_code" name="mistakeCode" id="mistake_code" required ng-model-options="{allowInvalid: true}">
+						<label class="input-label">Mistake Code</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="form-row">
+						<input type="text" ng-model="mistake.nr_fo" name="nrFo" id="nr-fo" required ng-model-options="{allowInvalid: true}">
+						<label class="input-label">Nr.Fo</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<select style="width=100%" class="select2" ng-model="mistake.characteristic" id="select_mistake">
+						<option value="">Select Characteristic</option>
+						<option ng-repeat="option in characteristic" value="{{option.characteristic_name_english}}" ng-checked="itemCharact.characteristic_name_english">	
+							{{option.characteristic_name_english}}
+						</option>
+					</select>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="form-row">
+						<input type="text" ng-model="mistake.nr_fe" name="nrFe" id="nr-fe" required ng-model-options="{allowInvalid: true}">
+						<label class="input-label">Nr.Fe</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<textarea rows="4" placeholder="Description" class="form-control" ng-model="mistake.mistake_description_english" ></textarea>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-4" ng-repeat="group in [0,1]">
+            <div class="row" ng-repeat="get in listProductSegment" ng-if="group == listProductSegment.indexOf(get) >= listProductSegment.length/2">
+                <div class="col-sm-12">
+                    <label class="check-box">
+                        <input type="checkbox" ng-click="check(get.product_segment_id)" value="{{get.product_segment_id}}" ng-checked="itemPSegment[$index].product_segment_id" ng-model="uncheckAll[$index]">&nbsp;{{get.product_segment_name_english}} 
+                    </label>
+                </div>
+            </div>
+        </div>
+	</div>
+</div>
+
+<div class="frm-save">
+	<button class="btn btn_save" type="button" ng-click="saveMistake()">Save</button>
+	<button type="button" class="btn btn_reset" ng-click="reset()">Reset</button>
+</div>
+
+<div id="table_content">
+	<div class="table_box">
+		<div class="col-sm-12">
+			<h3 class="title_table">
+				Mistake Dictionary List
+			</h3>
+
+			<table datatable="" id="mistake_datatable" dt-instance="dtInstance" dt-options="dtOptions" dt-columns="dtColumns" dt-column-defs="dtColumnDefs" class="table table-striped table-bordered" width="100%" >
+		        <thead>
+					<tr class="filter-group">
+					  	<th>Mistake Code</th>
+					  	<th>Nr.Fo</th>
+					  	<th>Characteristic</th>
+					  	<th>Nr.Fe</th>
+					  	<th>Description</th>
+					  	<th ng-repeat="segmentItem in listProductSegment"></th>
+					  	<th></th>
+					</tr>
+					<tr class="table-title">
+					  	<th style="vertical-align: middle">Mistake Code</th>
+					  	<th style="vertical-align: middle; width:7%">Nr.Fo</th>
+					  	<th style="vertical-align: middle">Characteristic</th>
+					  	<th style="vertical-align: middle; width:7%">Nr.Fe</th>
+					  	<th style="vertical-align: middle">Description</th>
+					  	<th ng-repeat="segmentItem in listProductSegment">
+					  		<span class="rotate">{{segmentItem.product_segment_name_english}}</span>
+					  	</th>
+					  	<th></th>
+					</tr>
+		        </thead>
+      		</table>
+		</div>
+	</div>
+</div>

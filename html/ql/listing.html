@@ -1,0 +1,77 @@
+<div id="ribbon">
+	<h3>Quality Level</h3>
+</div>
+<div id="input_content">
+	<div class="add-content">
+		<div class="col-sm-6">
+			<div class="row">
+				<div class="col-sm-12">
+					<div class="form-row">
+						<input type="text" ng-model="ql.quality_level" name="qualityLevel" id="quality_level" required ng-model-options="{allowInvalid: true}">
+						<label class="input-label">Quality Level</label>
+					</div>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<textarea rows="4" ng-model="ql.quality_description" placeholder="Quality Description" class="form-control" name="qualityDescription"></textarea>
+				</div>
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="row">
+				<div class="col-sm-12">
+					<select ng-model="ql.major_defect_aql">
+						<option value="">Select Major Defect</option>
+						<option ng-repeat="option in aqlMajor" value="{{option.average_quality_level}}">
+							{{option.average_quality_level}}
+						</option>
+					</select>
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<select ng-model="ql.minor_defect_aql">
+						<option value="">Select Minor Defect</option>
+						<option ng-repeat="option in aqlMinor" value="{{option.average_quality_level}}">
+							{{option.average_quality_level}}
+						</option>
+					</select>				
+				</div>
+			</div>
+			<div class="row">
+				<div class="col-sm-12">
+					<button type="button" class="btn btn_save" ng-click="addQL()">Save</button>
+					<button type="button" class="btn btn_reset" ng-click="reset()">Reset</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<div id="table_content">
+	<div class="table_box">
+		<div class="col-sm-12">
+			<h3 class="title_table">
+				Quality Level List
+			</h3>
+			<table id="quality_level_datatable" class="table table-striped table-bordered" width="100%" datatable="" dt-options="dtOptions" dt-columns="dtColumns" dt-instance="dtInstance" >
+				<thead>
+					<tr class="filter-group">
+					  	<th>Quality Level</th>
+					  	<th>Major Defect</th>
+					  	<th>Minor Defect</th>
+					  	<th>Quality Description</th>
+					  	<th></th>
+					</tr>
+					<tr>
+					  	<th>Quality Level</th>
+					  	<th>Major Defect</th>
+					  	<th>Minor Defect</th>
+					  	<th>Quality Description</th>
+					  	<th></th>
+					</tr>
+				</thead>
+      		</table>
+		</div>
+	</div>
+</div>

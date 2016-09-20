@@ -1,0 +1,169 @@
+<div id="ribbon">
+	<h3>Dashboard</h3>
+</div>
+<div id="search-content">
+	<div class="add-content">
+		<div class="col-sm-2">
+			<select class="select2" style="width:100%" ng-change="changeLocation()" ng-model="locationId">
+				<option value="">Select All Country</option>
+                <option ng-repeat="item in locations" value="{{item.locationid}}">{{item.locationname}}</option>
+			</select>
+		</div>
+        <div class="col-sm-4">
+			<select class="select2" style="width:100%" ng-model="supplierId" id="supplierId">
+				<option value="">Select All Supplier</option>
+                <option ng-repeat="sup in suppliers" value="{{sup.companyid}}">{{sup.name}}</option>
+			</select>
+		</div>
+		<div class="col-sm-4">
+			<select class="select2" style="width:100%" ng-model="segmentId">
+				<option value="">Select All Product Segment</option>
+                <option ng-repeat="segment in segments" value="{{segment.product_segment_id}}">{{segment.product_segment_name_english}}</option>
+			</select>
+		</div>
+		<div class="col-sm-2">
+			<button class="btn btn_custom" type="button" ng-click="searchEvents()"><i class="fa fa-search"></i></button>
+		</div>
+	</div>
+</div>
+<div id="dashboard-content">
+	<div class="col-sm-9">
+		<div class="row">
+			<div class="col-sm-12">
+                <div class='calendar dashboard-calendar' id="calendar"></div>
+			</div>
+		</div>
+        <div class="row no-margin explain-calendar">
+            <div class="col-sm-6 left-col">
+                <div class="row">
+                    <div class="col-sm-5 text-center no-padding">
+                        <h5><i class="fa fa-truck green"></i> DELIVERY</h5>
+                    </div>
+                    <div class="col-sm-7 no-padding">
+                        <ul>
+                            <li><i class="fa fa-truck green"></i> Delivered</li>
+                            <li><i class="fa fa-truck orange"></i> Delivered by next 14 days</li>
+                            <li><i class="fa fa-truck red"></i> Delivered by next 7 days</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 right-col">
+                <div class="row">
+                    <div class="col-sm-5 text-center no-padding">
+                        <h5><i class="fa fa-file-text-o green"></i> INSPECTION</h5>
+                    </div>
+                    <div class="col-sm-7 no-padding">
+                        <ul>
+                            <li><i class="fa fa-file-text-o green"></i> Inspected</li>
+                            <li><i class="fa fa-file-text-o orange"></i> Inspected by next 14 days</li>
+                            <li><i class="fa fa-file-text-o red"></i> Inspected by next 7 days</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row no-margin">
+            <div class="top-chart-group">
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <h3>Top 5 products line</h3>
+                        </div>
+                    </div>
+                    <div class="row border-right">
+                        <div class="col-sm-6 no-padding-right">
+                            <canvas id="pie" class="chart chart-pie" chart-data="topproduct_data" chart-labels="topproduct_label" chart-options="options"></canvas> 
+                        </div>
+                        <div class="col-sm-6 no-padding-left">
+                            <ul ng-repeat="product in topproduct_label" class="chart-top-list">
+                                <li>{{$index+1}} . {{product}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-sm-6">
+                    <div class="row">
+                        <div class="col-sm-12 text-center">
+                            <h3>Top 5 Suppliers</h3>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-sm-6 no-padding-right">
+                            <canvas id="pie" class="chart chart-pie" chart-data="topsupplier_data" chart-labels="topsupplier_label" chart-options="options"></canvas> 
+                        </div>
+                        <div class="col-sm-6 no-padding-left">
+                            <ul ng-repeat="sup in topsupplier_label" class="chart-top-list">
+                                <li>{{$index+1}} . {{sup}}</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="dashboard-chart-group">
+                    <canvas class="chart chart-line dashboard-chart-line" chart-data="dashboard_data" chart-labels="dashboard_label" ></canvas>
+                </div>
+            </div>
+        </div>
+	</div>
+	<div class="col-sm-3">
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="activity-title">
+					<h3>Users Activity</h3>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-sm-12">
+				<div class="activity-content">
+                    <div class="activity-item" >
+                    	<h2 class="title">Master data</h2>
+                        <ul class="content">
+                            <li ng-repeat="iMasterData in listMasterData"> 
+                                <div class="avatar">
+                                    <i class="fa fa-server" aria-hidden="true"></i>
+                                </div>
+                                <div class="notification">
+                                    <h6>{{iMasterData.messages}}</h6>
+                                </div>
+                                <div class="time"><span>{{iMasterData.createddate | asDate | date: 'dd-MMM-yyyy'}}</span></div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="activity-item" >
+                        <h2 class="title">Order data</h2>
+                        <ul class="content">
+                            <li ng-repeat="iOrderData in listOrderData"> 
+                                <div class="avatar">
+                                    <i class="fa fa-server" aria-hidden="true"></i>
+                                </div>
+                                <div class="notification">
+                                    <h6>{{iOrderData.messages}}</h6>
+                                </div>
+                                <div class="time"><span>{{iOrderData.createddate | asDate | date: 'dd-MMM-yyyy'}}</span></div>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="activity-item">
+                        <h2 class="title">Inspection report</h2>
+                        <ul class="content">
+                            <li ng-repeat="iInspection in listInspectionReport"> 
+                                <div class="avatar">
+                                    <i class="fa fa-server" aria-hidden="true"></i>
+                                </div>
+                                <div class="notification">
+                                    <h6>{{iInspection.messages}}</h6>
+                                </div>
+                                <div class="time"><span>{{iInspection.createddate | asDate | date: 'dd-MMM-yyyy'}}</span></div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+			</div>
+		</div>
+	</div>
+</div>

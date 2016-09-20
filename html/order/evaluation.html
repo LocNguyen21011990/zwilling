@@ -1,0 +1,75 @@
+<div id="ribbon">
+	<h3>Evaluation</h3>
+</div>
+<div id="input_content">
+	<div class="evaluation-content">
+	 	<div class="col-md-8 col-md-offset-2">
+	 		<div class="row">
+	 			<div class="col-md-12">
+					<select style="width:100%" ui-select2 id="suppiler_name" ng-model="supplier">
+						<option value="">Supplier's Name</option>
+						<option ng-repeat="option in suppliers" value="{{option.companyid}}">{{option.name}}</option>
+					</select>
+				</div>
+	 		</div>
+	 		<div class="row">
+	 			<div class="col-md-12">
+					<select style="width:100%" ui-select2 id="customer_name" ng-model="customer">
+						<option value="">Customer's Name</option>
+						<option ng-repeat="option in customers" value="{{option.companyid}}">{{option.name}}</option>
+					</select>
+				</div>
+	 		</div>
+	 		<div class="row">
+	 			<div class="col-md-12">
+					<select style="width:100%" ui-select2 id="product_segment" ng-model="product_segment" ng-change="getProductLine()">
+						<option value="">Product Segment</option>
+						<option ng-repeat="option in ListProductSegment" value="{{option.product_segment_id}}">{{option.product_segment_name_english}}</option>
+					</select>
+				</div>
+	 		</div>
+	 		<div class="row">
+	 			<div class="col-md-12">
+					<select style="width:100%" ui-select2 id="product_line" ng-model="product_line">
+						<option value="">Product Line</option>
+						<option ng-repeat="option in ListProductLine" value="{{option.product_line_no}}">{{option.product_line_name_english}}</option>
+					</select>
+				</div>
+	 		</div>
+	 		<div class="row">
+				<div class="col-md-6">
+					<input type="text" name="confFrom" placeholder="Confirmed Shipping Date From" class="datepicker" id="conf_from" ng-model="conf_from">
+				</div>
+				<div class="col-md-6">
+					<div class="input-label">
+						<label>To</label>
+						<input type="text" name="confTo" class="datepicker" id="conf_to" ng-model="conf_to">
+					</div>
+				</div>
+	 		</div>
+	 		<div class="row">
+				<div class="col-md-6">
+					<input type="text" name="etdFrom" placeholder="ETD Date From" class="datepicker" id="etd_from" ng-model="etd_from">
+				</div>
+				<div class="col-md-6">
+					<div class="input-label">
+						<label>To</label>
+						<input type="text" name="etdTo" class="datepicker" id="etd_to" ng-model="etd_to">
+					</div>
+				</div>
+	 		</div>
+	 		<div class="row">
+				<div class="col-md-12 button-group">
+					<button class="btn btn_custom" type="button" ng-click="DetailOrderData('perSupplier')">Volume Per Supplier</button>
+					<button class="btn btn_custom" type="button" ng-click="DetailOrderData('supplierBility')">Supplier's Reliability</button>
+					<button class="btn btn_custom" type="button" ng-click="DetailOrderData('orderData')">Detail Order Data</button>
+				</div>
+	 		</div>
+	 	</div>
+	</div>
+	<div ng-show="showTable" class="table-responsive">
+		<div class="col-md-12">
+			<table datatable="" dt-options="dtOptions" dt-columns="dtColumns" dt-instance="dtInstance" id="detail_order_data" class="table table-striped table-bordered" width="100%"></table>
+		</div>
+	</div>
+</div>

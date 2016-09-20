@@ -1,0 +1,542 @@
+<div id="ribbon">
+    <h3>Inspection report</h3>
+</div>
+<div id="input_content">
+    <div class="general-content">
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="title_function">General Information</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <input type="text" placeholder="Inspection No." ng-model="inspection_no" ng-disabled="inspectionid != ''">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <input type="text" placeholder="Inspection Date" class="datepicker" id="inspection_date" ng-model="inspection_date">
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <select style="width:100%" ui-select2 id="inspector1" ng-model="inspector1">
+                        <option value="">Select an Inspector</option>
+                        <option ng-repeat="option in listInspection" value="{{option.id_user}}">{{option.user_name}}</option>
+                    </select>
+                </div>
+                <div class="col-md-6">
+                    <select style="width:100%" ui-select2 id="inspector2" ng-model="inspector2">
+                        <option value="">Select an Inspector</option>
+                        <option ng-repeat="option in listInspection" value="{{option.id_user}}">{{option.user_name}}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-label-report">
+                        <label>Order No.</label>
+                        <input type="text" ng-model="order_no" value="{{order_no}}" disabled>
+                    </div>
+                </div>
+                <div class="col-md-6"></div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="input-label-report">
+                        <label>Position No.</label>
+                        <input type="text" ng-model="pos_no" value="{{pos_no}}" disabled>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="input-label-report">
+                        <label>AB No.</label>
+                        <input type="text" placeholder="AB No." ng-model="ab_no" value="{{ab_no}}" disabled>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="title_function">Supplier</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 supplier-info">
+                    <p>{{inspectionReport.supplier_name}}</p>
+                    <p>{{inspectionReport.supplier_address}}</p>
+                    <p>{{inspectionReport.supplier_phone}}</p>
+                    <p>{{inspectionReport.supplier_fax}}</p>
+                    <p>{{inspectionReport.supplier_mail}}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="row">
+                <div class="col-md-12">
+                    <h3 class="title_function">Customer</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12 customer-info">
+                    <p>{{inspectionReport.customer_name}}</p>
+                    <p>{{inspectionReport.customer_address}}</p>
+                    <p>{{inspectionReport.customer_phone}}</p>
+                    <p>{{inspectionReport.customer_fax}}</p>
+                    <p>{{inspectionReport.customer_mail}}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="inspected-item">
+        <div class="col-md-12">
+            <h3 class="title_function">Inspected Item</h3>
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Product Item Number</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>{{inspectionReport.product_item_no}}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Product Line</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>{{inspectionReport.product_line}}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Product Item Name</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>{{inspectionReport.product_item_name}}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Quality Level</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>{{inspectionReport.quality_level}}</label>
+                        </div>
+                    </div>
+                    <!-- <div class="row">
+                        <div class="col-md-6"><label>Major Defects</label></div>
+                        <div class="col-md-3"><label>Allow :: {{inspectionReport.major_allow}}</label></div>
+                        <div class="col-md-3"><label>Reject :: {{inspectionReport.major_reject}}</label></div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6"><label>Minor Defects</label></div>
+                        <div class="col-md-3"><label>Allow :: {{inspectionReport.minor_allow}}</label></div>
+                        <div class="col-md-3"><label>Reject :: {{inspectionReport.minor_reject}}</label></div>
+                    </div> -->
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Item Lot Size</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>{{inspectionReport.item_lost_size}}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Standard Inspected Quantity</label>
+                        </div>
+                        <div class="col-md-6">
+                            <label>{{inspectionReport.inspected_quantity}}</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <label>Inspected Quantity</label>
+                        </div>
+                        <div class="col-md-6">
+                            <input type="text" ng-model="inspectedQty">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>Used inspection support materials</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label>Technical Drawin</label>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="radio-inline">
+                                <input type="radio" class="radiobox" name="technicalDrawin" value="1" ng-model="technicalDrawin">
+                                <span>Yes</span>
+                            </label>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="radio-inline">
+                                <input type="radio" class="radiobox" name="technicalDrawin" value="0" ng-model="technicalDrawin">
+                                <span>No</span>
+                            </label>
+                        </div>
+                        <div class="col-md-5" ng-show="technicalDrawin == 0">
+                            <select style="width:100%" ui-select2 id="missing_reason_td" ng-model="missing_reason_td">
+                                <option value="">Select a reason (if you choose NO)</option>
+                                <option ng-repeat="option in listMissingReason" value="{{option.reasonid}}">{{option.reasonname}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <label>Sealed Sample</label>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="radio-inline">
+                                <input type="radio" class="radiobox" name="sealedSample" value="1" ng-model="sealedSample">
+                                <span>Yes</span>
+                            </label>
+                        </div>
+                        <div class="col-md-2">
+                            <label class="radio-inline">
+                                <input type="radio" class="radiobox" name="sealedSample" value="0" ng-model="sealedSample">
+                                <span>No</span>
+                            </label>
+                        </div>
+                        <div class="col-md-5" ng-show="sealedSample == 0">
+                            <select style="width:100%" ui-select2 id="missing_reason_ss" ng-model="missing_reason_ss">
+                                <option value="">Select a reason (if you choose NO)</option>
+                                <option ng-repeat="option in listMissingReason" value="{{option.reasonid}}">{{option.reasonname}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>Available Documents</label>
+                            <ul class="availabel-document">
+                                <li class="document-item" ng-repeat="docItem in listDocuments"><a href="{{docItem.path}}">{{docItem.fileName}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-12">
+            <ul class="tab-panel">
+                <li ng-class="{ active: isSet(1) }">
+                    <a href ng-click="setTab(1)">Input Mistake</a>
+                </li>
+                <li ng-class="{ active: isSet(2) }">
+                    <a href ng-click="setTab(2)">To Do List</a>
+                </li>
+            </ul>
+            <div title="Input Mistake" ng-show="isSet(1)">
+                <div class="tab-content">
+                    <div class="row" style="padding-bottom: 10px;">
+                        <div class="col-md-4">
+                            <select style="width:100%" ui-select2 id="mistake_dictionary" ng-model="mistake_dictionary">
+                                <option value="">Mistake Description</option>
+                                <option ng-repeat="option in listMistakeDictionary" value="{{option}}">{{option.characteristic}} :: {{option.mistake_description_english}}</option>
+                            </select>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-row">
+                                <input type="text" name="critical" ng-model="critical" required ng-model-options="{allowInvalid: true}">
+                                <label class="input-label">Critical</label>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-row">
+                                <input type="text" name="major" ng-model="major" required ng-model-options="{allowInvalid: true}">
+                                <label class="input-label">Major</label>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-row">
+                                <input type="text" name="minor" ng-model="minor" required ng-model-options="{allowInvalid: true}">
+                                <label class="input-label">Minor</label>
+                            </div>
+                        </div>
+                        <div class="col-md-1">
+                            <div class="form-row">
+                                <input type="text" name="notice" ng-model="notice" required ng-model-options="{allowInvalid: true}">
+                                <label class="input-label">Notice</label>
+                            </div>
+                            <!-- <textarea rows="1" placeholder="Notice" class="form-control" name="notice" ng-model="notice"></textarea> -->
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn_custom" type="button" ng-click="saveMistake()">Add/Update</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table id="datatable_mistakes" class="table table-striped table-bordered" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 15%">Code</th>
+                                        <th>Mistake Description</th>
+                                        <th style="width: 5%">Critical</th>
+                                        <th style="width: 5%">Major</th>
+                                        <th style="width: 5%">Minor</th>
+                                        <th style="width: 25%">Notice</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="mistake_list">
+                                    <tr ng-repeat="item in listMistakeItem">
+                                        <td>{{item.mistake_code}}</td>
+                                        <td>{{item.mistake_description_english}}</td>
+                                        <td class="text-center">{{item.critical}}</td>
+                                        <td class="text-center">{{item.major}}</td>
+                                        <td class="text-center">{{item.minor}}</td>
+                                        <td class="text-center">{{item.notice}}</td>
+                                    </tr>
+                                    <tr id="total_defects" class="text-center">
+                                        <td></td>
+                                        <td>Total </td>
+                                        <td>{{totalCritical}}</td>
+                                        <td>{{totalMajor}}</td>
+                                        <td>{{totalMinor}}</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr id="allowed_defects" class="text-center">
+                                        <td></td>
+                                        <td>Allow </td>
+                                        <td>0</td>
+                                        <td>{{inspectionReport.major_allow}}</td>
+                                        <td>{{inspectionReport.minor_allow}}</td>
+                                        <td></td>
+                                    </tr>
+                                    <tr id="rejected_defects" class="text-center">
+                                        <td></td>
+                                        <td>Reject </td>
+                                        <td>0</td>
+                                        <td>{{inspectionReport.major_reject}}</td>
+                                        <td>{{inspectionReport.minor_reject}}</td>
+                                        <td></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div title="To Do List" ng-show="isSet(2)">
+                <div class="tab-content">
+                    <table id="datatable_todos" class="table table-striped table-bordered">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%">No.</th>
+                                <th>Description</th>
+                                <td style="width: 17%">
+                                </td>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Check master carton</td>
+                                <td class="text-center">
+                                    <label class="radio radio-inline">
+                                        <input type="radio" name="todo1" value="yes" class="radiobox style-2" data-bv-field="todo1">
+                                        <span>Yes</span>
+                                    </label>
+                                    <label class="radio radio-inline">
+                                        <input type="radio" name="todo1" value="no" class="radiobox style-2" data-bv-field="todo1">
+                                        <span>No</span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Check shipping mark</td>
+                                <td class="text-center">
+                                    <label class="radio radio-inline">
+                                        <input type="radio" name="todo2" value="yes" class="radiobox style-2" data-bv-field="todo2">
+                                        <span>Yes</span>
+                                    </label>
+                                    <label class="radio radio-inline">
+                                        <input type="radio" name="todo2" value="no" class="radiobox style-2" data-bv-field="todo2">
+                                        <span>No</span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Check box packaging</td>
+                                <td class="text-center">
+                                    <label class="radio radio-inline">
+                                        <input type="radio" name="todo3" value="yes" class="radiobox style-2" data-bv-field="todo3">
+                                        <span>Yes</span>
+                                    </label>
+                                    <label class="radio radio-inline">
+                                        <input type="radio" name="todo3" value="no" class="radiobox style-2" data-bv-field="todo3">
+                                        <span>No</span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Check EAN/UPC code</td>
+                                <td class="text-center">
+                                    <label class="radio radio-inline">
+                                        <input type="radio" name="todo4" value="yes" class="radiobox style-2" data-bv-field="todo4">
+                                        <span>Yes</span>
+                                    </label>
+                                    <label class="radio radio-inline">
+                                        <input type="radio" name="todo4" value="no" class="radiobox style-2" data-bv-field="todo4">
+                                        <span>No</span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>5</td>
+                                <td>Cutting test</td>
+                                <td class="text-center">
+                                    <label class="radio radio-inline">
+                                        <input type="radio" name="todo5" value="yes" class="radiobox style-2" data-bv-field="todo5">
+                                        <span>Yes</span>
+                                    </label>
+                                    <label class="radio radio-inline">
+                                        <input type="radio" name="todo5" value="no" class="radiobox style-2" data-bv-field="todo5">
+                                        <span>No</span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>6</td>
+                                <td>Hardness test</td>
+                                <td class="text-center">
+                                    <label class="radio radio-inline">
+                                        <input type="radio" name="todo6" value="yes" class="radiobox style-2" data-bv-field="todo6">
+                                        <span>Yes</span>
+                                    </label>
+                                    <label class="radio radio-inline">
+                                        <input type="radio" name="todo6" value="no" class="radiobox style-2" data-bv-field="todo6">
+                                        <span>No</span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>7</td>
+                                <td>Handle bending test</td>
+                                <td class="text-center">
+                                    <label class="radio radio-inline">
+                                        <input type="radio" name="todo7" value="yes" class="radiobox style-2" data-bv-field="todo7">
+                                        <span>Yes</span>
+                                    </label>
+                                    <label class="radio radio-inline">
+                                        <input type="radio" name="todo7" value="no" class="radiobox style-2" data-bv-field="todo7">
+                                        <span>No</span>
+                                    </label>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>8</td>
+                                <td>Check workmanship for defects</td>
+                                <td class="text-center">
+                                    <label class="radio radio-inline">
+                                        <input type="radio" name="todo8" value="yes" class="radiobox style-2" data-bv-field="todo8">
+                                        <span>Yes</span>
+                                    </label>
+                                    <label class="radio radio-inline">
+                                        <input type="radio" name="todo8" value="no" class="radiobox style-2" data-bv-field="todo8">
+                                        <span>No</span>
+                                    </label>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="inspected-result">
+        <div class="col-md-12">
+            <h3 class="title_function">Inspection Result</h3>
+        </div>
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <select style="width:100%" ui-select2 id="inspection_result" ng-model="inspection_result">
+                                <option value="">Select a result</option>
+                                <option ng-repeat="option in listInspectionResult" value="{{option.inspection_result_description}}">{{option.inspection_result_description}}</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-row">
+                                <input type="text" ng-model="quantity_accepted" required ng-model-options="{allowInvalid: true}">
+                                <label class="input-label">Accepted Quantity</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <textarea rows="3" placeholder="Comment" class="form-control" name="comment" ng-model="comment"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-row">
+                                        <input type="text" name="sealFrom1" ng-model="sealFrom1" required ng-model-options="{allowInvalid:true}">
+                                        <label class="input-label">Seal From</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-row">
+                                        <input type="text" name="sealTo1" ng-model="sealTo1" required ng-model-options="{allowInvalid: true}">
+                                        <label class="input-label">To</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-row">
+                                        <input type="text" name="sealFrom2" ng-model="sealFrom2" required ng-model-options="{allowInvalid: true}">
+                                        <label class="input-label">Seal From</label>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-row">
+                                        <input type="text" name="sealTo2" ng-model="sealTo2" required ng-model-options="{allowInvalid: true}">
+                                        <label class="input-label">To</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <textarea rows="3" placeholder="Inspected Boxes' Seal Number" class="form-control" name="carton_info" ng-model="carton_info"></textarea>
+                        </div>
+                    </div>
+                    <div class="row" ng-show="parent == 1">
+                        <div class="col-md-12">
+                            <label>Report for childs</label>
+                            <input type="checkbox" name="reportforchild" ng-model="reportforchild">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="frm-save">
+    <div class="col-md-12">
+        <button class="btn btn_save" type="button" ng-click="saveReport()">Save</button>
+        <button ng-show="inspectionid != ''" class="btn btn_save" type="button" ng-click="viewPDF()">View PDF</button>
+    </div>
+</div>
