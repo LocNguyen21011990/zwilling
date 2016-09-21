@@ -224,6 +224,26 @@
                             </ul>
                         </div>
                     </div>
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <label for="inspection-plan-document" class="input_upload_file upload_resource">Image File</label>
+                            <input type="file" class="document_type" ng-model="fileImage" name="technicalDrawing" id="inspection-plan-document" multiple base-sixty-four-input/>
+                        </div>
+                        <div class="col-sm-6">
+                            <button type="button" class="btn btn_upload" ng-click="uploadFileImages()">Upload</button>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <ul class="upload_listing"></ul>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>Available Images</label>
+                            <ul class="availabel-document">
+                                <li class="document-item" ng-repeat="item in listImages"><a href="{{item.path}}">{{item.file_name}}</a></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -545,3 +565,16 @@
         <button ng-show="inspectionid != ''" class="btn btn_save" type="button" ng-click="viewPDF()">View PDF</button>
     </div>
 </div>
+<script type="text/javascript">
+jQuery(function($) {
+    $('input[type="file"].document_type').change(function() {
+        if (this.files) {
+            var filename = this.files;
+            $("ul.upload_listing").html("");
+            for (i = 0; i < filename.length; i++) {
+                $("ul.upload_listing").append("<li>" + filename[i].name + "</li>");
+            }
+        }
+    });
+});
+</script>

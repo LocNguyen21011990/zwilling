@@ -5,4 +5,5 @@ WEB-INF
 /fileUpload/productItem/*
 /fileUpload/productSegment/*
 /fileUpload/inspectionReport/*
+/fileUpload/images/*
 /log/*

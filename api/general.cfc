@@ -189,7 +189,14 @@ component output="false" displayname=""  {
 
            return validContentTypes;
        }
+    function ContentTypeImages(param) {
+          var validContentTypes = {
+                                     'image/jpeg': {extension: 'jpg'}
+                                    ,'image/png': {extension: 'png'}
+                                }; 
 
+           return validContentTypes;
+       }
     function checkTimeOut(string token) {
         var getSession = entityLoad("session",{token = token},true);
         var result = {}; 

@@ -42,14 +42,17 @@ var app = angular.module('zwillingApp', ['zwilling.controllers','checklist-model
                     if(value.url && !defaultState)
                         defaultState = value.url;
                     if(!check){
-                        if(value.url == toState.name)
+                        if(value.url == toState.name && value.view == 1)
                              check = true;
                     }
                 })
                 if(!check)
                 {
                     if(fromState.name){
-                        $state.go(fromState.name);
+                        if(fromState.name == 'login')
+                            $state.go(defaultState);
+                        else
+                            $state.go(fromState.name);
                         event.preventDefault();
                     }
                     else{

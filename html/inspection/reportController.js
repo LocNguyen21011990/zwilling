@@ -1,11 +1,12 @@
 "use strict";
-app.controller('inspectionReport', ['$rootScope','$window', '$scope', '$timeout', 'ENV', '$state', '$stateParams', '$http', 'userService', 'Notification', function($rootScope,$window, $scope, $timeout, ENV, $state, $stateParams, $http, userService, Notification) {
+app.controller('inspectionReport', ['$rootScope', '$window', '$scope', '$timeout', 'ENV', '$state', '$stateParams', '$http', 'userService', 'Notification', function($rootScope, $window, $scope, $timeout, ENV, $state, $stateParams, $http, userService, Notification) {
 
     $scope.tab = 1;
     $scope.critical = 0;
     $scope.major = 0;
     $scope.minor = 0;
     $scope.notice = 0;
+    $scope.listImages = [];
 
     $("#mistake_dictionary").select2("val", "");
     $scope.setTab = function(newTab) {
@@ -123,11 +124,11 @@ app.controller('inspectionReport', ['$rootScope','$window', '$scope', '$timeout'
                 "updateby": $rootScope.username
             }
             $http.post(ENV.domain + 'inspectionReportMistake.execute', data).then(function(res) {
-                if(res.data['success']){
+                if (res.data['success']) {
                     $scope.listMistakeItem[$scope.listMistakeItem.length - 1].inspection_mistake_id = res.data.inspection_mistake_id;
-                    Notification.success({message:res.data['message'] || 'Input mistake success', delay:2000});
-                }else{
-                    Notification.error({message:res.data['message'] || 'Input mistake failed.', delay:5000});
+                    Notification.success({ message: res.data['message'] || 'Input mistake success', delay: 2000 });
+                } else {
+                    Notification.error({ message: res.data['message'] || 'Input mistake failed.', delay: 5000 });
                 }
             });
             $scope.critical = 0;
@@ -207,6 +208,10 @@ app.controller('inspectionReport', ['$rootScope','$window', '$scope', '$timeout'
             $scope.sealedSample = 0;
             $scope.missing_reason_ss = $scope.inspectionReport.missing_ss;
         }
+        $http.get(ENV.domain + 'image.execute?inspectionid=' + $scope.inspectionid).then(function(response) {
+            $scope.listImages = response.data;
+            console.log($scope.listImages)
+        });
     });
 
     $scope.removeMistake = function(index) {
@@ -227,112 +232,172 @@ app.controller('inspectionReport', ['$rootScope','$window', '$scope', '$timeout'
 
     }
     $scope.saveReport = function() {
-        var messageValid = 'Input Accepted Quantity must be less than equal ' + $scope.inspectionReport.item_lost_size;
-        if ($scope.technicalDrawin == undefined) {
-            Notification.error({ message: 'Check Technical Drawin, Please!</br>', delay: 5000 });
-            return;
-        }
-        if ($scope.sealedSample == undefined) {
-            Notification.error({ message: 'Check Sealed Sample, Please!</br>', delay: 5000 });
-            return;
-        }
-        if ($scope.inspection_no == '') {
-            Notification.error({ message: 'Please input Inspection No.', delay: 2000 });
-            return;
-        }
-        if (!validValues($scope.quantity_accepted)) {
-            Notification.error({ message: 'Field Accepted Quantity must be number </br>', delay: 5000 });
-            return;
-        }
-        if ($scope.quantity_accepted > $scope.inspectionReport.item_lost_size) {
-            Notification.error({ message: messageValid, delay: 5000 });
-            return;
-        }
-        $scope.listMistakeID = [];
+            var messageValid = 'Input Accepted Quantity must be less than equal ' + $scope.inspectionReport.item_lost_size;
+            if ($scope.technicalDrawin == undefined) {
+                Notification.error({ message: 'Check Technical Drawin, Please!</br>', delay: 5000 });
+                return;
+            }
+            if ($scope.sealedSample == undefined) {
+                Notification.error({ message: 'Check Sealed Sample, Please!</br>', delay: 5000 });
+                return;
+            }
+            if ($scope.inspection_no == '') {
+                Notification.error({ message: 'Please input Inspection No.', delay: 2000 });
+                return;
+            }
+            if (!validValues($scope.quantity_accepted)) {
+                Notification.error({ message: 'Field Accepted Quantity must be number </br>', delay: 5000 });
+                return;
+            }
+            if ($scope.quantity_accepted > $scope.inspectionReport.item_lost_size) {
+                Notification.error({ message: messageValid, delay: 5000 });
+                return;
+            }
+            $scope.listMistakeID = [];
 
-        //update inspector schedule
-        var dataSchedule = { id: $scope.inspectionReport.id, inspector1: $scope.inspector1, inspector2: $scope.inspector2, plan_date: $scope.plan_date, updateby: 'rasia' };
-        $http.put(ENV.domain + 'inspection.editSchedule', dataSchedule).then(function(data) {});
+            //update inspector schedule
+            var dataSchedule = { id: $scope.inspectionReport.id, inspector1: $scope.inspector1, inspector2: $scope.inspector2, plan_date: $scope.plan_date, updateby: 'rasia' };
+            $http.put(ENV.domain + 'inspection.editSchedule', dataSchedule).then(function(data) {});
 
-        var inspection = {
-            "inspectionid": $scope.inspectionid,
-            "abid": $scope.inspectionReport.abid,
-            "inspection_no": $scope.inspection_no,
-            "inspection_date": $scope.inspection_date,
-            "set_item_lot_size": $scope.inspectionReport.shipped_quantity,
-            "item_lot_size": $scope.inspectionReport.item_lost_size,
-            "inspected_quantity": $scope.inspectedQty,
-            "quantity_accepted": $scope.quantity_accepted,
-            "inspected_ql": $scope.inspectionReport.quality_level,
-            "product_item_no": $scope.inspectionReport.product_item_no,
-            "inspector1": $scope.inspector1,
-            "inspector2": $scope.inspector2,
-            "last_change_person": 1,
-            "sealfrom1": $scope.sealFrom1,
-            "sealfrom2": $scope.sealFrom2,
-            "sealto1": $scope.sealTo1,
-            "sealto2": $scope.sealTo2,
-            "td_materials": "no",
-            "missing_td": $scope.missing_reason_td,
-            "ss_materials": "no",
-            "missing_ss": $scope.missing_reason_ss,
-            "carton_info": $scope.carton_info,
-            "result": $scope.inspection_result,
-            "comment": $scope.comment,
-            "is_general_report": $scope.reportforchild,
-            "mistake": $scope.listMistakeID
-        };
-        if ($scope.inspectionid != '') {
-            //edit inspection report
-            $timeout(function() {
+            var inspection = {
+                "inspectionid": $scope.inspectionid,
+                "abid": $scope.inspectionReport.abid,
+                "inspection_no": $scope.inspection_no,
+                "inspection_date": $scope.inspection_date,
+                "set_item_lot_size": $scope.inspectionReport.shipped_quantity,
+                "item_lot_size": $scope.inspectionReport.item_lost_size,
+                "inspected_quantity": $scope.inspectedQty,
+                "quantity_accepted": $scope.quantity_accepted,
+                "inspected_ql": $scope.inspectionReport.quality_level,
+                "product_item_no": $scope.inspectionReport.product_item_no,
+                "inspector1": $scope.inspector1,
+                "inspector2": $scope.inspector2,
+                "last_change_person": 1,
+                "sealfrom1": $scope.sealFrom1,
+                "sealfrom2": $scope.sealFrom2,
+                "sealto1": $scope.sealTo1,
+                "sealto2": $scope.sealTo2,
+                "td_materials": "no",
+                "missing_td": $scope.missing_reason_td,
+                "ss_materials": "no",
+                "missing_ss": $scope.missing_reason_ss,
+                "carton_info": $scope.carton_info,
+                "result": $scope.inspection_result,
+                "comment": $scope.comment,
+                "is_general_report": $scope.reportforchild,
+                "mistake": $scope.listMistakeID
+            };
+            if ($scope.inspectionid != '') {
+                //edit inspection report
+                $timeout(function() {
 
-                $http.put(ENV.domain + 'inspection.execute', inspection).then(function(d) {
-                    if (d.data['success']) {
-                        Notification.success({ message: d.data['message'] || 'Updated Inspection report success', delay: 2000 });
-                    } else {
-                        Notification.error({ message: d.data['message'] || 'Update Inspection report failed', delay: 2000 });
+                    $http.put(ENV.domain + 'inspection.execute', inspection).then(function(d) {
+                        if (d.data['success']) {
+                            Notification.success({ message: d.data['message'] || 'Updated Inspection report success', delay: 2000 });
+                        } else {
+                            Notification.error({ message: d.data['message'] || 'Update Inspection report failed', delay: 2000 });
+                        }
+                    });
+
+                }, 300);
+
+            } else {
+
+                //create new inspection report.
+
+                angular.forEach($scope.listMistakeItem, function(item) {
+                    var data = {
+                        "mistake_code": item.mistake_code,
+                        "number_of_critical_defect": item.critical,
+                        "number_of_major_defect": item.major,
+                        "number_of_minor_defect": item.minor,
+                        "number_of_notice": item.notice,
+                        "updateby": $rootScope.username
                     }
+                    $http.post(ENV.domain + 'inspectionReportMistake.execute', data).then(function(res) {
+                        if (res.data.success) {
+                            $scope.listMistakeID.push(res.data.inspection_mistake_id);
+                        }
+                    });
                 });
 
-            }, 300);
 
-        } else {
+                $timeout(function() {
 
-            //create new inspection report.
+                    $http.post(ENV.domain + 'inspection.execute', inspection).then(function(d) {
+                        if (d.data['success']) {
+                            $scope.inspectionid = d.data['id'];
+                            Notification.success({ message: d.data['message'] || 'inspection report saved success', delay: 2000 });
+                        } else {
+                            Notification.error({ message: d.data['message'] || 'Inspection report failed', delay: 2000 });
+                        }
+                    });
 
-            angular.forEach($scope.listMistakeItem, function(item) {
-                var data = {
-                    "mistake_code": item.mistake_code,
-                    "number_of_critical_defect": item.critical,
-                    "number_of_major_defect": item.major,
-                    "number_of_minor_defect": item.minor,
-                    "number_of_notice": item.notice,
-                    "updateby": $rootScope.username
+                }, 300);
+            }
+
+
+        }
+        // upload document;
+    $scope.listImageid = [];
+    $scope.iFiles = [];
+    $scope.listImageFn = [];
+    $scope.listDocument = [];
+    // $scope.icheckData = 0;
+    // $scope.listFileInspection = function() {
+    //     $scope.iFiles = [];
+    //     angular.forEach($scope.listImageid, function(value) {
+    //         $scope.iFiles.push(value);
+    //         $scope.icheckData = $scope.iFiles.length;
+    //     });
+    //     $scope.icheckData = $scope.iFiles.length;
+    // }
+    // $scope.removeFileInspection = function(index, id) {
+    //     $http.delete(ENV.domain + 'productSegmentDocument.execute/?docId=' + id).then(function(response) {
+    //         if (response.data['success']) {
+    //             $scope.iFiles.splice(index, 1);
+    //             $scope.listImageFn.splice(index, 1);
+    //             $scope.listImageid.splice(index, 1);
+    //             Notification.success({ message: response.data['message'] || 'Delete file success', delay: 2000 });
+    //         } else {
+    //             Notification.error({ message: response.data['message'] || 'Delete file failed', delay: 2000 });
+    //         }
+    //     });
+    // }
+    $scope.uploadFileImages = function() {
+
+            if (!$scope.fileImage) {
+                Notification.error({ message: 'Please select file to upload first', delay: 2000 });
+            } else {
+                for (var i = 0; i < $scope.fileImage.length; i++) {
+                    $scope.fileImage[i].inspectionid = $scope.inspectionid;
+                    $scope.fileImage[i].updateby = $rootScope.username;
                 }
-                $http.post(ENV.domain + 'inspectionReportMistake.execute', data).then(function(res) {
-                    if (res.data.success) {
-                        $scope.listMistakeID.push(res.data.inspection_mistake_id);
-                    }
-                });
-            });
-
-
-            $timeout(function() {
-
-                $http.post(ENV.domain + 'inspection.execute', inspection).then(function(d) {
+                var req = {
+                    method: 'POST',
+                    url: ENV.domain + 'image.uploadImages',
+                    headers: {
+                        'Content-Type': undefined
+                    },
+                    data: $scope.fileImage
+                }
+                console.log(req)
+                $http(req).then(function(d) {
                     if (d.data['success']) {
-                        $scope.inspectionid = d.data['id'];
-                        Notification.success({ message: d.data['message'] || 'inspection report saved success', delay: 2000 });
+                        $scope.listImageid = $scope.listImageid.concat(d.data.imageId);
+                        $scope.listDocument = $scope.listDocument.concat($scope.listImageid);
+                        $scope.listImageFn = $scope.listImageFn.concat(d.data.filename);
+                        Notification.success({ message: 'Upload Image success', delay: 2000 });
+                        delete $scope.fileImage;
                     } else {
-                        Notification.error({ message: d.data['message'] || 'Inspection report failed', delay: 2000 });
+                        Notification.error({ message: d.data['message'] || 'Please select file to upload first', delay: 2000 });
                     }
-                });
 
-            }, 300);
+                })
+                $("ul.upload_listing").html("");
+            }
         }
-
-
-    }
+        // End upload document inspection
 
     //create pdf
     $scope.viewPDF = function() {
