@@ -32,8 +32,8 @@ component output="false" displayname=""  {
 					pi.product_item_name_english, p.product_line_name_english,
 			        ab.abno, ab.shipped_quantity, ab.expected_shipping_date, ab.confirmed_shipping_date,
 			        insport.result, insport.inspectionid, insport.inspection_no,
-			        if(insport.quantity_accepted != '', quantity_accepted, 0) as accepted,
-                    (ab.shipped_quantity - (select accepted)) as remain,
+                     if(sum(insport.quantity_accepted) != '', sum(insport.quantity_accepted), 0) as accepted,
+                  (ab.shipped_quantity - ifnull((sum(insport.quantity_accepted)),0)) as remain,GROUP_CONCAT(insport.inspection_no) as list_ins_no,
 			        insche.plan_date,insche.inspector1,insche.inspector2, insche.abid, insche.id as inspection_schedule_id  
 			FROM 	inspection_schedule insche 
 			INNER JOIN 	ab ON ab.abid = insche.abid AND ab.active = 1 " &
@@ -43,6 +43,7 @@ component output="false" displayname=""  {
 			LEFT JOIN inspection_report insport ON ab.abid = insport.abid AND insport.active = 1 
 			INNER JOIN 	product_item pi ON opos.product_item_no = pi.product_item_no and pi.active = 1  
 			INNER JOIN 	product_line p ON pi.product_line_no = p.product_line_no and p.active = 1  
+			GROUP BY ab.abid
 			ORDER BY po.order_date DESC, opos.position_no";
 		return queryExecute(order_spec, paramset);
 	}

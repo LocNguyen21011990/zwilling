@@ -15,13 +15,15 @@ appControllers.controller('loginCtrl',function(userService,$log,$state,Storage,N
             Storage.remove(storageKey);
             Storage.remove('token');
             $rootScope.username = '';
+            window.location.reload();
         });
     }
     var user = {};
-    function signup(){
+    function signup(login){
         var capcha = '';
-        if(vcRecaptchaService != '') {
-            capcha = vcRecaptchaService.getResponse(); 
+        var response = vcRecaptchaService.getResponse();
+        if(response.length > 0) {
+            capcha = response;
         }
         userService.signup(login.username, login.password,login.lang,capcha, login.isOver3Times).then(function(data) {
             if(data.success)

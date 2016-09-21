@@ -1,10 +1,13 @@
 "use strict";
-app.controller('inspectionReport', ['$window', '$scope', '$timeout', 'ENV', '$state', '$stateParams', '$http', 'userService', 'Notification', function($window, $scope, $timeout, ENV, $state, $stateParams, $http, userService, Notification) {
-
-
+app.controller('inspectionReport', ['$rootScope','$window', '$scope', '$timeout', 'ENV', '$state', '$stateParams', '$http', 'userService', 'Notification', function($rootScope,$window, $scope, $timeout, ENV, $state, $stateParams, $http, userService, Notification) {
 
     $scope.tab = 1;
+    $scope.critical = 0;
+    $scope.major = 0;
+    $scope.minor = 0;
+    $scope.notice = 0;
 
+    $("#mistake_dictionary").select2("val", "");
     $scope.setTab = function(newTab) {
         $scope.tab = newTab;
     };
@@ -111,18 +114,24 @@ app.controller('inspectionReport', ['$window', '$scope', '$timeout', 'ENV', '$st
                 "number_of_major_defect": $scope.major,
                 "number_of_minor_defect": $scope.minor,
                 "number_of_notice": $scope.notice,
-                "updateby": "rasia"
+                "updateby": $rootScope.username
             }
             $http.post(ENV.domain + 'inspectionReportMistake.execute', data).then(function(res) {
-            	$scope.listMistakeItem[$scope.listMistakeItem.length -1].inspection_mistake_id =res.data.inspection_mistake_id;
+                if(res.data['success']){
+                    $scope.listMistakeItem[$scope.listMistakeItem.length - 1].inspection_mistake_id = res.data.inspection_mistake_id;
+                    Notification.success({message:res.data['message'] || 'Input mistake success', delay:2000});
+                }else{
+                    Notification.error({message:res.data['message'] || 'Input mistake failed.', delay:5000});
+                }
             });
+            $scope.critical = 0;
+            $scope.major = 0;
+            $scope.minor = 0;
+            $scope.notice = 0;
+            $scope.mistake_dictionary = '';
+            $("#mistake_dictionary").select2("val", "");
         }
 
-        $scope.critical = "";
-        $scope.major = "";
-        $scope.minor = "";
-        $scope.notice = "";
-        $("#mistake_dictionary").select2("val", "");
     }
 
     $scope.listDocuments = [];
@@ -196,11 +205,13 @@ app.controller('inspectionReport', ['$window', '$scope', '$timeout', 'ENV', '$st
 
     $scope.removeMistake = function(index) {
         var value = $scope.listMistakeItem[index];
-        console.log(value)
         if (value.inspection_mistake_id != '') {
             $http.delete(ENV.domain + 'inspectionReportMistake.execute?id=' + value.inspection_mistake_id).then(function(response) {
                 if (response.data['success']) {
                     $scope.listMistakeItem.splice(index, 1);
+                    $scope.totalCritical -= parseInt(value.critical);
+                    $scope.totalMajor -= parseInt(value.major);
+                    $scope.totalMinor -= parseInt(value.minor);
                     Notification.success({ message: response.data['message'] || 'Delete record mistake success', delay: 2000 });
                 } else {
                     Notification.error({ message: response.data['message'] || 'Delete record mistake failed', delay: 2000 });
@@ -290,7 +301,7 @@ app.controller('inspectionReport', ['$window', '$scope', '$timeout', 'ENV', '$st
                     "number_of_major_defect": item.major,
                     "number_of_minor_defect": item.minor,
                     "number_of_notice": item.notice,
-                    "updateby": "rasia"
+                    "updateby": $rootScope.username
                 }
                 $http.post(ENV.domain + 'inspectionReportMistake.execute', data).then(function(res) {
                     if (res.data.success) {

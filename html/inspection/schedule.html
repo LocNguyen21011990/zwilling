@@ -146,7 +146,7 @@
 	    <div class="modal-content">
 	      	<div class="modal-header">
 		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-		        <h4 class="modal-title" id="myModalLabel">Choose an item to be inspected</h4>
+		        <h4 class="modal-title" id="myModalLabel">List Inspection Report</h4>
 	      	</div>
 		    <div class="modal-body">
 				<div class="table-responsive">
@@ -178,6 +178,60 @@
 								<td class="btn_edit"><a class="cursor" ng-click="goReport($index)"><i class="fa fa-pencil-square-o"></i></a></td>
 								<td class="btn_edit"><a class="cursor" ng-click="goSubPDF($index)" ng-show="item.inspection_no != ''"><i class="fa fa-file-pdf-o"></i></a></td>
 							</tr>
+						</tbody>
+					</table>
+				</div>
+		    </div>
+		  	<div class="modal-footer">
+		  	</div>
+	    </div>
+  	</div>
+</div>
+
+<div class="modal fade" id="listInspected" tabindex="-1" role="dialog">
+  	<div class="modal-dialog modal-lg" role="document">
+	    <div class="modal-content">
+	      	<div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		        <h4 class="modal-title" id="myModalLabel">Choose an item to be inspected</h4>
+	      	</div>
+		    <div class="modal-body">
+				<div class="table-responsive">
+					<table class="table table-bordered table-striped">
+						<thead>
+							<tr>
+								<th style="width:15%">Inspection No.</th>
+								<th style="width:18%">Status</th>
+								<th style="width:15%">Quantity</th>
+								<th style="width:5%"></th>
+							</tr>
+						</thead>
+						<tbody id="item_list_ins">
+							<tr>
+							<td>abc</td>
+							<td>abc</td>
+							<td>abc</td>
+							<td>abc</td>
+							</tr>
+						<tr>
+							<td>abc</td>
+							<td>abc</td>
+							<td>abc</td>
+							<td>abc</td>
+							</tr>
+
+							<!-- <tr ng-repeat="item in listItemSet">
+								<td>{{item.product_item_no}}</td>
+								<td>{{item.product_line}}</td>
+								<td>{{item.product_item_name}}</td>
+								<td>{{item.quantity_product_item_set}} x {{item.quantity_ab}}</td>
+								<td>{{item.result}}</td>
+								<td>{{inspectorname1}}</td>
+								<td>{{inspectorname2}}</td>
+								<td>{{item.inspection_no}}::{{item.inspection_date}}</td>
+								<td class="btn_edit"><a class="cursor" ng-click="goReport($index)"><i class="fa fa-pencil-square-o"></i></a></td>
+								<td class="btn_edit"><a class="cursor" ng-click="goSubPDF($index)" ng-show="item.inspection_no != ''"><i class="fa fa-file-pdf-o"></i></a></td>
+							</tr> -->
 						</tbody>
 					</table>
 				</div>

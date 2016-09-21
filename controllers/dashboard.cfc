@@ -37,12 +37,16 @@ component accessors=true {
             structIns.title = ins.shipped_quantity&" x "&ins.product_line_name_english&" - "&ins.product_item_name_english;
             structIns.start = DateFormat(ins.plan_date, "yyyy-mm-dd");
             structIns.stick = true;
-            var color_ins = "green";
+            var color_ins = "";
             var mdate = DateDiff("d", dateCurrent, structIns.start);
-            if(mdate <= 7){
-                color_ins = "red";
-            }else if(mdate <= 14){
-                color_ins = "orange";
+            if(!isEmpty(ins.inspection_no)){
+                color_ins = "green";
+            }else{
+                if(mdate <= 7){
+                    color_ins = "red";
+                }else{
+                    color_ins = "orange";
+                }
             }
             // Add class "green" for "Inspected / Delivered"
             // Add class "orange" for "Inspected by next 14 days / Delivered by next 14 days"
@@ -64,12 +68,16 @@ component accessors=true {
             structDeli.title = deli.shipped_quantity&" x "&deli.product_line_name_english&" - "&deli.product_item_name_english;
             structDeli.start = DateFormat(deli.confirmed_shipping_date, "yyyy-mm-dd");
             structDeli.stick = true;
-            var color_dei = "green";
+            var color_dei = "";
             var ndate = DateDiff("d", dateCurrent, structDeli.start);
-            if(ndate <= 7){
-                color_dei = "red";
-            }else if(ndate <= 14){
-                color_dei = "orange";
+            if(!isEmpty(deli.inspection_no)){
+                color_dei = "green";
+            }else{
+                if(ndate <= 7){
+                    color_dei = "red";
+                }else{
+                    color_dei = "orange";
+                }
             }
             structDeli.icon   = "<i class='fa fa-truck "&color_dei&"'></i>";
             arrayAppend(dashboard, structDeli);
@@ -108,17 +116,14 @@ component accessors=true {
         }
         for(supChart in supplierCharts)
         {
-            //supl++;
-            //if(supl <= 5){
-                totaltop += supChart.total_price_usd;
-                var structsupChart = {};
-                structsupChart.title = supChart.name;
-                structsupChart.price = supChart.total_price_usd;
-                arrayAppend(suppliers, structsupChart);
-            //}
+            totaltop += supChart.total_price_usd;
+            var structsupChart = {};
+            structsupChart.title = supChart.name;
+            structsupChart.price = supChart.total_price_usd;
+            arrayAppend(suppliers, structsupChart);
         }
         total = totalAll - totaltop;
-        arrayAppend(suppliers, {price = total, title = "Others"});
+        arrayAppend(suppliers, {price = NumberFormat(total, ".000"), title = "Others"});
         data.supplier=suppliers;
         //data chart product
         var productCharts = purchase_orderService.getOrderChart(1, startChart, endChart).filter(
@@ -129,22 +134,18 @@ component accessors=true {
                 return sup_filter && seg_filter && loc_filter; 
             });
         var products = [];
-        //lpro = 0;
         var ptotaltop = 0;
         var ptotal = 0;
         for(proChart in productCharts)
         {
-            //lpro++;
-            //if(lpro <= 5){
-                ptotaltop += proChart.total_price_usd;
-                var structproChart = {};
-                structproChart.title = proChart.product_line_name_english;
-                structproChart.price = proChart.total_price_usd;
-                arrayAppend(products, structproChart);
-            //}
+            ptotaltop += proChart.total_price_usd;
+            var structproChart = {};
+            structproChart.title = proChart.product_line_name_english;
+            structproChart.price = proChart.total_price_usd;
+            arrayAppend(products, structproChart);
         }
         ptotal = totalAll - ptotaltop;
-        arrayAppend(products, {price = ptotal, title = "Others"});
+        arrayAppend(products, {price = NumberFormat(ptotal, ".000"), title = "Others"});
         data.product=products;
 
         //data chart order

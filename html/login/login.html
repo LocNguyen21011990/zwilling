@@ -20,7 +20,7 @@ body {
 				<span class="sr-only">Error:</span>
 				{{login.errorMessage}}
 			</div>
-        	<form class="frm_login" ng-submit="login.signup()" role="form" name="loginForm">
+        	<form class="frm_login" ng-submit="login.signup(login)" role="form" name="loginForm">
                 <div class="form-group">
                     <input class="form-control" id="username" placeholder="User Name" ng-model="login.username" required>
                 </div>

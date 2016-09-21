@@ -80,45 +80,83 @@ app.controller('dashboard', function($scope,$http,$log, $timeout, ENV,companySer
     $scope.supplierId ='';
     $scope.segmentId = '';
     $scope.searchEvents = searchEvents;
- 
-   function searchEvents(){
-        var api = ENV.domain+'dashboard.execute?month='+currentMonth+'&year='+currentYear;
-        if($scope.locationId != ''){
-            api =api + "&location=" + $scope.locationId;
-        }
-        if($scope.supplierId != ''){
-            api =api + "&supplier=" + $scope.supplierId;
-        }
-        if($scope.segmentId != ''){
-            api =api + "&segment=" + $scope.segmentId;
-        }
-        $http.get(api).then(function(res){
-            $('#calendar').fullCalendar( 'removeEventSource', events);
-            $('#calendar').fullCalendar( 'addEventSource', res.data.calendar);  
-            events = res.data.calendar;
-            $('#calendar').fullCalendar( 'refetchEvents' );
-            $scope.topproduct_label = [];
-            $scope.topproduct_data = [];
-            $scope.topsupplier_label =[];
-            $scope.topsupplier_data = [];
-            $scope.dashboard_label = [];
-            $scope.dashboard_data = [];
-            angular.forEach(res.data.product,function(value){
-                $scope.topproduct_label.push(value.title);
-                $scope.topproduct_data.push(value.price);
-            });
-            angular.forEach(res.data.supplier,function(value){
-                $scope.topsupplier_label.push(value.title);
-                $scope.topsupplier_data.push(value.price);
-            });
-             angular.forEach(res.data.order,function(value){
-                $scope.dashboard_label.push(value.title);
-                $scope.dashboard_data.push(value.price);
-            });
-        });
+
+  function searchEvents(){
+    var api = ENV.domain+'dashboard.execute?month='+currentMonth+'&year='+currentYear;
+    if($scope.locationId != ''){
+        api =api + "&location=" + $scope.locationId;
+    }
+    if($scope.supplierId != ''){
+        api =api + "&supplier=" + $scope.supplierId;
+    }
+    if($scope.segmentId != ''){
+        api =api + "&segment=" + $scope.segmentId;
+    }
+    $http.get(api).then(function(res){
+      $('#calendar').fullCalendar( 'removeEventSource', events);
+      $('#calendar').fullCalendar( 'addEventSource', res.data.calendar);  
+      events = res.data.calendar;
+      $('#calendar').fullCalendar( 'refetchEvents' );
+      $scope.topproduct_label = [];
+      $scope.topproduct_data  = [];
+      $scope.topsupplier_label= [];
+      $scope.topsupplier_data = [];
+      $scope.dashboard_label  = [];
+      $scope.dashboard_data   = [];
+      var dashboard_data      = [];
+      angular.forEach(res.data.product,function(value){
+          $scope.topproduct_label.push(value.title);
+          $scope.topproduct_data.push(value.price);
+      });
+      angular.forEach(res.data.supplier,function(value){
+          $scope.topsupplier_label.push(value.title);
+          $scope.topsupplier_data.push(value.price);
+      });
+      angular.forEach(res.data.order,function(value){
+          $scope.dashboard_label.push(value.title);
+          dashboard_data.push(value.price);
+      });
+      $scope.dashboard_data.push(dashboard_data);
+    });
   }
 
+  $scope.options = {
+    tooltips: {
+      enabled: true,
+      mode: 'single',
+      callbacks: {
+        label: function(tooltipItem, data) {
+          // var label = data.labels[tooltipItem.index];
+          var datasetLabel = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toString().replace(".",",");
+          return datasetLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+      }
+    }
+  };
 
+  $scope.optionsLine = {
+    tooltips: {
+      enabled: true,
+      mode: 'single',
+      callbacks: {
+        label: function(tooltipItem, data) {
+          // var label = data.labels[tooltipItem.index];
+          var datasetLabel = data.datasets[tooltipItem.datasetIndex].data[tooltipItem.index].toString().replace(".",",");
+          return datasetLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+      }
+    },
+    scales: {
+        yAxes: [{
+          ticks: {
+              callback: function(value, index, values) {
+                  var datasetLabel = value.toString().replace(".",",");
+                  return datasetLabel.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+              }
+          }
+        }]
+    }
+  };
 
   $timeout(function () {
       pageSetUp();

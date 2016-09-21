@@ -263,6 +263,12 @@ component accessors=true {
         var obj = createObject("component","api/general");
         VARIABLES.framework.renderData('JSON', obj.queryToArray(inspection_reportService.getInspectionNoList()));
     }
+
+    function getListInspectionByAbid() {
+        var obj = createObject("component","api/general");
+        var data = obj.queryToArray(inspection_reportService.getListInspectionByAbid(URL.abid));
+        variables.framework.renderData('JSON', data);
+    }
     
     function getLocationList() {
         var obj = createObject("component","api/general");
@@ -301,12 +307,16 @@ component accessors=true {
             structCalendar.title = item.shipped_quantity&" x "&item.product_line_name_english&" - "&item.product_item_name_english;
             structCalendar.start = DateFormat(item.plan_date, "yyyy-mm-dd");
             structCalendar.stick = true;
-            var color = "green";
+            var color = "";
             var mdate = DateDiff("d", dateCurrent, structCalendar.start);
-            if(mdate <= 7){
-                color = "red";
-            }else if(mdate <= 14){
-                color = "orange";
+            if(!isEmpty(item.inspection_no)){
+                color = "green";
+            }else{
+                if(mdate <= 7){
+                    color = "red";
+                }else{
+                    color = "orange";
+                }
             }
             structCalendar.icon  = "<i class='fa fa-file-text-o "&color&"'></i>";
             arrayAppend(calendar, structCalendar);
@@ -488,6 +498,10 @@ component accessors=true {
                 }
                 if(StructKeyExists(URL, 'start') and StructKeyExists(URL, 'end') and StructKeyExists(URL, 'calendar')){
                     calendarSearch(URL.start, URL.end);
+                    break;
+                }
+                if(StructKeyExists(URL, 'abid')){
+                    getListInspectionByAbid(URL.abid);
                     break;
                 }
                 oSearch(); 

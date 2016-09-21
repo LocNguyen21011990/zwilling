@@ -68,7 +68,11 @@ component accessors=true {
         VARIABLES.framework.renderData('JSON', {'success': success, 'message': message});
     }
 
-    function getlistUser(string token) { 
+    function getlistUser() { 
+        var token = "";
+        if(StructKeyExists(GetHttpRequestData().headers, 'Authorization')){
+            token = GetHttpRequestData().headers.Authorization;
+        }
         var obj = createObject("component","api/general");
         var checkAccess = obj.checkTimeOut(token);
         var message = checkAccess.data;
@@ -76,13 +80,10 @@ component accessors=true {
         if(checkAccess.success){
             var listUser = obj.queryToArray(userService.getListUser());
             for(item in listUser){
-                var roles = listToArray(item.id_role, ',');
-                var nameArray = [];
-                for(id in roles){
-                    var role_name = userService.getRoleById(id);
-                    arrayAppend(nameArray, userService.getRoleById(id).role_name);
-                }
-                item.id_role = arrayToList(nameArray, ',');
+                var role_id = item.id_role;
+                if(isEmpty(role_id))
+                     role_id = "0";
+                item.id_role = userService.getRoleByIds(role_id).role_name;
             }
             variables.framework.renderData('JSON', listUser);
         }else{
@@ -94,7 +95,11 @@ component accessors=true {
         var flag = false;
         var success = false;
         var obj = createObject("component","api/general");
-        var checkAccess = obj.checkTimeOut(GetHttpRequestData().headers.Authorization);
+        var tokens = "";
+        if(StructKeyExists(GetHttpRequestData().headers, 'Authorization')){
+            tokens = GetHttpRequestData().headers.Authorization;
+        }
+        var checkAccess = obj.checkTimeOut(tokens);
         var message = checkAccess.data;
         if(checkAccess.success){
             var info = deserializeJSON(data);
@@ -149,7 +154,11 @@ component accessors=true {
         var flag = true;
         var success = false;
         var obj = createObject("component","api/general");
-        var checkAccess = obj.checkTimeOut(GetHttpRequestData().headers.Authorization);
+        var tokens = "";
+        if(StructKeyExists(GetHttpRequestData().headers, 'Authorization')){
+            tokens = GetHttpRequestData().headers.Authorization;
+        }
+        var checkAccess = obj.checkTimeOut(tokens);
         var message = checkAccess.data;
         if(checkAccess.success){
             var info = deserializeJSON(data);
@@ -202,12 +211,15 @@ component accessors=true {
 
     function getUserById(numeric id_user) {
         var obj = createObject("component","api/general");
-        var checkAccess = obj.checkToken(GetHttpRequestData().headers.Authorization, obj.getIdPage(CGI.path_info));
+        var token = "";
+        if(StructKeyExists(GetHttpRequestData().headers, 'Authorization')){
+            token = GetHttpRequestData().headers.Authorization;
+        }
+        var checkAccess = obj.checkTimeOut(token);
         var message = checkAccess.data;
         var success = false;
         if(checkAccess.success){
             var user = obj.queryToObject(userService.getUserByUserId(id_user));
-            user.id_role = listToArray(user.id_role, ',');
             variables.framework.renderData('JSON', user);
         }else{
             variables.framework.renderData('JSON', {'success': success, 'message': message});
@@ -282,7 +294,7 @@ component accessors=true {
                 configMail.mailTo=check.email;
                 configMail.mailSubject="Zwilling - forgot password for you";
                 configMail.mailContent=CGI.http_host&"/##/reset-password/"&token;
-                var mail = obj.sendMail(configMail);
+                var mail = obj.sendMail(configMail); 
                 if(mail){
                     entity = entityLoad("user", check.id_user, true);
                     entity.setLast_login(now());
@@ -360,7 +372,7 @@ component accessors=true {
                     getUserInspector(URL.user_type); 
                     break;
                 }
-                getlistUser(GetHttpRequestData().headers.Authorization); 
+                getlistUser(); 
                 break;         
         } //end switch
     }

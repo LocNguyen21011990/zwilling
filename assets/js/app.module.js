@@ -15,8 +15,7 @@ window.globalVariable = {
         product_segment:2
     }
 };
-
-var app = angular.module('zwillingApp', ['zwilling.controllers','angular.filter','zwilling.services','ui.router','ngResource','ui-notification','ui.select2','ui.select2.sortable','datatables','datatables.buttons','datatables.columnfilter','naif.base64', 'ui.autocomplete','chart.js','angular-loading-bar', 'vcRecaptcha'])
+var app = angular.module('zwillingApp', ['zwilling.controllers','checklist-model','angular.filter','zwilling.services','ui.router','ngResource','ui-notification','ui.select2','ui.select2.sortable','datatables','datatables.buttons','datatables.columnfilter','naif.base64', 'ui.autocomplete','chart.js','angular-loading-bar', 'vcRecaptcha'])
 .run(function($rootScope, $state,$timeout,Storage){
     if(Storage.get('user')){
         $rootScope.username = Storage.get('user').user_name;

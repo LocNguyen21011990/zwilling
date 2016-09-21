@@ -37,7 +37,7 @@
 				<div class="col-md-6">
 					<label>Active</label>
 					<label class="radio-inline">
-						<label class="check-box"><input type="checkbox" ng-model="user.is_active"></label>
+						<label class="check-box"><input type="checkbox" ng-checked="true" ng-model="is_active" ng-change="changeActive(is_active)"></label>
 					</label>
 				</div>
 				<div class="col-md-6">
@@ -51,7 +51,7 @@
 		<div class="col-md-7">
 			<div class="col-md-6" ng-repeat="role in roles">
 				<label class="check-box">
-					<input type="checkbox" ng-model="ischeck" ng-change="checkRole(role.id_role,ischeck)">&nbsp;{{role.role_name}} 
+					<input type="checkbox" ng-model="ischeck" checklist-model="user.id_role" checklist-value="role.id_role">&nbsp;{{role.role_name}} 
 				</label>
 			</div>
 		</div>
@@ -60,7 +60,7 @@
 		<div class="col-sm-12 text-center">
 			<br>
 			<button type="button" ng-click="saveUser()" class="btn btn_save">Save</button>
-			<button type="button" class="btn btn_reset">Reset</button>
+			<button type="button" class="btn btn_reset" ng-click="reset()">Reset</button>
 		</div>
 	</div>
 </div>

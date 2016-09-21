@@ -25,7 +25,7 @@ component output="false" displayname=""  {
 	}
 	
 	public function sendMail(any mail) {
-		mailerService = new mail(); 
+		var mailerService = new mail(); 
         
         /* set mail attributes using implicit setters provided */ 
         mailerService.setTo(mail.mailTo); 

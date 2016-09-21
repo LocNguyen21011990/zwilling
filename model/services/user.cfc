@@ -8,8 +8,7 @@ component {
 	function getListUser() {
 		var sql = "select user.user_name, user.id_user, user.first_name as displayname, 
 					user.email, user.is_active, user.id_role 
-					from user 
-					where user.is_active=1";
+					from user";
 		return queryExecute(sql);
 	}
 	
@@ -80,5 +79,10 @@ component {
 		var sql = "select * from role where id_role = :id_role";
 		paramset['id_role'] = {value=id_role, CFSQLType="integer"};
 		return queryExecute(sql, paramset); 
+	}
+
+	function getRoleByIds(string id_role) {
+		var sql = "select GROUP_CONCAT(role_name) as role_name from role where id_role in ("&id_role&")";
+		return queryExecute(sql); 
 	}
 }

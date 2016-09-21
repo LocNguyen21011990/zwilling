@@ -223,7 +223,17 @@ app.controller('inspectionSchedule', ['$window','Notification','$scope','Storage
                 $('#itemInspected').modal('show');
             }
             else{
-                $state.go('home.inspection.report',{pid:$scope.ListInspectionSchedule[index].product_item_no,abid:$scope.ListInspectionSchedule[index].abid,quantity:1});
+                if($scope.ListInspectionSchedule[index].list_ins_no == ''){
+                    //go to create new inspection report
+                    $state.go('home.inspection.report',{pid:$scope.ListInspectionSchedule[index].product_item_no,abid:$scope.ListInspectionSchedule[index].abid,quantity:1});
+
+                }else{
+                    //show modal list inspection report
+                    $scope.listInspectionReport = angular.fromJson($scope.ListInspectionSchedule[index].list_ins_no);
+                    console.log($scope.listInspectionReport);
+                    $('#listInspected').modal('show');
+                }
+                
             }
         })
 

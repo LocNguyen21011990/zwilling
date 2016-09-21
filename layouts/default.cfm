@@ -66,7 +66,7 @@
 		<script type="text/javascript" src="assets/js/lib/calendar/moment.min.js"></script>
 		<script type="text/javascript" src="assets/js/lib/calendar/fullcalendar.min.js"></script>
 		<script src="//cdnjs.cloudflare.com/ajax/libs/angular-filter/0.4.7/angular-filter.js"></script>
-
+		<script type="text/javascript" src="assets/js/lib/checklist-model.js"></script>
 		<script lang="javascript" src="assets/js/lib/datatable/xlsx.core.min.js"></script>
 
 

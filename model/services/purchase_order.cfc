@@ -357,18 +357,21 @@ component {
 
 	function getInspectionCalendar(string startDate, string endDate) {
 		var sql = "select pi.product_item_name_english, ab.shipped_quantity, 
-					ins.plan_date, ins.inspector1, ins.inspector2, po.supplier_companyid, s.locationid, pl.product_line_name_english           
+					ins.plan_date, ins.inspector1, ins.inspector2, po.supplier_companyid, 
+					s.locationid, pl.product_line_name_english, inspec.inspection_no            
 					from inspection_schedule ins 
 					inner join ab on ins.abid = ab.abid and ab.active = 1 
 					inner join order_position op on ab.positionid = op.positionid and op.active = 1 and op.tmp = 0 
 					inner join purchase_order po on op.orderid = po.orderid and po.active = 1  
 					inner join product_item pi on op.product_item_no = pi.product_item_no and pi.active = 1 
 					inner join product_line pl on pi.product_line_no = pl.product_line_no and pl.active = 1 
-					inner join company s on po.supplier_companyid = s.companyid and s.active = 1
+					inner join company s on po.supplier_companyid = s.companyid and s.active = 1 
+					left join inspection_report inspec on ab.abid = inspec.abid and inspec.active = 1 
 					where ins.plan_date >= :startDate 
 					and ins.plan_date <= :endDate 
-					and ab.abid not in (select distinct abid from inspection_report where active = 1)
+
 					";
+					//and ab.abid not in (select distinct abid from inspection_report where active = 1)
 		    paramset['startDate'] = {value=DateFormat(startDate, 'yyyy-mm-dd'), CFSQLType="date"};
 		    paramset['endDate'] = {value=DateFormat(endDate, 'yyyy-mm-dd'), CFSQLType="date"};
 		return queryExecute(sql, paramset);
@@ -376,7 +379,7 @@ component {
 
 	function getOrderInspection(string startDate, string endDate) {
 		var sql = "select pi.product_item_name_english, ab.shipped_quantity, ins.plan_date, 
-					po.supplier_companyid, pl.product_segment_id, s.locationid, pl.product_line_name_english         
+					po.supplier_companyid, pl.product_segment_id, s.locationid, pl.product_line_name_english, inspec.inspection_no          
 					from inspection_schedule ins 
 					inner join ab on ins.abid = ab.abid and ab.active = 1 
 					inner join order_position op on ab.positionid = op.positionid and op.active = 1 and op.tmp = 0 
@@ -384,10 +387,12 @@ component {
 					inner join product_item pi on op.product_item_no = pi.product_item_no and pi.active = 1 
 					inner join product_line pl on pi.product_line_no = pl.product_line_no and pl.active = 1  
 					inner join company s on po.supplier_companyid = s.companyid and s.active = 1  
+					left join inspection_report inspec on ab.abid = inspec.abid and inspec.active = 1 
 					where ins.plan_date >= :startDate 
 					and ins.plan_date <= :endDate 
-					and ab.abid not in (select distinct abid from inspection_report where active = 1)
+					
 					";
+					//and ab.abid not in (select distinct abid from inspection_report where active = 1)
 		    paramset['startDate'] = {value=DateFormat(startDate, 'yyyy-mm-dd'), CFSQLType="date"};
 		    paramset['endDate'] = {value=DateFormat(endDate, 'yyyy-mm-dd'), CFSQLType="date"};
 		return queryExecute(sql, paramset);
@@ -395,17 +400,18 @@ component {
 
 	function getOrderDelivery(string startDate, string endDate) {
 		var sql = "select pi.product_item_name_english, ab.shipped_quantity, ab.confirmed_shipping_date, 
-					po.supplier_companyid, pl.product_segment_id, s.locationid, pl.product_line_name_english        
+					po.supplier_companyid, pl.product_segment_id, s.locationid, pl.product_line_name_english, inspec.inspection_no         
 					from ab 
 					inner join order_position op on ab.positionid = op.positionid and op.active = 1 and op.tmp = 0 and ab.active = 1 
 					inner join purchase_order po on op.orderid = po.orderid and po.active = 1 
 					inner join product_item pi on op.product_item_no = pi.product_item_no and pi.active = 1   
 					inner join product_line pl on pi.product_line_no = pl.product_line_no and pl.active = 1 
 					inner join company s on po.supplier_companyid = s.companyid and s.active = 1 
+					left join inspection_report inspec on ab.abid = inspec.abid and inspec.active = 1 
 					where ab.confirmed_shipping_date >= :startDate  
 					and ab.confirmed_shipping_date <= :endDate 
-					and ab.abid not in (select distinct abid from inspection_report where active = 1)
 					";
+					//and ab.abid not in (select distinct abid from inspection_report where active = 1)
 		    paramset['startDate'] = {value=DateFormat(startDate, 'yyyy-mm-dd'), CFSQLType="date"};
 		    paramset['endDate'] = {value=DateFormat(endDate, 'yyyy-mm-dd'), CFSQLType="date"};
 		return queryExecute(sql, paramset);

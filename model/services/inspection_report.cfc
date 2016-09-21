@@ -128,6 +128,12 @@ component output="false" {
 		        sql &= " group by ir.inspectionid";
 		return queryExecute(sql, paramset);
 	}
-	
+
+	function getListInspectionByAbid(numeric abid) {
+		var paramset = {};
+		var sql ="select * from inspection_report where abid  = :abid";
+		paramset["abid"] = {value=abid,  CFSQLType="integer"};
+		return queryExecute(sql, paramset);
+	}
 	
 }
