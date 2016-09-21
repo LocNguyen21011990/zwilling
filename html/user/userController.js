@@ -36,7 +36,7 @@ app.controller('userListing', function($compile, $http,$log, $scope, $timeout, E
         DTColumnBuilder.newColumn('displayname').withTitle('Display Name'),
         DTColumnBuilder.newColumn('email').withTitle('Email Address'),
         DTColumnBuilder.newColumn('id_role').withTitle('Roles'),
-        DTColumnBuilder.newColumn('is_active').withTitle('Active'),
+        DTColumnBuilder.newColumn('is_active').withTitle('Active').renderWith(renderComposition),
         DTColumnBuilder.newColumn(null).withTitle('Edit').renderWith(renderAction)
     ];
     $scope.dtColumnDefs = [];
@@ -55,6 +55,13 @@ app.controller('userListing', function($compile, $http,$log, $scope, $timeout, E
 
     function renderAction(data,type,full,meta) {
         return '<a class="cursor"><i class="fa fa-pencil-square-o" ng-click="edit('+data.id_user+')"></i></a>';
+    }
+    function renderComposition(data) {
+        var active = "";
+        if (data === 1) {
+            active = '<i class="fa fa-check-square-o" aria-hidden="true"></i>';
+        }
+        return active;
     }
     function changeActive(isCheck){
         if(isCheck)
@@ -156,6 +163,7 @@ app.controller('userListing', function($compile, $http,$log, $scope, $timeout, E
     function reset(){
         $scope.user = createUser();
         isEdit = false;
+        $scope.is_active = true;
     }
     function validateEmail(email) {
         var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;

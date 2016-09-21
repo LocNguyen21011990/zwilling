@@ -166,7 +166,7 @@ app.config(function($stateProvider, $urlRouterProvider) {
             authenticate: true
         })
         .state('home.inspection.report', {
-            url: '/report/:pid/:abid/:quantity/:parent',
+            url: '/report/:pid/:abid/:quantity/:parent/:insid',
             views: {
                 'content@': {
                     templateUrl: '/html/inspection/report.html',

@@ -26,13 +26,45 @@ var app = angular.module('zwillingApp', ['zwilling.controllers','checklist-model
          $rootScope.userId = '';
     }
     $rootScope.$on("$stateChangeStart", function(event, toState, toParams, fromState, fromParams){
+        if(toState.name == "home")
+             $state.go("home.dashboard");
         if(toState.authenticate){
             if(Storage.get('token')==null)
             {
                 $state.go("login");
                 event.preventDefault(); 
             }
+            var accesses = Storage.get('user').access||'';
+            if(accesses){
+                var check = false;
+                var defaultState = "";
+                angular.forEach(accesses,function(value){
+                    if(value.url && !defaultState)
+                        defaultState = value.url;
+                    if(!check){
+                        if(value.url == toState.name)
+                             check = true;
+                    }
+                })
+                if(!check)
+                {
+                    if(fromState.name){
+                        $state.go(fromState.name);
+                        event.preventDefault();
+                    }
+                    else{
+                        $state.go(defaultState);
+                        event.preventDefault();
+                    }
+                }
+            }
+            else{
+                $state.go("login");
+                event.preventDefault();
+            }
+
         }
+        
     })
     
     $timeout(function () {

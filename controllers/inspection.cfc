@@ -74,7 +74,11 @@ component accessors=true {
     
     function getInspectionScheduleInput(numeric schab, string itemno) {
         var obj = createObject("component","api/general");
-        var inspection_order = inspection_scheduleService.getInspection_order(schab, itemno);
+        var insid = 0;
+        if(structKeyExists(URL, "insid")){
+            insid = URL.insid;
+        }
+        var inspection_order = inspection_scheduleService.getInspection_order(schab, itemno,insid);
         data = obj.queryToObject(inspection_order);
         data.product_item_no = itemno;
         check = product_item_qlService.getProductItenQl(itemno); 
@@ -512,7 +516,7 @@ component accessors=true {
     function reportEXP(struct data) {
         var obj = createObject("component","api/general");
         var exp = createObject("component","report");
-        data.company = obj.queryToObject(inspection_scheduleService.getInspection_order(data.abid, data.product_item_no));
+        data.company = obj.queryToObject(inspection_scheduleService.getInspection_order(data.abid, data.product_item_no,data.inspectionid));
         var check = product_item_qlService.getProductItenQl(data.product_item_no); 
         var product_segment_id = 0;
         if(!isEmpty(check)){

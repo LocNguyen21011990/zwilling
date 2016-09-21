@@ -48,8 +48,14 @@ component output="false" displayname=""  {
 		return queryExecute(order_spec, paramset);
 	}
 
-	function getInspection_order( numeric schab, string itemno) {
+	function getInspection_order( numeric schab, string itemno,numeric insid) {
 		var paramset = {};
+		var sql_con = "";
+		if (isDefined("insid")) {
+			sql_con = "and insport.inspectionid=:insid";
+			paramset['insid'] = {value=insid, CFSQLType="integer"};
+
+		}
 		var sql = "select 
 							insport.inspectionid, insport.inspection_no,insport.missing_td,insport.missing_ss,insport.carton_info,insport.result,insport.comment,insport.seal_from1,insport.seal_to1,insport.seal_from2,insport.seal_to2,
 							insport.inspection_date,insport.inspected_quantity as reportqty,isi.id, isi.abid,isi.inspector1, isi.inspector2, isi.plan_date,
@@ -72,8 +78,8 @@ component output="false" displayname=""  {
 							inner join 	purchase_order po ON opos.orderid = po.orderid AND po.active = 1 
 							inner join company c on po.buyer_companyid = c.companyid and c.active = 1  
 							inner join company s on po.supplier_companyid = s.companyid and c.active = 1  
-							left join inspection_report insport ON ab.abid = insport.abid AND insport.active = 1 and insport.inspected_product_item_no = :itemno 
-							left join location lc ON c.locationid = lc.locationid AND lc.active = 1 
+							left join inspection_report insport ON ab.abid = insport.abid AND insport.active = 1 and insport.inspected_product_item_no = :itemno " &sql_con&  
+							" left join location lc ON c.locationid = lc.locationid AND lc.active = 1 
 							left join location ls ON s.locationid = ls.locationid AND ls.active = 1 
 							left join user u1 ON isi.inspector1 = u1.id_user AND u1.is_active = 1 
 							left join user u2 ON isi.inspector2 = u2.id_user AND u2.is_active = 1";

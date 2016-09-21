@@ -229,15 +229,27 @@ app.controller('inspectionSchedule', ['$window','Notification','$scope','Storage
 
                 }else{
                     //show modal list inspection report
-                    $scope.listInspectionReport = angular.fromJson($scope.ListInspectionSchedule[index].list_ins_no);
-                    console.log($scope.listInspectionReport);
-                    $('#listInspected').modal('show');
+                    $http.get(ENV.domain+'inspection.execute?abid='+$scope.ListInspectionSchedule[index].abid).then(function(res){
+                    console.log(res);
+                    if(res.data.length >0){
+                        $scope.listInspectionReport = res.data;
+                        $('#listInspected').modal('show');
+                    }
+                    })
                 }
                 
             }
         })
 
     }
+
+    $scope.goReportEdit = function(index){
+        $state.go('home.inspection.report',{pid:$scope.listInspectionReport[index].inspected_product_item_no,abid:$scope.listInspectionReport[index].abid,quantity:1,insid:$scope.listInspectionReport[index].inspectionid});
+        $('#listInspected').modal('hide');
+        $('body').removeClass('modal-open');
+        $('.modal-backdrop').remove();
+    }
+
 
     $scope.goReport = function(index){
         $state.go('home.inspection.report',{pid:$scope.listItemSet[index].product_item_no,abid:$scope.listItemSet[index].abid,quantity:$scope.listItemSet[index].quantity_product_item_set,parent:$scope.listItemSet[index].parent});

@@ -21,6 +21,12 @@ app.controller('inspectionReport', ['$rootScope','$window', '$scope', '$timeout'
     $scope.abid = $stateParams.abid;
     $scope.qty = $stateParams.quantity;
     $scope.parent = $stateParams.parent;
+    $scope.insid = 0;
+    if($stateParams.insid !=''){
+        $scope.insid = $stateParams.insid;
+    }
+    
+    console.log($stateParams.insid=='')
     var date_shown = "dd-M-yy";
 
     $scope.inspection_date = new Date().toFormat(date_shown);
@@ -137,7 +143,7 @@ app.controller('inspectionReport', ['$rootScope','$window', '$scope', '$timeout'
     $scope.listDocuments = [];
     $scope.reportforchild = false;
 
-    $http.get(ENV.domain + "inspection.execute?schab=" + $scope.abid + "&itemno=" + $scope.pid + "&quantity=" + $scope.qty).then(function(data) {
+    $http.get(ENV.domain + "inspection.execute?schab=" + $scope.abid + "&itemno=" + $scope.pid + "&quantity=" + $scope.qty+ "&insid="+$scope.insid).then(function(data) {
         $scope.inspectionReport = data.data;
         //console.log($scope.inspectionReport)
         $scope.reportforchild = Boolean($scope.inspectionReport.is_general_report);

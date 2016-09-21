@@ -16,10 +16,10 @@ component {
 			paramset['end'] = {value:enddate, CFSQLType="date"};
 		};
 		if(finish == 1){
-			finish_con = " HAVING ab.shipped_quantity != (select accepted) ";
+			finish_con = " HAVING ab.shipped_quantity != ifnull((sum(insport.quantity_accepted)),0) ";
 		}
 		if(finish == 0){
-			finish_con = " HAVING ab.shipped_quantity = (select accepted) ";
+			finish_con = " HAVING ab.shipped_quantity = ifnull((sum(insport.quantity_accepted)),0) ";
 		}
 		var order_spec =
 			"SELECT po.orderid, po.order_no, po.order_date, po.supplier_companyid AS supid, 
@@ -28,15 +28,15 @@ component {
 					pi.product_item_name_english, p.product_line_name_english,
 			        ab.abno, ab.shipped_quantity, ab.expected_shipping_date, ab.confirmed_shipping_date,
 			        insport.result,
-			        if(insport.quantity_accepted != '', quantity_accepted, 0) as accepted,
-                    (ab.shipped_quantity - (select accepted)) as remain   
+			        if(sum(insport.quantity_accepted) != '', sum(insport.quantity_accepted), 0) as accepted,
+                  (ab.shipped_quantity - ifnull((sum(insport.quantity_accepted)),0)) as remain  
 			FROM 	purchase_order po 
 			INNER JOIN 	order_position opos ON po.orderid = opos.orderid AND po.active = 1 AND opos.active = 1 AND opos.tmp = 0 " &
 					start_con & end_con &
 			"INNER JOIN ab ON opos.positionid = ab.positionid AND ab.active = 1  
 			LEFT JOIN inspection_report insport ON ab.abid = insport.abid AND insport.active = 1 
 			INNER JOIN 	product_item pi ON opos.product_item_no = pi.product_item_no AND pi.active = 1  
-			INNER JOIN 	product_line p ON pi.product_line_no = p.product_line_no AND p.active = 1 "
+			INNER JOIN 	product_line p ON pi.product_line_no = p.product_line_no AND p.active = 1 GROUP BY ab.abid "
 			&finish_con&
 			"ORDER BY po.order_date DESC, opos.position_no";
 		return queryExecute(order_spec, paramset);

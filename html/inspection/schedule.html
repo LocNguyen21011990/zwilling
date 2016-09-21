@@ -207,31 +207,13 @@
 							</tr>
 						</thead>
 						<tbody id="item_list_ins">
-							<tr>
-							<td>abc</td>
-							<td>abc</td>
-							<td>abc</td>
-							<td>abc</td>
-							</tr>
-						<tr>
-							<td>abc</td>
-							<td>abc</td>
-							<td>abc</td>
-							<td>abc</td>
-							</tr>
-
-							<!-- <tr ng-repeat="item in listItemSet">
-								<td>{{item.product_item_no}}</td>
-								<td>{{item.product_line}}</td>
-								<td>{{item.product_item_name}}</td>
-								<td>{{item.quantity_product_item_set}} x {{item.quantity_ab}}</td>
+							<tr ng-repeat="item in listInspectionReport">
+								<td>{{item.inspection_no}}</td>
 								<td>{{item.result}}</td>
-								<td>{{inspectorname1}}</td>
-								<td>{{inspectorname2}}</td>
-								<td>{{item.inspection_no}}::{{item.inspection_date}}</td>
-								<td class="btn_edit"><a class="cursor" ng-click="goReport($index)"><i class="fa fa-pencil-square-o"></i></a></td>
-								<td class="btn_edit"><a class="cursor" ng-click="goSubPDF($index)" ng-show="item.inspection_no != ''"><i class="fa fa-file-pdf-o"></i></a></td>
-							</tr> -->
+								<td>{{item.quantity_accepted.insertThousandSeparator()}}</td>
+								<td class="btn_edit"><a class="cursor" ng-click="goReportEdit($index)"><i class="fa fa-pencil-square-o"></i></a></td>
+								<!-- <td class="btn_edit"><a class="cursor" ng-click="goSubPDF($index)" ng-show="item.inspection_no != ''"><i class="fa fa-file-pdf-o"></i></a></td> -->
+							</tr>
 						</tbody>
 					</table>
 				</div>
